@@ -2,12 +2,12 @@ using System;
 
 namespace Timer.SoundEffects
 {
-    internal sealed class SoundsOfWorkoutSteps
+    internal sealed class SoundsOfWorkout
     {
         private readonly ISoundFactory _soundFactory;
         private static readonly Frequency PipFrequency = Frequency.FromHertz(1000);
 
-        public SoundsOfWorkoutSteps(ISoundFactory soundFactory)
+        public SoundsOfWorkout(ISoundFactory soundFactory)
         {
             _soundFactory = soundFactory;
         }
@@ -18,7 +18,7 @@ namespace Timer.SoundEffects
 
         public ISoundEffect Break(TimeSpan duration) => new SoundCountdown(duration, Beep(), Pip());
 
-        public ISoundEffect SetDone() => new SingleSound(DoublePip());
+        public ISoundEffect RoundDone() => new SingleSound(DoublePip());
 
         public ISoundEffect WorkoutDone() => new SingleSound(LongPip());
 

@@ -44,7 +44,7 @@ namespace Timer
         }
 
         public bool CanExecute(object parameter) =>
-            !_running && parameter is WorkoutSteps && NumberOfSets > 0;
+            !_running && parameter is WorkoutRoundSteps && NumberOfSets > 0;
 
         public async void Execute(object parameter)
         {
@@ -98,10 +98,10 @@ namespace Timer
 
         private Workout Workout(object parameter)
         {
-            var steps = (parameter as WorkoutSteps)?.ToWorkoutSteps();
+            var round = (parameter as WorkoutRoundSteps)?.ToWorkoutRound();
             var setCount = SetCount.FromNumber(NumberOfSets);
-            return steps != null && setCount != null
-                ? new Workout(steps, setCount.Value)
+            return round != null && setCount != null
+                ? new Workout(round, setCount.Value)
                 : default;
         }
 

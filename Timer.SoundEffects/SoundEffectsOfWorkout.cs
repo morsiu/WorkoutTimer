@@ -27,16 +27,16 @@ namespace Timer.SoundEffects
 
             IEnumerable<ISoundEffect> SoundEffects()
             {
-                var sounds = new SoundsOfWorkoutSteps(_soundFactory);
-                foreach (var step in _workout.Steps())
+                var sounds = new SoundsOfWorkout(_soundFactory);
+                foreach (var step in
+                    _workout.Select(
+                        exercise: x => sounds.Exercise(x.ToTimeSpan()),
+                        @break: x => sounds.Break(x.ToTimeSpan()),
+                        warmUp: x => sounds.WarmUp(x.ToTimeSpan()),
+                        roundDone: () => sounds.RoundDone(),
+                        workoutDone: () => sounds.WorkoutDone()))
                 {
-                    yield return
-                        step.Map(
-                            exercise: x => sounds.Exercise(x.ToTimeSpan()),
-                            @break: x => sounds.Break(x.ToTimeSpan()),
-                            warmUp: x => sounds.WarmUp(x.ToTimeSpan()),
-                            setDone: () => sounds.SetDone(),
-                            workoutDone: () => sounds.WorkoutDone());
+                    yield return step;
                 }
             }
 

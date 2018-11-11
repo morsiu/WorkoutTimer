@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Timers" Height="350" Width="525">
     <Window.Resources>
-        <local:WorkoutSteps x:Key="WorkoutSteps"/>
+        <local:WorkoutRoundSteps x:Key="WorkoutSteps"/>
         <local:RunWorkoutCommand x:Key="RunWorkout"/>
     </Window.Resources>
     <StackPanel>

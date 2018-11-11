@@ -2,27 +2,27 @@ using Timer.WorkoutPlans;
 
 namespace Timer
 {
-    internal sealed class WorkoutStep
+    internal sealed class WorkoutRoundStep
     {
         public int LengthInSeconds { get; set; }
         
         public WorkoutStepPurpose Purpose { get; set; }
 
-        public IWorkoutStep ToWorkoutStep()
+        public WorkoutRound AddTo(WorkoutRound workoutRound)
         {
             var duration = Duration.TryFromSeconds(LengthInSeconds);
             if (duration == null)
             {
-                return null;
+                return workoutRound;
             }
             switch (Purpose)
             {
                 case WorkoutStepPurpose.Exercise:
-                    return WorkoutStepFactory.Exercise(duration.Value);
+                    return workoutRound.AddExercise(duration.Value);
                 case WorkoutStepPurpose.Break:
-                    return WorkoutStepFactory.Break(duration.Value);
+                    return workoutRound.AddBreak(duration.Value);
                 default:
-                    return null;
+                    return workoutRound;
             }
         }
     }

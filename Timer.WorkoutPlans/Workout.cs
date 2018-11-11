@@ -1,39 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Timer.WorkoutPlans
 {
-    public readonly struct Workout
+    public sealed class Workout
     {
-        private readonly IEnumerable<IWorkoutStep> _steps;
+        private readonly WorkoutRound _workoutRound;
+        private readonly SetCount _setCount;
 
-        public Workout(IEnumerable<IWorkoutStep> steps, SetCount setCount)
+        public Workout(WorkoutRound workoutRound, SetCount setCount)
         {
-            _steps = steps;
-            SetCount = setCount;
+            _workoutRound = workoutRound;
+            _setCount = setCount;
         }
 
         [Pure]
-        public IEnumerable<IWorkoutStep> Steps()
+        public IEnumerable<T> Select<T>(
+            Func<Duration, T> warmUp,
+            Func<Duration, T> exercise,
+            Func<Duration, T> @break,
+            Func<T> roundDone,
+            Func<T> workoutDone)
         {
-            yield return new Warmup();
-            foreach (var set in Enumerable.Range(1, SetCount))
+            yield return warmUp(Duration.FromSeconds(15));
+            foreach (var set in Enumerable.Range(1, _setCount))
             {
-                foreach (var step in _steps)
+                foreach (var x in _workoutRound.Select(exercise, @break))
                 {
-                    yield return step;
+                    yield return x;
                 }
 
-                if (set != SetCount)
+                if (set != _setCount)
                 {
-                    yield return new SetDone();
+                    yield return roundDone();
                 }
             }
 
-            yield return new WorkoutDone();
+            yield return workoutDone();
         }
-
-        public SetCount SetCount { get; }
     }
 }
