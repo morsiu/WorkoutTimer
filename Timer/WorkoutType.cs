@@ -1,6 +1,6 @@
 namespace Timer
 {
-    internal enum WorkoutStepPurpose
+    internal enum WorkoutType
     {
         Break,
         Exercise,

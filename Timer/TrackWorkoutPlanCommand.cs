@@ -9,13 +9,13 @@ using Timer.WorkoutPlans;
 
 namespace Timer
 {
-    internal sealed class RunWorkoutCommand : DependencyObject, ICommand
+    internal sealed class TrackWorkoutPlanCommand : DependencyObject, ICommand
     {
         public static readonly DependencyProperty NumberOfRoundsProperty =
             DependencyProperty.Register(
                 nameof(NumberOfRounds),
                 typeof(int),
-                typeof(RunWorkoutCommand),
+                typeof(TrackWorkoutPlanCommand),
                 new PropertyMetadata(1, NumberOfRoundsChanged, CoerceNumberOfRounds));
 
         private readonly CancelCommand _cancel = new CancelCommand();
@@ -23,7 +23,7 @@ namespace Timer
         private readonly ModifyRoundCountCommand _removeRound;
         private bool _running;
 
-        public RunWorkoutCommand()
+        public TrackWorkoutPlanCommand()
         {
             _removeRound = new ModifyRoundCountCommand(this, -1);
             _addRound = new ModifyRoundCountCommand(this, 1);
@@ -44,11 +44,11 @@ namespace Timer
         }
 
         public bool CanExecute(object parameter) =>
-            !_running && parameter is WorkoutRoundSteps && NumberOfRounds > 0;
+            !_running && parameter is WorkoutCollection && NumberOfRounds > 0;
 
         public async void Execute(object parameter)
         {
-            if (_running || !(Workout(parameter) is Workout workout)) return;
+            if (_running || !(Workout(parameter) is WorkoutPlan workout)) return;
             try
             {
                 _running = true;
@@ -72,7 +72,7 @@ namespace Timer
         private static object CoerceNumberOfRounds(DependencyObject d, object basevalue) =>
             (int)basevalue > 0 ? basevalue : 1;
 
-        private static Task Execute(Workout workout, CancellationToken cancellationToken)
+        private static Task Execute(WorkoutPlan workoutPlan, CancellationToken cancellationToken)
         {
             return RunSoundEffects();
 
@@ -80,7 +80,7 @@ namespace Timer
             {
                 using (var soundFactory = new NAudioSoundFactory())
                 {
-                    await new SoundEffectsOfWorkout(workout, soundFactory)
+                    await new SoundEffectsOfWorkout(workoutPlan, soundFactory)
                         .Run(cancellationToken);
                 }
             }
@@ -88,7 +88,7 @@ namespace Timer
 
         private static void NumberOfRoundsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is RunWorkoutCommand self)) return;
+            if (!(d is TrackWorkoutPlanCommand self)) return;
             self._addRound.RaiseCanExecuteChanged();
             self._removeRound.RaiseCanExecuteChanged();
         }
@@ -96,21 +96,21 @@ namespace Timer
         private void RaiseCanExecuteChanged() =>
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
-        private Workout Workout(object parameter)
+        private WorkoutPlan Workout(object parameter)
         {
-            var round = (parameter as WorkoutRoundSteps)?.ToWorkoutRound();
+            var round = (parameter as WorkoutCollection)?.ToWorkoutRound();
             var roundCount = RoundCount.FromNumber(NumberOfRounds);
             return round != null && roundCount != null
-                ? new Workout(round, roundCount.Value)
+                ? new WorkoutPlan(round, roundCount.Value)
                 : default;
         }
 
         private sealed class ModifyRoundCountCommand : ICommand
         {
-            private readonly RunWorkoutCommand _target;
+            private readonly TrackWorkoutPlanCommand _target;
             private readonly int _delta;
 
-            public ModifyRoundCountCommand(RunWorkoutCommand target, int delta)
+            public ModifyRoundCountCommand(TrackWorkoutPlanCommand target, int delta)
             {
                 _target = target;
                 _delta = delta;

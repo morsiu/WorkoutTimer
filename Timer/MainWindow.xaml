@@ -7,17 +7,17 @@
         mc:Ignorable="d"
         Title="Timers" Height="350" Width="525">
     <Window.Resources>
-        <local:WorkoutRoundSteps x:Key="WorkoutSteps"/>
-        <local:RunWorkoutCommand x:Key="RunWorkout"/>
+        <local:WorkoutCollection x:Key="RoundWorkouts"/>
+        <local:TrackWorkoutPlanCommand x:Key="TrackWorkoutPlan"/>
     </Window.Resources>
     <StackPanel>
-        <DataGrid ItemsSource="{StaticResource WorkoutSteps}" />
+        <DataGrid ItemsSource="{StaticResource RoundWorkouts}" />
         <ToolBar>
-            <Button Content="Run" CommandParameter="{StaticResource WorkoutSteps}" Command="{StaticResource RunWorkout}" />
-            <Button Content="Stop" Command="{Binding Cancel, Source={StaticResource RunWorkout}}" />
-            <TextBox Text="{Binding NumberOfRounds, Source={StaticResource RunWorkout}}" />
-            <Button Content="+" Command="{Binding AddRound, Source={StaticResource RunWorkout}}" />
-            <Button Content="-" Command="{Binding RemoveRound, Source={StaticResource RunWorkout}}" />
+            <Button Content="Start" CommandParameter="{StaticResource RoundWorkouts}" Command="{StaticResource TrackWorkoutPlan}" />
+            <Button Content="Stop" Command="{Binding Cancel, Source={StaticResource TrackWorkoutPlan}}" />
+            <TextBox Text="{Binding NumberOfRounds, Source={StaticResource TrackWorkoutPlan}}" />
+            <Button Content="+" Command="{Binding AddRound, Source={StaticResource TrackWorkoutPlan}}" />
+            <Button Content="-" Command="{Binding RemoveRound, Source={StaticResource TrackWorkoutPlan}}" />
         </ToolBar>
     </StackPanel>
 </Window>

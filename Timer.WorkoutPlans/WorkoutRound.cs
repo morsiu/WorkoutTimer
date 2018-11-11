@@ -6,34 +6,34 @@ namespace Timer.WorkoutPlans
 {
     public sealed class WorkoutRound
     {
-        private readonly ImmutableArray<(StepType Type, Duration Duration)> _steps;
+        private readonly ImmutableArray<(WorkoutType Type, Duration Duration)> _workouts;
 
         public WorkoutRound()
-            : this(ImmutableArray<(StepType, Duration)>.Empty)
+            : this(ImmutableArray<(WorkoutType, Duration)>.Empty)
         {
         }
 
-        private WorkoutRound(ImmutableArray<(StepType, Duration)> steps)
+        private WorkoutRound(ImmutableArray<(WorkoutType, Duration)> workouts)
         {
-            _steps = steps;
+            _workouts = workouts;
         }
 
-        public WorkoutRound AddBreak(Duration duration) =>
-            new WorkoutRound(_steps.Add((StepType.Break, duration)));
+        public WorkoutRound AddBreakWorkout(Duration duration) =>
+            new WorkoutRound(_workouts.Add((WorkoutType.Break, duration)));
 
-        public WorkoutRound AddExercise(Duration duration) =>
-            new WorkoutRound(_steps.Add((StepType.Exercise, duration)));
+        public WorkoutRound AddExerciseWorkout(Duration duration) =>
+            new WorkoutRound(_workouts.Add((WorkoutType.Exercise, duration)));
 
         internal IEnumerable<T> Select<T>(Func<Duration, T> exercise, Func<Duration, T> @break)
         {
-            foreach (var step in _steps)
+            foreach (var step in _workouts)
             {
                 switch (step.Type)
                 {
-                    case StepType.Exercise:
+                    case WorkoutType.Exercise:
                         yield return exercise(step.Duration);
                         break;
-                    case StepType.Break:
+                    case WorkoutType.Break:
                         yield return @break(step.Duration);
                         break;
                     default:
@@ -42,7 +42,7 @@ namespace Timer.WorkoutPlans
             }
         }
 
-        private enum StepType
+        private enum WorkoutType
         {
             Exercise,
             Break

@@ -4,12 +4,12 @@ using System.Diagnostics.Contracts;
 
 namespace Timer.WorkoutPlans
 {
-    public sealed class Workout
+    public sealed class WorkoutPlan
     {
         private readonly WorkoutRound _workoutRound;
         private readonly RoundCount _roundCount;
 
-        public Workout(WorkoutRound workoutRound, RoundCount roundCount)
+        public WorkoutPlan(WorkoutRound workoutRound, RoundCount roundCount)
         {
             _workoutRound = workoutRound;
             _roundCount = roundCount;

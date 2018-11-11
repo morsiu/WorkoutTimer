@@ -2,11 +2,11 @@ using Timer.WorkoutPlans;
 
 namespace Timer
 {
-    internal sealed class WorkoutRoundStep
+    internal sealed class Workout
     {
         public int LengthInSeconds { get; set; }
         
-        public WorkoutStepPurpose Purpose { get; set; }
+        public WorkoutType Type { get; set; }
 
         public WorkoutRound AddTo(WorkoutRound workoutRound)
         {
@@ -15,12 +15,12 @@ namespace Timer
             {
                 return workoutRound;
             }
-            switch (Purpose)
+            switch (Type)
             {
-                case WorkoutStepPurpose.Exercise:
-                    return workoutRound.AddExercise(duration.Value);
-                case WorkoutStepPurpose.Break:
-                    return workoutRound.AddBreak(duration.Value);
+                case WorkoutType.Exercise:
+                    return workoutRound.AddExerciseWorkout(duration.Value);
+                case WorkoutType.Break:
+                    return workoutRound.AddBreakWorkout(duration.Value);
                 default:
                     return workoutRound;
             }

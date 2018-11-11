@@ -4,7 +4,7 @@ using Timer.WorkoutPlans;
 
 namespace Timer
 {
-    internal sealed class WorkoutRoundSteps : Collection<WorkoutRoundStep>
+    internal sealed class WorkoutCollection : Collection<Workout>
     {
         public WorkoutRound ToWorkoutRound()
         {

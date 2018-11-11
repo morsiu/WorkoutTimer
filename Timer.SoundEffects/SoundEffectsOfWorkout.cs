@@ -8,12 +8,12 @@ namespace Timer.SoundEffects
 {
     public sealed class SoundEffectsOfWorkout
     {
-        private readonly Workout _workout;
+        private readonly WorkoutPlan _workoutPlan;
         private readonly ISoundFactory _soundFactory;
 
-        public SoundEffectsOfWorkout(Workout workout, ISoundFactory soundFactory)
+        public SoundEffectsOfWorkout(WorkoutPlan workoutPlan, ISoundFactory soundFactory)
         {
-            _workout = workout;
+            _workoutPlan = workoutPlan;
             _soundFactory = soundFactory;
         }
 
@@ -29,7 +29,7 @@ namespace Timer.SoundEffects
             {
                 var sounds = new SoundsOfWorkout(_soundFactory);
                 foreach (var step in
-                    _workout.Select(
+                    _workoutPlan.Select(
                         exercise: x => sounds.Exercise(x.ToTimeSpan()),
                         @break: x => sounds.Break(x.ToTimeSpan()),
                         warmUp: x => sounds.WarmUp(x.ToTimeSpan()),
