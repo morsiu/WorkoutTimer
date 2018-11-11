@@ -20,8 +20,8 @@ namespace Timer.WorkoutPlans
             Func<Duration, T> warmUp,
             Func<Duration, T> exercise,
             Func<Duration, T> @break,
-            Func<T> roundDone,
-            Func<T> workoutDone)
+            Func<T> nonLastRoundDone,
+            Func<T> lastRoundDone)
         {
             yield return warmUp(Duration.FromSeconds(15));
             foreach (var round in _roundCount.Rounds())
@@ -32,10 +32,10 @@ namespace Timer.WorkoutPlans
                 }
                 if (!round.IsLast)
                 {
-                    yield return roundDone();
+                    yield return nonLastRoundDone();
                 }
             }
-            yield return workoutDone();
+            yield return lastRoundDone();
         }
     }
 }

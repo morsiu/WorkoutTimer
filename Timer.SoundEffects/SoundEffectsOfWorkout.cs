@@ -33,8 +33,8 @@ namespace Timer.SoundEffects
                         exercise: x => sounds.Exercise(x.ToTimeSpan()),
                         @break: x => sounds.Break(x.ToTimeSpan()),
                         warmUp: x => sounds.WarmUp(x.ToTimeSpan()),
-                        roundDone: () => sounds.RoundDone(),
-                        workoutDone: () => sounds.WorkoutDone()))
+                        nonLastRoundDone: () => sounds.RoundDone(),
+                        lastRoundDone: () => sounds.WorkoutDone()))
                 {
                     yield return step;
                 }
