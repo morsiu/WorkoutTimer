@@ -15,9 +15,9 @@
         <ToolBar>
             <Button Content="Run" CommandParameter="{StaticResource WorkoutSteps}" Command="{StaticResource RunWorkout}" />
             <Button Content="Stop" Command="{Binding Cancel, Source={StaticResource RunWorkout}}" />
-            <TextBox Text="{Binding NumberOfSets, Source={StaticResource RunWorkout}}" />
-            <Button Content="+" Command="{Binding AddSet, Source={StaticResource RunWorkout}}" />
-            <Button Content="-" Command="{Binding RemoveSet, Source={StaticResource RunWorkout}}" />
+            <TextBox Text="{Binding NumberOfRounds, Source={StaticResource RunWorkout}}" />
+            <Button Content="+" Command="{Binding AddRound, Source={StaticResource RunWorkout}}" />
+            <Button Content="-" Command="{Binding RemoveRound, Source={StaticResource RunWorkout}}" />
         </ToolBar>
     </StackPanel>
 </Window>

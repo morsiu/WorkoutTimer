@@ -8,12 +8,12 @@ namespace Timer.WorkoutPlans
     public sealed class Workout
     {
         private readonly WorkoutRound _workoutRound;
-        private readonly SetCount _setCount;
+        private readonly RoundCount _roundCount;
 
-        public Workout(WorkoutRound workoutRound, SetCount setCount)
+        public Workout(WorkoutRound workoutRound, RoundCount roundCount)
         {
             _workoutRound = workoutRound;
-            _setCount = setCount;
+            _roundCount = roundCount;
         }
 
         [Pure]
@@ -25,14 +25,14 @@ namespace Timer.WorkoutPlans
             Func<T> workoutDone)
         {
             yield return warmUp(Duration.FromSeconds(15));
-            foreach (var set in Enumerable.Range(1, _setCount))
+            foreach (var roundNumber in Enumerable.Range(1, _roundCount))
             {
                 foreach (var x in _workoutRound.Select(exercise, @break))
                 {
                     yield return x;
                 }
 
-                if (set != _setCount)
+                if (roundNumber != _roundCount)
                 {
                     yield return roundDone();
                 }

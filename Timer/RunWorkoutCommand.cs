@@ -11,40 +11,40 @@ namespace Timer
 {
     internal sealed class RunWorkoutCommand : DependencyObject, ICommand
     {
-        public static readonly DependencyProperty NumberOfSetsProperty =
+        public static readonly DependencyProperty NumberOfRoundsProperty =
             DependencyProperty.Register(
-                nameof(NumberOfSets),
+                nameof(NumberOfRounds),
                 typeof(int),
                 typeof(RunWorkoutCommand),
-                new PropertyMetadata(1, NumberOfSetsChanged, CoerceNumberOfSets));
+                new PropertyMetadata(1, NumberOfRoundsChanged, CoerceNumberOfRounds));
 
         private readonly CancelCommand _cancel = new CancelCommand();
-        private readonly ModifySetCountCommand _addSet;
-        private readonly ModifySetCountCommand _removeSet;
+        private readonly ModifyRoundCountCommand _addRound;
+        private readonly ModifyRoundCountCommand _removeRound;
         private bool _running;
 
         public RunWorkoutCommand()
         {
-            _removeSet = new ModifySetCountCommand(this, -1);
-            _addSet = new ModifySetCountCommand(this, 1);
+            _removeRound = new ModifyRoundCountCommand(this, -1);
+            _addRound = new ModifyRoundCountCommand(this, 1);
         }
 
         public event EventHandler CanExecuteChanged;
         
         public ICommand Cancel => _cancel;
 
-        public ICommand AddSet => _addSet;
+        public ICommand AddRound => _addRound;
 
-        public ICommand RemoveSet => _removeSet;
+        public ICommand RemoveRound => _removeRound;
 
-        public int NumberOfSets
+        public int NumberOfRounds
         {
-            get => (int) GetValue(NumberOfSetsProperty);
-            set => SetValue(NumberOfSetsProperty, value);
+            get => (int) GetValue(NumberOfRoundsProperty);
+            set => SetValue(NumberOfRoundsProperty, value);
         }
 
         public bool CanExecute(object parameter) =>
-            !_running && parameter is WorkoutRoundSteps && NumberOfSets > 0;
+            !_running && parameter is WorkoutRoundSteps && NumberOfRounds > 0;
 
         public async void Execute(object parameter)
         {
@@ -69,7 +69,7 @@ namespace Timer
         }
 
 
-        private static object CoerceNumberOfSets(DependencyObject d, object basevalue) =>
+        private static object CoerceNumberOfRounds(DependencyObject d, object basevalue) =>
             (int)basevalue > 0 ? basevalue : 1;
 
         private static Task Execute(Workout workout, CancellationToken cancellationToken)
@@ -86,11 +86,11 @@ namespace Timer
             }
         }
 
-        private static void NumberOfSetsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void NumberOfRoundsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!(d is RunWorkoutCommand self)) return;
-            self._addSet.RaiseCanExecuteChanged();
-            self._removeSet.RaiseCanExecuteChanged();
+            self._addRound.RaiseCanExecuteChanged();
+            self._removeRound.RaiseCanExecuteChanged();
         }
 
         private void RaiseCanExecuteChanged() =>
@@ -99,28 +99,28 @@ namespace Timer
         private Workout Workout(object parameter)
         {
             var round = (parameter as WorkoutRoundSteps)?.ToWorkoutRound();
-            var setCount = SetCount.FromNumber(NumberOfSets);
-            return round != null && setCount != null
-                ? new Workout(round, setCount.Value)
+            var roundCount = RoundCount.FromNumber(NumberOfRounds);
+            return round != null && roundCount != null
+                ? new Workout(round, roundCount.Value)
                 : default;
         }
 
-        private sealed class ModifySetCountCommand : ICommand
+        private sealed class ModifyRoundCountCommand : ICommand
         {
             private readonly RunWorkoutCommand _target;
             private readonly int _delta;
 
-            public ModifySetCountCommand(RunWorkoutCommand target, int delta)
+            public ModifyRoundCountCommand(RunWorkoutCommand target, int delta)
             {
                 _target = target;
                 _delta = delta;
             }
 
-            public bool CanExecute(object parameter) => _target.NumberOfSets + _delta > 0;
+            public bool CanExecute(object parameter) => _target.NumberOfRounds + _delta > 0;
 
             public void Execute(object parameter)
             {
-                _target.NumberOfSets += _delta;
+                _target.NumberOfRounds += _delta;
                 RaiseCanExecuteChanged();
             }
 
