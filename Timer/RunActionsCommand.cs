@@ -73,16 +73,7 @@ namespace Timer
             }
         }
 
-        private async Task Execute(Actions actions, CancellationToken cancellation)
-        {
-            try
-            {
-                await actions.SoundEvents(SetCount).Run(cancellation);
-            }
-            catch (TaskCanceledException)
-            {
-            }
-        }
+        private Task Execute(Actions actions, CancellationToken cancellation) => actions.RunSoundEffects(SetCount, cancellation);
 
         private void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 

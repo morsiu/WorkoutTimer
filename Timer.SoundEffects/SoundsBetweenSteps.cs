@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Timer
+namespace Timer.SoundEffects
 {
-    internal sealed class PlaySoundBetweenSteps
+    internal sealed class SoundsBetweenSteps
     {
         private readonly IEnumerable<TimeSpan> _steps;
         private readonly ISound _sound;
 
-        public PlaySoundBetweenSteps(IEnumerable<TimeSpan> steps, ISound sound)
+        public SoundsBetweenSteps(IEnumerable<TimeSpan> steps, ISound sound)
         {
             _steps = steps;
             _sound = sound;

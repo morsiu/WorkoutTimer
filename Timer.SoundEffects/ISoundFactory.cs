@@ -1,8 +1,8 @@
 using System;
 
-namespace Timer
+namespace Timer.SoundEffects
 {
-    internal interface ISounds
+    public interface ISoundFactory
     {
         ISound Sound(Frequency frequency, TimeSpan duration);
         

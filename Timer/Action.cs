@@ -1,24 +1,28 @@
 using System;
+using Timer.ExercisePlans;
 
 namespace Timer
 {
-    internal sealed class Action
+    internal sealed class Action : IAction
     {
         public TimeSpan Duration { get; set; }
         
         public ActionPurpose Purpose { get; set; }
 
-        public IEvent Event(IEvents events)
+        public T Map<T>(
+            Func<TimeSpan, T> exercise,
+            Func<TimeSpan, T> @break,
+            Func<T> invalid)
         {
-            if (Duration < TimeSpan.Zero) return new None();
+            if (Duration < TimeSpan.Zero) return invalid();
             switch (Purpose)
             {
                 case ActionPurpose.Exercise:
-                    return events.Exercise(Duration);
+                    return exercise(Duration);
                 case ActionPurpose.Break:
-                    return events.Break(Duration);
+                    return @break(Duration);
                 default:
-                    return new Delay(Duration);
+                    return invalid();
             }
         }
     }

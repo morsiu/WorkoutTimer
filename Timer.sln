@@ -1,6 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer", "Timer\Timer.csproj", "{4E7A7EB5-C0F4-4512-86C9-9B505F3441F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.SoundEffects", "Timer.SoundEffects\Timer.SoundEffects.csproj", "{3052FCD3-04BB-4564-81F8-98F02ADD4420}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.SoundEffects.NAudio", "Timer.SoundEffects.NAudio\Timer.SoundEffects.NAudio.csproj", "{F792123B-9290-438E-B039-56F8C04C0CFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.ExercisePlans", "Timer.ExercisePlans\Timer.ExercisePlans.csproj", "{A41018B5-094E-438A-8E8D-39715EB9A72A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +21,23 @@ Global
 		{4E7A7EB5-C0F4-4512-86C9-9B505F3441F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E7A7EB5-C0F4-4512-86C9-9B505F3441F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E7A7EB5-C0F4-4512-86C9-9B505F3441F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3052FCD3-04BB-4564-81F8-98F02ADD4420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3052FCD3-04BB-4564-81F8-98F02ADD4420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3052FCD3-04BB-4564-81F8-98F02ADD4420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3052FCD3-04BB-4564-81F8-98F02ADD4420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F792123B-9290-438E-B039-56F8C04C0CFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F792123B-9290-438E-B039-56F8C04C0CFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F792123B-9290-438E-B039-56F8C04C0CFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F792123B-9290-438E-B039-56F8C04C0CFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A41018B5-094E-438A-8E8D-39715EB9A72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A41018B5-094E-438A-8E8D-39715EB9A72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A41018B5-094E-438A-8E8D-39715EB9A72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A41018B5-094E-438A-8E8D-39715EB9A72A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9BA95304-94FE-44D7-80B8-EB7F5EC2908D}
 	EndGlobalSection
 EndGlobal

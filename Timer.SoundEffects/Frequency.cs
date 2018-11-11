@@ -1,6 +1,6 @@
-namespace Timer
+namespace Timer.SoundEffects
 {
-    internal readonly struct Frequency
+    public readonly struct Frequency
     {
         private readonly int _hertz;
 

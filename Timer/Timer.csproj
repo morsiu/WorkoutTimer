@@ -5,14 +5,13 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <LangVersion>latest</LangVersion>
-    <Version>0.0.1</Version>
     <Description>Timer for exercising</Description>
     <Authors>Łukasz Mrozek</Authors>
     <StartupObject>Timer.App</StartupObject>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="NAudio" Version="1.8.4" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xaml" />
@@ -30,5 +29,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Timer.ExercisePlans\Timer.ExercisePlans.csproj" />
+    <ProjectReference Include="..\Timer.SoundEffects.NAudio\Timer.SoundEffects.NAudio.csproj" />
+    <ProjectReference Include="..\Timer.SoundEffects\Timer.SoundEffects.csproj" />
   </ItemGroup>
 </Project>

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
-namespace Timer
+namespace Timer.SoundEffects.NAudio
 {
-    internal sealed class Sounds : ISounds, IDisposable
+    public sealed class NAudioSoundFactory : ISoundFactory, IDisposable
     {
         private const int Channels = 1;
         private const int SampleRate = 44100;
@@ -15,7 +15,7 @@ namespace Timer
         private bool _disposed;
         private bool _initialized;
 
-        public Sounds()
+        public NAudioSoundFactory()
         {
             _outputDevice = new WaveOutEvent();
             _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(SampleRate, Channels));
@@ -45,7 +45,7 @@ namespace Timer
 
         private void ThrowWhenDisposed()
         {
-            if (_disposed) throw new ObjectDisposedException(nameof(Sounds));
+            if (_disposed) throw new ObjectDisposedException(nameof(NAudioSoundFactory));
         }
 
         private void Initialize()
