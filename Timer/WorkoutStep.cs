@@ -1,17 +1,16 @@
-using System;
 using Timer.WorkoutPlans;
 
 namespace Timer
 {
     internal sealed class WorkoutStep
     {
-        public TimeSpan Length { get; set; }
+        public int LengthInSeconds { get; set; }
         
         public WorkoutStepPurpose Purpose { get; set; }
 
         public IWorkoutStep ToWorkoutStep()
         {
-            var duration = Duration.FromSeconds((int)Length.TotalSeconds);
+            var duration = Duration.FromSeconds(LengthInSeconds);
             if (duration == null)
             {
                 return null;
