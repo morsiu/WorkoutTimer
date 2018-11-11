@@ -11,7 +11,7 @@ namespace Timer.WorkoutPlans
             _duration = duration;
         }
 
-        public T Map<T>(Func<Duration, T> exercise, Func<Duration, T> @break)
+        public T Map<T>(Func<Duration, T> warmUp, Func<Duration, T> exercise, Func<Duration, T> @break, Func<T> setDone, Func<T> workoutDone)
         {
             return @break(_duration);
         }

@@ -20,7 +20,7 @@ namespace Timer.SoundEffects
 
         public ISoundEffect SetDone() => new SingleSound(DoublePip());
 
-        public ISoundEffect AllDone() => new SingleSound(LongPip());
+        public ISoundEffect WorkoutDone() => new SingleSound(LongPip());
 
         private ISound DoublePip() =>
             _soundFactory.SeriesOfSound(

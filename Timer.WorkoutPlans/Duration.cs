@@ -27,7 +27,9 @@ namespace Timer.WorkoutPlans
 
         public static bool operator !=(Duration left, Duration right) => left.CompareTo(right) != 0;
 
-        public static Duration? FromSeconds(int seconds) =>
+        public static Duration FromSeconds(int seconds) => new Duration(seconds);
+
+        public static Duration? TryFromSeconds(int seconds) =>
             seconds >= 0
                 ? new Duration(seconds)
                 : default(Duration?);

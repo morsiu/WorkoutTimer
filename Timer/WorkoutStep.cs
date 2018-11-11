@@ -10,7 +10,7 @@ namespace Timer
 
         public IWorkoutStep ToWorkoutStep()
         {
-            var duration = Duration.FromSeconds(LengthInSeconds);
+            var duration = Duration.TryFromSeconds(LengthInSeconds);
             if (duration == null)
             {
                 return null;
