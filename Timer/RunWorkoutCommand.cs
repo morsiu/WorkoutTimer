@@ -16,21 +16,12 @@ namespace Timer
                 nameof(NumberOfSets),
                 typeof(int),
                 typeof(RunWorkoutCommand),
-                new PropertyMetadata(1, SetCountChanged, CoerceSetCount));
-
-        private static void SetCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (!(d is RunWorkoutCommand self)) return;
-            self._addSet.RaiseCanExecuteChanged();
-            self._removeSet.RaiseCanExecuteChanged();
-        }
-
-        private static object CoerceSetCount(DependencyObject d, object basevalue) => (int)basevalue > 0 ? basevalue : 1;
+                new PropertyMetadata(1, NumberOfSetsChanged, CoerceNumberOfSets));
 
         private readonly CancelCommand _cancel = new CancelCommand();
-        private bool _running;
         private readonly ModifySetCountCommand _addSet;
         private readonly ModifySetCountCommand _removeSet;
+        private bool _running;
 
         public RunWorkoutCommand()
         {
@@ -52,7 +43,8 @@ namespace Timer
             set => SetValue(NumberOfSetsProperty, value);
         }
 
-        public bool CanExecute(object parameter) => !_running && parameter is WorkoutSteps && NumberOfSets > 0;
+        public bool CanExecute(object parameter) =>
+            !_running && parameter is WorkoutSteps && NumberOfSets > 0;
 
         public async void Execute(object parameter)
         {
@@ -77,19 +69,32 @@ namespace Timer
         }
 
 
-        private static Task Execute(Workout workout, CancellationToken cancellation) =>
-            RunSoundEffects(workout, cancellation);
+        private static object CoerceNumberOfSets(DependencyObject d, object basevalue) =>
+            (int)basevalue > 0 ? basevalue : 1;
 
-        private void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-
-        private static async Task RunSoundEffects(Workout workout, CancellationToken cancellationToken)
+        private static Task Execute(Workout workout, CancellationToken cancellationToken)
         {
-            using (var soundFactory = new NAudioSoundFactory())
+            return RunSoundEffects();
+
+            async Task RunSoundEffects()
             {
-                await new SoundEffectsOfWorkout(workout, soundFactory)
-                    .Run(cancellationToken);
+                using (var soundFactory = new NAudioSoundFactory())
+                {
+                    await new SoundEffectsOfWorkout(workout, soundFactory)
+                        .Run(cancellationToken);
+                }
             }
         }
+
+        private static void NumberOfSetsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is RunWorkoutCommand self)) return;
+            self._addSet.RaiseCanExecuteChanged();
+            self._removeSet.RaiseCanExecuteChanged();
+        }
+
+        private void RaiseCanExecuteChanged() =>
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
         private Workout Workout(object parameter)
         {
