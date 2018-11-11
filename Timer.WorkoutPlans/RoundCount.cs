@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace Timer.WorkoutPlans
 {
@@ -41,6 +44,12 @@ namespace Timer.WorkoutPlans
         public override bool Equals(object obj) => obj is RoundCount other && Equals(other);
 
         public override int GetHashCode() => _numberOfRounds;
+
+        [Pure]
+        public IEnumerable<Round> Rounds() =>
+            Enumerable
+                .Repeat(new Round(isLast: false), _numberOfRounds - 1)
+                .Concat(new[] {new Round(isLast: true)});
 
         public override string ToString() => _numberOfRounds.ToString();
     }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 
 namespace Timer.WorkoutPlans
 {
@@ -25,19 +24,17 @@ namespace Timer.WorkoutPlans
             Func<T> workoutDone)
         {
             yield return warmUp(Duration.FromSeconds(15));
-            foreach (var roundNumber in Enumerable.Range(1, _roundCount))
+            foreach (var round in _roundCount.Rounds())
             {
                 foreach (var x in _workoutRound.Select(exercise, @break))
                 {
                     yield return x;
                 }
-
-                if (roundNumber != _roundCount)
+                if (!round.IsLast)
                 {
                     yield return roundDone();
                 }
             }
-
             yield return workoutDone();
         }
     }
