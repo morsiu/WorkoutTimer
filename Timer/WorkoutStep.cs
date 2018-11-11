@@ -18,9 +18,9 @@ namespace Timer
             switch (Purpose)
             {
                 case WorkoutStepPurpose.Exercise:
-                    return new Exercise(duration.Value);
+                    return WorkoutStepFactory.Exercise(duration.Value);
                 case WorkoutStepPurpose.Break:
-                    return new Break(duration.Value);
+                    return WorkoutStepFactory.Break(duration.Value);
                 default:
                     return null;
             }

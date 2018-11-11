@@ -2,7 +2,7 @@
 
 namespace Timer.WorkoutPlans
 {
-    public sealed class Break : IWorkoutStep
+    internal sealed class Break : IWorkoutStep
     {
         private readonly Duration _duration;
 
