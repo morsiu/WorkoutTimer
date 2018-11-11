@@ -2,12 +2,12 @@ using System;
 
 namespace Timer.SoundEffects
 {
-    internal sealed class SoundsOfActions
+    internal sealed class SoundsOfWorkoutSteps
     {
         private readonly ISoundFactory _soundFactory;
         private static readonly Frequency PipFrequency = Frequency.FromHertz(1000);
 
-        public SoundsOfActions(ISoundFactory soundFactory)
+        public SoundsOfWorkoutSteps(ISoundFactory soundFactory)
         {
             _soundFactory = soundFactory;
         }

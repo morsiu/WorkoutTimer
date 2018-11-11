@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Timer.ExercisePlans;
+using Timer.WorkoutPlans;
 
 namespace Timer.SoundEffects
 {
-    public sealed class SoundEffectsOfActions
+    public sealed class SoundEffectsOfWorkout
     {
-        private readonly IEnumerable<IAction> _actions;
-        private readonly int _setCount;
+        private readonly Workout _workout;
         private readonly ISoundFactory _soundFactory;
 
-        public SoundEffectsOfActions(IEnumerable<IAction> actions, int setCount, ISoundFactory soundFactory)
+        public SoundEffectsOfWorkout(Workout workout, ISoundFactory soundFactory)
         {
-            _actions = actions;
-            _setCount = setCount;
+            _workout = workout;
             _soundFactory = soundFactory;
         }
 
@@ -30,32 +28,31 @@ namespace Timer.SoundEffects
 
             IEnumerable<ISoundEffect> SoundEffects()
             {
-                var actionSounds = new SoundsOfActions(_soundFactory);
-                yield return actionSounds.WarmUp(TimeSpan.FromSeconds(15));
+                var sounds = new SoundsOfWorkoutSteps(_soundFactory);
+                yield return sounds.WarmUp(TimeSpan.FromSeconds(15));
                 foreach (var set in Sets())
                 {
-                    foreach (var action in _actions)
+                    foreach (var step in _workout.Steps)
                     {
                         var soundEffect =
-                            action.Map(
-                                exercise: x => actionSounds.Exercise(x),
-                                @break: x => actionSounds.Break(x),
-                                invalid: () => null);
+                            step.Map(
+                                exercise: x => sounds.Exercise(x.ToTimeSpan()),
+                                @break: x => sounds.Break(x.ToTimeSpan()));
                         if (soundEffect != null)
                         {
                             yield return soundEffect;
                         }
                     }
-                    if (set < _setCount)
+                    if (set < _workout.SetCount)
                     {
-                        yield return actionSounds.SetDone();
+                        yield return sounds.SetDone();
                     }
                 }
-                yield return actionSounds.AllDone();
+                yield return sounds.AllDone();
             }
 
             Task DelayToAllowLastSoundToPlayOut() => Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
-            IEnumerable<int> Sets() => Enumerable.Range(2, _setCount);
+            IEnumerable<int> Sets() => Enumerable.Range(2, _workout.SetCount);
         }
     }
 }

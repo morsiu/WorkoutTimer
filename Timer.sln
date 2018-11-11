@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.SoundEffects", "Timer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.SoundEffects.NAudio", "Timer.SoundEffects.NAudio\Timer.SoundEffects.NAudio.csproj", "{F792123B-9290-438E-B039-56F8C04C0CFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.ExercisePlans", "Timer.ExercisePlans\Timer.ExercisePlans.csproj", "{A41018B5-094E-438A-8E8D-39715EB9A72A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.WorkoutPlans", "Timer.WorkoutPlans\Timer.WorkoutPlans.csproj", "{A41018B5-094E-438A-8E8D-39715EB9A72A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

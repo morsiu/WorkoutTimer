@@ -8,6 +8,6 @@
     <Authors>Łukasz Mrozek</Authors>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Timer.ExercisePlans\Timer.ExercisePlans.csproj" />
+    <ProjectReference Include="..\Timer.WorkoutPlans\Timer.WorkoutPlans.csproj" />
   </ItemGroup>
  </Project>
