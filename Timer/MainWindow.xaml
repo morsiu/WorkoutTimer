@@ -26,7 +26,6 @@
         <ToolBar>
             <Button
                 Command="{StaticResource TrackWorkoutPlan}"
-                CommandParameter="{StaticResource RoundWorkouts}"
                 Content="Start" />
             <Button
                 Command="{Binding Cancel, Source={StaticResource TrackWorkoutPlan}}"
