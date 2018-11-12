@@ -10,7 +10,7 @@
     <Authors>Łukasz Mrozek</Authors>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Timer.SoundEffects\Timer.SoundEffects.csproj" />
+    <ProjectReference Include="..\Timer.WorkoutTracking.Sound\Timer.WorkoutTracking.Sound.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NAudio" Version="1.8.4" />

@@ -27,9 +27,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Timer.WorkoutTracking.Sound.NAudio\Timer.WorkoutTracking.Sound.NAudio.csproj" />
     <ProjectReference Include="..\Timer.WorkoutPlanning\Timer.WorkoutPlanning.csproj" />
     <ProjectReference Include="..\Timer.WorkoutPlans\Timer.WorkoutPlans.csproj" />
-    <ProjectReference Include="..\Timer.SoundEffects.NAudio\Timer.SoundEffects.NAudio.csproj" />
-    <ProjectReference Include="..\Timer.SoundEffects\Timer.SoundEffects.csproj" />
+    <ProjectReference Include="..\Timer.WorkoutTracking.Sound\Timer.WorkoutTracking.Sound.csproj" />
   </ItemGroup>
 </Project>

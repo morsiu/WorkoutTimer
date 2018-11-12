@@ -5,13 +5,13 @@ VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer", "Timer\Timer.csproj", "{4E7A7EB5-C0F4-4512-86C9-9B505F3441F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer.SoundEffects", "Timer.SoundEffects\Timer.SoundEffects.csproj", "{3052FCD3-04BB-4564-81F8-98F02ADD4420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer.WorkoutTracking.Sound", "Timer.WorkoutTracking.Sound\Timer.WorkoutTracking.Sound.csproj", "{3052FCD3-04BB-4564-81F8-98F02ADD4420}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer.SoundEffects.NAudio", "Timer.SoundEffects.NAudio\Timer.SoundEffects.NAudio.csproj", "{F792123B-9290-438E-B039-56F8C04C0CFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer.WorkoutTracking.Sound.NAudio", "Timer.WorkoutTracking.Sound.NAudio\Timer.WorkoutTracking.Sound.NAudio.csproj", "{F792123B-9290-438E-B039-56F8C04C0CFD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer.WorkoutPlans", "Timer.WorkoutPlans\Timer.WorkoutPlans.csproj", "{A41018B5-094E-438A-8E8D-39715EB9A72A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.WorkoutPlanning", "Timer.WorkoutPlanning\Timer.WorkoutPlanning.csproj", "{9D048C01-F033-49F8-9158-9C4422359CC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer.WorkoutPlanning", "Timer.WorkoutPlanning\Timer.WorkoutPlanning.csproj", "{9D048C01-F033-49F8-9158-9C4422359CC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
