@@ -1,28 +1,44 @@
-﻿<Window x:Class="Timer.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Timer"
-        xmlns:workoutPlanning="http://timer/workoutPlanning"
-        mc:Ignorable="d"
-        Title="Timers" Height="350" Width="525">
+﻿<Window
+    x:Class="Timer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Timer"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:workoutPlanning="http://timer/workoutPlanning"
+    Title="Timers"
+    Width="525"
+    Height="350"
+    mc:Ignorable="d">
     <Window.Resources>
-        <workoutPlanning:WorkoutRoundCount x:Key="RoundCount"/>
-        <workoutPlanning:WorkoutCollection x:Key="RoundWorkouts"/>
+        <workoutPlanning:WorkoutRoundCount
+            x:Key="RoundCount" />
+        <workoutPlanning:WorkoutCollection
+            x:Key="RoundWorkouts" />
         <local:TrackWorkoutPlanCommand
             x:Key="TrackWorkoutPlan"
             RoundCount="{Binding RoundCount, Source={StaticResource RoundCount}}"
-            WorkoutRound="{Binding WorkoutRound, Source={StaticResource RoundWorkouts}}"/>
+            WorkoutRound="{Binding WorkoutRound, Source={StaticResource RoundWorkouts}}" />
     </Window.Resources>
     <StackPanel>
-        <DataGrid ItemsSource="{StaticResource RoundWorkouts}" />
+        <DataGrid
+            ItemsSource="{StaticResource RoundWorkouts}" />
         <ToolBar>
-            <Button Content="Start" CommandParameter="{StaticResource RoundWorkouts}" Command="{StaticResource TrackWorkoutPlan}" />
-            <Button Content="Stop" Command="{Binding Cancel, Source={StaticResource TrackWorkoutPlan}}" />
-            <TextBox Text="{Binding Value, Source={StaticResource RoundCount}}" />
-            <Button Content="+" Command="{Binding AddRound, Source={StaticResource RoundCount}}" />
-            <Button Content="-" Command="{Binding RemoveRound, Source={StaticResource RoundCount}}" />
+            <Button
+                Command="{StaticResource TrackWorkoutPlan}"
+                CommandParameter="{StaticResource RoundWorkouts}"
+                Content="Start" />
+            <Button
+                Command="{Binding Cancel, Source={StaticResource TrackWorkoutPlan}}"
+                Content="Stop" />
+            <TextBox
+                Text="{Binding Value, Source={StaticResource RoundCount}}" />
+            <Button
+                Command="{Binding AddRound, Source={StaticResource RoundCount}}"
+                Content="+" />
+            <Button
+                Command="{Binding RemoveRound, Source={StaticResource RoundCount}}"
+                Content="-" />
         </ToolBar>
     </StackPanel>
 </Window>
