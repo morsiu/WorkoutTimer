@@ -27,6 +27,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Timer.WorkoutPlanning\Timer.WorkoutPlanning.csproj" />
     <ProjectReference Include="..\Timer.WorkoutPlans\Timer.WorkoutPlans.csproj" />
     <ProjectReference Include="..\Timer.SoundEffects.NAudio\Timer.SoundEffects.NAudio.csproj" />
     <ProjectReference Include="..\Timer.SoundEffects\Timer.SoundEffects.csproj" />

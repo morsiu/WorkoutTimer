@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Linq;
 using Timer.WorkoutPlans;
 
-namespace Timer
+namespace Timer.WorkoutPlanning
 {
-    internal sealed class WorkoutCollection : Collection<Workout>, INotifyPropertyChanged
+    public sealed class WorkoutCollection : Collection<Workout>, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

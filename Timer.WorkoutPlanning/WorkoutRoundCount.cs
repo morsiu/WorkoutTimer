@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Input;
 using Timer.WorkoutPlans;
 
-namespace Timer
+namespace Timer.WorkoutPlanning
 {
-    internal sealed class WorkoutRoundCount : DependencyObject
+    public sealed class WorkoutRoundCount : DependencyObject
     {
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(

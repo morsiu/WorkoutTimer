@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using Timer.WorkoutPlans;
 
-namespace Timer
+namespace Timer.WorkoutPlanning
 {
-    internal sealed class Workout : INotifyPropertyChanged
+    public sealed class Workout : INotifyPropertyChanged
     {
         private int _lengthInSeconds;
         private WorkoutType _type;
