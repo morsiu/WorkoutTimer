@@ -1,18 +1,53 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using Timer.WorkoutPlans;
 
 namespace Timer
 {
-    internal sealed class WorkoutCollection : Collection<Workout>
+    internal sealed class WorkoutCollection : Collection<Workout>, INotifyPropertyChanged
     {
-        public WorkoutRound ToWorkoutRound()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public WorkoutRound WorkoutRound
         {
-            var round =
-                this.Aggregate(
-                    new WorkoutRound(),
-                    (x, y) => y.AddTo(x));
-            return round;
+            get
+            {
+                var round =
+                    this.Aggregate(
+                        new WorkoutRound(),
+                        (x, y) => y.AddTo(x));
+                return round;
+            }
+        }
+
+        protected override void ClearItems()
+        {
+            base.ClearItems();
+            RaiseWorkoutRoundChange();
+        }
+
+        protected override void InsertItem(int index, Workout item)
+        {
+            base.InsertItem(index, item);
+            RaiseWorkoutRoundChange();
+        }
+
+        protected override void RemoveItem(int index)
+        {
+            base.RemoveItem(index);
+            RaiseWorkoutRoundChange();
+        }
+
+        protected override void SetItem(int index, Workout item)
+        {
+            base.SetItem(index, item);
+            RaiseWorkoutRoundChange();
+        }
+
+        private void RaiseWorkoutRoundChange()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutRound)));
         }
     }
 }
