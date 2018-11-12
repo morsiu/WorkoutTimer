@@ -1,12 +1,34 @@
+using System.ComponentModel;
 using Timer.WorkoutPlans;
 
 namespace Timer
 {
-    internal sealed class Workout
+    internal sealed class Workout : INotifyPropertyChanged
     {
-        public int LengthInSeconds { get; set; }
-        
-        public WorkoutType Type { get; set; }
+        private int _lengthInSeconds;
+        private WorkoutType _type;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public int LengthInSeconds
+        {
+            get => _lengthInSeconds;
+            set
+            {
+                _lengthInSeconds = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LengthInSeconds)));
+            }
+        }
+
+        public WorkoutType Type
+        {
+            get => _type;
+            set
+            {
+                _type = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Type)));
+            }
+        }
 
         public WorkoutRound AddTo(WorkoutRound workoutRound)
         {
