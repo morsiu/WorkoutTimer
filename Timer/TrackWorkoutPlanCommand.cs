@@ -59,7 +59,7 @@ namespace Timer
                 {
                     using (var soundFactory = new NAudioSoundFactory())
                     {
-                        await new SoundEffectsOfWorkout(workoutPlan, soundFactory)
+                        await new SoundTrackingOfWorkout(workoutPlan, soundFactory)
                             .Run(cancellation.Token);
                     }
                 }

@@ -6,12 +6,12 @@ using Timer.WorkoutPlans;
 
 namespace Timer.SoundEffects
 {
-    public sealed class SoundEffectsOfWorkout
+    public sealed class SoundTrackingOfWorkout
     {
         private readonly WorkoutPlan _workoutPlan;
         private readonly ISoundFactory _soundFactory;
 
-        public SoundEffectsOfWorkout(WorkoutPlan workoutPlan, ISoundFactory soundFactory)
+        public SoundTrackingOfWorkout(WorkoutPlan workoutPlan, ISoundFactory soundFactory)
         {
             _workoutPlan = workoutPlan;
             _soundFactory = soundFactory;
