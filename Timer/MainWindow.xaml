@@ -6,11 +6,14 @@
     xmlns:local="clr-namespace:Timer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:workoutPlanning="http://timer/workoutPlanning"
+    xmlns:workoutTracking="http://timer/workoutTracking"
     Title="Timers"
     Width="525"
     Height="350"
     mc:Ignorable="d">
     <Window.Resources>
+        <workoutTracking:CurrentWorkout
+            x:Key="CurrentWorkout" />
         <workoutPlanning:WorkoutRoundCount
             x:Key="RoundCount" />
         <workoutPlanning:WorkoutCollection
@@ -18,7 +21,8 @@
         <local:TrackWorkoutPlanCommand
             x:Key="TrackWorkoutPlan"
             RoundCount="{Binding RoundCount, Source={StaticResource RoundCount}}"
-            WorkoutRound="{Binding WorkoutRound, Source={StaticResource RoundWorkouts}}" />
+            WorkoutRound="{Binding WorkoutRound, Source={StaticResource RoundWorkouts}}"
+            WorkoutStatuses="{StaticResource CurrentWorkout}"/>
     </Window.Resources>
     <StackPanel>
         <DataGrid
@@ -39,5 +43,6 @@
                 Command="{Binding RemoveRound, Source={StaticResource RoundCount}}"
                 Content="-" />
         </ToolBar>
+        <ContentControl Content="{StaticResource CurrentWorkout}"/>
     </StackPanel>
 </Window>

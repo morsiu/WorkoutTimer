@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Timer.WorkoutPlans;
 using Timer.WorkoutTracking.Sound;
 using Timer.WorkoutTracking.Sound.NAudio;
+using Timer.WorkoutTracking.Visual;
 
 namespace Timer
 {
@@ -24,6 +25,13 @@ namespace Timer
                 typeof(WorkoutRound),
                 typeof(TrackWorkoutPlanCommand),
                 new PropertyMetadata(null, WorkoutRoundChanged));
+
+        public static readonly DependencyProperty WorkoutStatusesProperty =
+            DependencyProperty.Register(
+                nameof(WorkoutStatuses),
+                typeof(IVisualWorkoutStatuses),
+                typeof(TrackWorkoutPlanCommand),
+                new PropertyMetadata(null));
 
         private readonly CancelCommand _cancel = new CancelCommand();
         private bool _running;
@@ -44,6 +52,12 @@ namespace Timer
             set => SetValue(WorkoutRoundProperty, value);
         }
 
+        public IVisualWorkoutStatuses WorkoutStatuses
+        {
+            get => (IVisualWorkoutStatuses) GetValue(WorkoutStatusesProperty);
+            set => SetValue(WorkoutStatusesProperty, value);
+        }
+
         public async void Execute(object parameter)
         {
             if (_running || !(WorkoutPlan() is WorkoutPlan workoutPlan)) return;
@@ -53,7 +67,14 @@ namespace Timer
                 var cancellation = new CancellationTokenSource();
                 _cancel.Source = cancellation;
                 RaiseCanExecuteChanged();
-                await RunSoundTracking();
+                await Task.WhenAll(RunSoundTracking(), RunVisualTracking());
+
+                Task RunVisualTracking()
+                {
+                    return WorkoutStatuses != null
+                        ? new VisualTrackingOfWorkout(workoutPlan, WorkoutStatuses).Run(cancellation.Token)
+                        : Task.CompletedTask;
+                }
 
                 async Task RunSoundTracking()
                 {
