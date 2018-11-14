@@ -1,4 +1,4 @@
-namespace Timer.SoundEffects
+namespace Timer.WorkoutTracking.Sound
 {
     public readonly struct Frequency
     {

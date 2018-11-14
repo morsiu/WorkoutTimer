@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Timer.SoundEffects
+namespace Timer.WorkoutTracking.Sound
 {
     public interface ISoundEffect
     {

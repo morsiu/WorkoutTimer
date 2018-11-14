@@ -1,6 +1,6 @@
 using System;
 
-namespace Timer.SoundEffects
+namespace Timer.WorkoutTracking.Sound
 {
     internal sealed class SoundsOfWorkout
     {

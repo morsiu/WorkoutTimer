@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Timer.WorkoutPlans;
 
-namespace Timer.SoundEffects
+namespace Timer.WorkoutTracking.Sound
 {
     public sealed class SoundTrackingOfWorkout
     {

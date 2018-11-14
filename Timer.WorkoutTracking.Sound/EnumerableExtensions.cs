@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Timer.SoundEffects
+namespace Timer.WorkoutTracking.Sound
 {
     internal static class EnumerableExtensions 
     {

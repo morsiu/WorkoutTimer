@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Timer.SoundEffects
+namespace Timer.WorkoutTracking.Sound
 {
     internal sealed class DelayedSound : ISoundEffect
     {

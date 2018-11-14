@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
-namespace Timer.SoundEffects.NAudio
+namespace Timer.WorkoutTracking.Sound.NAudio
 {
     public sealed class NAudioSoundFactory : ISoundFactory, IDisposable
     {
