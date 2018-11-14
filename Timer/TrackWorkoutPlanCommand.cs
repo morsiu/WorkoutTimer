@@ -53,7 +53,16 @@ namespace Timer
                 var cancellation = new CancellationTokenSource();
                 _cancel.Source = cancellation;
                 RaiseCanExecuteChanged();
-                await Execute(workoutPlan, cancellation.Token);
+                await RunSoundTracking();
+
+                async Task RunSoundTracking()
+                {
+                    using (var soundFactory = new NAudioSoundFactory())
+                    {
+                        await new SoundEffectsOfWorkout(workoutPlan, soundFactory)
+                            .Run(cancellation.Token);
+                    }
+                }
             }
             catch (TaskCanceledException)
             {
@@ -75,20 +84,6 @@ namespace Timer
 
         public bool CanExecute(object parameter) =>
             !_running && WorkoutRound != null && RoundCount != null;
-
-        private static Task Execute(WorkoutPlan workoutPlan, CancellationToken cancellationToken)
-        {
-            return RunSoundEffects();
-
-            async Task RunSoundEffects()
-            {
-                using (var soundFactory = new NAudioSoundFactory())
-                {
-                    await new SoundEffectsOfWorkout(workoutPlan, soundFactory)
-                        .Run(cancellationToken);
-                }
-            }
-        }
 
         private static void RoundCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
