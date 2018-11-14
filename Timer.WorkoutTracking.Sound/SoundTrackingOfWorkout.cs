@@ -28,16 +28,13 @@ namespace Timer.WorkoutTracking.Sound
             IEnumerable<ISoundEffect> SoundEffects()
             {
                 var sounds = new SoundsOfWorkout(_soundFactory);
-                foreach (var step in
+                return
                     _workoutPlan.Select(
                         exercise: x => sounds.Exercise(x.ToTimeSpan()),
                         @break: x => sounds.Break(x.ToTimeSpan()),
                         warmUp: x => sounds.WarmUp(x.ToTimeSpan()),
                         nonLastRoundDone: () => sounds.RoundDone(),
-                        lastRoundDone: () => sounds.WorkoutDone()))
-                {
-                    yield return step;
-                }
+                        lastRoundDone: () => sounds.WorkoutDone());
             }
 
             Task DelayToAllowLastSoundToPlayOut() => Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
