@@ -48,8 +48,9 @@ namespace Timer.WorkoutPlans
         [Pure]
         public IEnumerable<Round> Rounds() =>
             Enumerable
-                .Repeat(new Round(isLast: false), _numberOfRounds - 1)
-                .Concat(new[] {new Round(isLast: true)});
+                .Range(1, _numberOfRounds - 1)
+                .Select(x => new Round(number: x, isLast: false))
+                .Concat(new[] {new Round(number: _numberOfRounds, isLast: true)});
 
         public override string ToString() => _numberOfRounds.ToString();
     }

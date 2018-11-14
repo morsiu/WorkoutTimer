@@ -30,11 +30,11 @@ namespace Timer.WorkoutTracking.Sound
                 var sounds = new SoundsOfWorkout(_soundFactory);
                 return
                     _workoutPlan.Select(
-                        exercise: x => sounds.Exercise(x.ToTimeSpan()),
-                        @break: x => sounds.Break(x.ToTimeSpan()),
+                        exercise: (a, b) => sounds.Exercise(b.ToTimeSpan()),
+                        @break: (a, b) => sounds.Break(b.ToTimeSpan()),
                         warmUp: x => sounds.WarmUp(x.ToTimeSpan()),
-                        nonLastRoundDone: () => sounds.RoundDone(),
-                        lastRoundDone: () => sounds.WorkoutDone());
+                        nonLastRoundDone: x => sounds.RoundDone(),
+                        lastRoundDone: x => sounds.WorkoutDone());
             }
 
             Task DelayToAllowLastSoundToPlayOut() => Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);

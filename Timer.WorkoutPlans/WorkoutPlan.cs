@@ -18,24 +18,30 @@ namespace Timer.WorkoutPlans
         [Pure]
         public IEnumerable<T> Select<T>(
             Func<Duration, T> warmUp,
-            Func<Duration, T> exercise,
-            Func<Duration, T> @break,
-            Func<T> nonLastRoundDone,
-            Func<T> lastRoundDone)
+            Func<Round, Duration, T> exercise,
+            Func<Round, Duration, T> @break,
+            Func<Round, T> nonLastRoundDone,
+            Func<Round, T> lastRoundDone)
         {
             yield return warmUp(Duration.FromSeconds(15));
             foreach (var round in _roundCount.Rounds())
             {
-                foreach (var x in _workoutRound.Select(exercise, @break))
+                foreach (var x in 
+                    _workoutRound.Select(
+                        x => exercise(round, x),
+                        x => @break(round, x)))
                 {
                     yield return x;
                 }
                 if (!round.IsLast)
                 {
-                    yield return nonLastRoundDone();
+                    yield return nonLastRoundDone(round);
+                }
+                else
+                {
+                    yield return lastRoundDone(round);
                 }
             }
-            yield return lastRoundDone();
         }
     }
 }
