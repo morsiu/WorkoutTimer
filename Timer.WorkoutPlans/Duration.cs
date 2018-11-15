@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace Timer.WorkoutPlans
 {
@@ -44,6 +45,6 @@ namespace Timer.WorkoutPlans
 
         public override string ToString() => TotalSeconds.ToString();
 
-        public TimeSpan ToTimeSpan() => TimeSpan.FromSeconds(TotalSeconds);
+        [Pure] public TimeSpan ToTimeSpan() => TimeSpan.FromSeconds(TotalSeconds);
     }
 }

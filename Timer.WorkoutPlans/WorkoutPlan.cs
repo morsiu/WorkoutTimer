@@ -23,7 +23,7 @@ namespace Timer.WorkoutPlans
             Func<Round, T> nonLastRoundDone,
             Func<Round, T> lastRoundDone)
         {
-            yield return warmUp(Duration.FromSeconds(15));
+            yield return warmUp(Duration.FromSeconds(3));
             foreach (var round in _roundCount.Rounds())
             {
                 foreach (var x in 
