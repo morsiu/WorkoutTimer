@@ -1,39 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Timer.WorkoutPlans;
 
 namespace Timer.WorkoutTracking.Visual
 {
     public sealed class VisualTrackingOfWorkout
     {
-        private readonly WorkoutPlan _workoutPlan;
-        private readonly IVisualWorkoutStatuses _workoutStatuses;
+        private readonly Dispatcher _dispatcher;
+        private readonly WorkoutsOfPlan _workoutsOfPlan;
+        private readonly WorkoutSegment _workoutSegment;
 
-        public VisualTrackingOfWorkout(WorkoutPlan workoutPlan, IVisualWorkoutStatuses workoutStatuses)
+        public VisualTrackingOfWorkout(WorkoutPlan workoutPlan, Dispatcher dispatcher)
         {
-            _workoutPlan = workoutPlan;
-            _workoutStatuses = workoutStatuses;
+            _dispatcher = dispatcher;
+            var workoutsOfPlan = new WorkoutsOfPlan(workoutPlan);
+            var workoutSegment = new WorkoutSegment(workoutsOfPlan);
+            _workoutsOfPlan = workoutsOfPlan;
+            _workoutSegment = workoutSegment;
+            WorkoutsOfCurrentRound = workoutSegment;
         }
+
+        public object WorkoutsOfCurrentRound { get; }
 
         public async Task Run(CancellationToken cancellationToken)
         {
-            foreach (var (durationOfStatus, status) in StatusesWithDurations())
+            foreach (var round in _workoutsOfPlan.Rounds())
             {
-                status?.Apply();
-                await Task.Delay(durationOfStatus, cancellationToken);
-            }
-
-            IEnumerable<(TimeSpan DurationOfStatus, IVisualWorkoutStatus Status)> StatusesWithDurations()
-            {
-                return
-                    _workoutPlan.Select(
-                        warmUp: x => (x.ToTimeSpan(), _workoutStatuses.WarmUp(x)),
-                        exercise: (a, b) => (b.ToTimeSpan(), _workoutStatuses.Exercise(b, a)),
-                        @break: (a, b) => (b.ToTimeSpan(), _workoutStatuses.Break(b, a)),
-                        nonLastRoundDone: x => (TimeSpan.Zero, null),
-                        lastRoundDone: x => (TimeSpan.Zero, _workoutStatuses.Done()));
+                 _workoutSegment.SwitchToRound(round);
+                foreach (var (duration, workout) in _workoutsOfPlan.OfRound(round))
+                {
+                    workout.Activate();
+                    await Task.Delay(duration.ToTimeSpan(), cancellationToken);
+                    workout.Deactivate();
+                }
             }
         }
     }

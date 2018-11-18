@@ -26,15 +26,22 @@ namespace Timer
                 typeof(TrackWorkoutPlanCommand),
                 new PropertyMetadata(null, WorkoutRoundChanged));
 
-        public static readonly DependencyProperty WorkoutStatusesProperty =
-            DependencyProperty.Register(
-                nameof(WorkoutStatuses),
-                typeof(IVisualWorkoutStatuses),
-                typeof(TrackWorkoutPlanCommand),
-                new PropertyMetadata(null));
+        public static readonly DependencyProperty WorkoutsOfCurrentSegmentProperty;
+        private static readonly DependencyPropertyKey WorkoutsOfCurrentSegmentPropertyKey;
 
         private readonly CancelCommand _cancel = new CancelCommand();
         private bool _running;
+
+        static TrackWorkoutPlanCommand()
+        {
+            WorkoutsOfCurrentSegmentPropertyKey = 
+                DependencyProperty.RegisterReadOnly(
+                    nameof(WorkoutsOfCurrentSegment),
+                    typeof(object),
+                    typeof(TrackWorkoutPlanCommand),
+                    new PropertyMetadata(null));
+            WorkoutsOfCurrentSegmentProperty = WorkoutsOfCurrentSegmentPropertyKey.DependencyProperty;
+        }
 
         public event EventHandler CanExecuteChanged;
 
@@ -52,10 +59,10 @@ namespace Timer
             set => SetValue(WorkoutRoundProperty, value);
         }
 
-        public IVisualWorkoutStatuses WorkoutStatuses
+        public object WorkoutsOfCurrentSegment
         {
-            get => (IVisualWorkoutStatuses) GetValue(WorkoutStatusesProperty);
-            set => SetValue(WorkoutStatusesProperty, value);
+            get => GetValue(WorkoutsOfCurrentSegmentProperty);
+            private set => SetValue(WorkoutsOfCurrentSegmentPropertyKey, value);
         }
 
         public async void Execute(object parameter)
@@ -69,11 +76,19 @@ namespace Timer
                 RaiseCanExecuteChanged();
                 await Task.WhenAll(RunSoundTracking(), RunVisualTracking());
 
-                Task RunVisualTracking()
+                async Task RunVisualTracking()
                 {
-                    return WorkoutStatuses != null
-                        ? new VisualTrackingOfWorkout(workoutPlan, WorkoutStatuses).Run(cancellation.Token)
-                        : Task.CompletedTask;
+                    try
+                    {
+                        var visualTracking = new VisualTrackingOfWorkout(workoutPlan, Dispatcher);
+                        WorkoutsOfCurrentSegment = visualTracking.WorkoutsOfCurrentRound;
+                        await visualTracking.Run(cancellation.Token);
+
+                    }
+                    finally
+                    {
+                        WorkoutsOfCurrentSegment = null;
+                    }
                 }
 
                 async Task RunSoundTracking()

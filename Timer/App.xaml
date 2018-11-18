@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary
-                    Source="pack://application:,,,/Timer.WorkoutTracking.Visual;component/CurrentWorkout.xaml" />
+                    Source="pack://application:,,,/Timer.WorkoutTracking.Visual;component/Workout.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

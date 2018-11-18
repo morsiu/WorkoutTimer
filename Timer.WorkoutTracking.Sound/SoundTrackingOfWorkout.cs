@@ -29,7 +29,7 @@ namespace Timer.WorkoutTracking.Sound
             {
                 var sounds = new SoundsOfWorkout(_soundFactory);
                 return
-                    _workoutPlan.Select(
+                    _workoutPlan.Workouts(
                         exercise: (a, b) => sounds.Exercise(b.ToTimeSpan()),
                         @break: (a, b) => sounds.Break(b.ToTimeSpan()),
                         warmUp: x => sounds.WarmUp(x.ToTimeSpan()),
