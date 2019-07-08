@@ -6,6 +6,7 @@ using Duration = Timer.WorkoutPlans.Duration;
 
 namespace Timer.WorkoutTracking.Visual
 {
+    [TemplatePart(Name = "PART_Countdown", Type = typeof(ProgressBar))]
     [TemplatePart(Name = "PART_Description", Type = typeof(TextBlock))]
     [TemplatePart(Name = "PART_Round", Type = typeof(TextBlock))]
     [TemplateVisualState(GroupName = "ActivationStates", Name = "Active")]

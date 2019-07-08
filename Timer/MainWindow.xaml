@@ -11,18 +11,18 @@
     Height="350"
     mc:Ignorable="d">
     <Window.Resources>
+        <workoutPlanning:WorkoutExpression
+            x:Key="RoundWorkouts"/>
         <workoutPlanning:WorkoutRoundCount
             x:Key="RoundCount" />
-        <workoutPlanning:WorkoutCollection
-            x:Key="RoundWorkouts" />
         <local:TrackWorkoutPlanCommand
             x:Key="TrackWorkoutPlan"
             RoundCount="{Binding RoundCount, Source={StaticResource RoundCount}}"
             WorkoutRound="{Binding WorkoutRound, Source={StaticResource RoundWorkouts}}" />
     </Window.Resources>
     <StackPanel>
-        <DataGrid
-            ItemsSource="{StaticResource RoundWorkouts}" />
+        <TextBox Text="{Binding Value, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Text="{Binding ActualValue, Source={StaticResource RoundWorkouts}}"/>
         <ToolBar>
             <Button
                 Command="{StaticResource TrackWorkoutPlan}"

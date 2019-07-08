@@ -24,7 +24,7 @@ namespace Timer.WorkoutPlans
         public WorkoutRound AddExerciseWorkout(Duration duration) =>
             new WorkoutRound(_workouts.Add((WorkoutType.Exercise, duration)));
 
-        internal IEnumerable<T> Select<T>(Func<Duration, T> exercise, Func<Duration, T> @break)
+        public IEnumerable<T> Select<T>(Func<Duration, T> exercise, Func<Duration, T> @break)
         {
             foreach (var step in _workouts)
             {

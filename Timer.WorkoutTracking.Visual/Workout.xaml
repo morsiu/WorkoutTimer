@@ -24,19 +24,19 @@
                                     <DiscreteObjectKeyFrame>
                                         <DiscreteObjectKeyFrame.Value>
                                             <SolidColorBrush
-                                                Color="LimeGreen" />
+                                                Color="Red" />
                                         </DiscreteObjectKeyFrame.Value>
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
                                 <DoubleAnimationUsingKeyFrames
-                                    Storyboard.TargetName="DurationCountdown"
+                                    Storyboard.TargetName="PART_Countdown"
                                     Storyboard.TargetProperty="Maximum"
                                     Duration="0">
                                     <DiscreteDoubleKeyFrame
                                         Value="1" />
                                 </DoubleAnimationUsingKeyFrames>
                                 <DoubleAnimation
-                                    Storyboard.TargetName="DurationCountdown"
+                                    Storyboard.TargetName="PART_Countdown"
                                     Storyboard.TargetProperty="Value"
                                     From="1"
                                     To="0"
@@ -57,14 +57,14 @@
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
                                 <DoubleAnimationUsingKeyFrames
-                                    Storyboard.TargetName="DurationCountdown"
+                                    Storyboard.TargetName="PART_Countdown"
                                     Storyboard.TargetProperty="Maximum"
                                     Duration="0">
                                     <DiscreteDoubleKeyFrame
                                         Value="1" />
                                 </DoubleAnimationUsingKeyFrames>
                                 <DoubleAnimationUsingKeyFrames
-                                    Storyboard.TargetName="DurationCountdown"
+                                    Storyboard.TargetName="PART_Countdown"
                                     Storyboard.TargetProperty="Value"
                                     Duration="0">
                                     <DiscreteDoubleKeyFrame
@@ -86,14 +86,14 @@
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
                                 <DoubleAnimationUsingKeyFrames
-                                    Storyboard.TargetName="DurationCountdown"
+                                    Storyboard.TargetName="PART_Countdown"
                                     Storyboard.TargetProperty="Maximum"
                                     Duration="0">
                                     <DiscreteDoubleKeyFrame
                                         Value="1" />
                                 </DoubleAnimationUsingKeyFrames>
                                 <DoubleAnimationUsingKeyFrames
-                                    Storyboard.TargetName="DurationCountdown"
+                                    Storyboard.TargetName="PART_Countdown"
                                     Storyboard.TargetProperty="Value"
                                     Duration="0">
                                     <DiscreteDoubleKeyFrame
@@ -120,7 +120,9 @@
                                     HorizontalAlignment="Right" />
                             </Grid>
                             <ProgressBar
-                                x:Name="DurationCountdown" />
+                                x:Name="PART_Countdown"
+                                Height="20"
+                                Foreground="LimeGreen" />
                         </StackPanel>
 
                         <VisualStateManager.VisualStateGroups>
