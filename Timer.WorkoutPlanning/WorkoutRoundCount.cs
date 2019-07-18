@@ -25,9 +25,9 @@ namespace Timer.WorkoutPlanning
             RoundCountPropertyKey =
                 DependencyProperty.RegisterReadOnly(
                     "RoundCount",
-                    typeof(RoundCount?),
+                    typeof(Count?),
                     typeof(WorkoutRoundCount),
-                    new PropertyMetadata(WorkoutPlans.RoundCount.FromNumber(1), null, CoerceRoundCount));
+                    new PropertyMetadata(Count.FromNumber(1), null, CoerceRoundCount));
             RoundCountProperty = RoundCountPropertyKey.DependencyProperty;
         }
 
@@ -37,9 +37,9 @@ namespace Timer.WorkoutPlanning
             _removeRound = new ModifyRoundCountCommand(this, -1);
         }
 
-        public RoundCount? RoundCount
+        public Count? RoundCount
         {
-            get => (RoundCount?) GetValue(RoundCountProperty);
+            get => (Count?) GetValue(RoundCountProperty);
             private set => SetValue(RoundCountPropertyKey, value);
         }
 
@@ -61,7 +61,7 @@ namespace Timer.WorkoutPlanning
         private static object CoerceRoundCount(DependencyObject d, object basevalue)
         {
             return d is WorkoutRoundCount self
-                ? WorkoutPlans.RoundCount.FromNumber(self.Value)
+                ? Count.FromNumber(self.Value)
                 : null;
         }
 

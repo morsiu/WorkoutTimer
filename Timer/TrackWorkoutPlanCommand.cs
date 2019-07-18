@@ -15,7 +15,7 @@ namespace Timer
         public static readonly DependencyProperty RoundCountProperty =
             DependencyProperty.Register(
                 nameof(RoundCount),
-                typeof(RoundCount?),
+                typeof(Count?),
                 typeof(TrackWorkoutPlanCommand),
                 new PropertyMetadata(null, RoundCountChanged));
 
@@ -47,9 +47,9 @@ namespace Timer
 
         public ICommand Cancel => _cancel;
 
-        public RoundCount? RoundCount
+        public Count? RoundCount
         {
-            get => (RoundCount?) GetValue(RoundCountProperty);
+            get => (Count?) GetValue(RoundCountProperty);
             set => SetValue(RoundCountProperty, value);
         }
 

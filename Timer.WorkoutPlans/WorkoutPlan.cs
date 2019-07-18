@@ -8,9 +8,9 @@ namespace Timer.WorkoutPlans
     {
         private readonly Duration _warmupDuration = Duration.FromSeconds(3);
         private readonly WorkoutRound _workoutRound;
-        private readonly RoundCount _roundCount;
+        private readonly Count _roundCount;
 
-        public WorkoutPlan(WorkoutRound workoutRound, RoundCount roundCount)
+        public WorkoutPlan(WorkoutRound workoutRound, Count roundCount)
         {
             _workoutRound = workoutRound;
             _roundCount = roundCount;
