@@ -27,6 +27,22 @@ namespace Timer.WorkoutPlans
             _warmup = warmup;
         }
 
+        public WorkoutPlan AddBreak(Duration duration)
+        {
+            return new WorkoutPlan(
+                _workoutRound.AddBreakWorkout(duration),
+                _rounds,
+                _warmup);
+        }
+
+        public WorkoutPlan AddExercise(Duration duration)
+        {
+            return new WorkoutPlan(
+                _workoutRound.AddExerciseWorkout(duration),
+                _rounds,
+                _warmup);
+        }
+
         public IEnumerable<(Round Round, IEnumerable<T> Workouts)> Rounds<T>(
             Func<Duration, T> warmUp,
             Func<Round, Duration, T> exercise,
