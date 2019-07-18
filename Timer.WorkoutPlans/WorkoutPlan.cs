@@ -21,7 +21,8 @@ namespace Timer.WorkoutPlans
             Func<Round, Duration, T> exercise,
             Func<Round, Duration, T> @break)
         {
-            foreach (var round in _roundCount.Rounds())
+            foreach (var round in
+                _roundCount.Enumerate(x => new Round(x.Number, x.IsLast)))
             {
                 yield return (round, WorkoutsOfRound(round));
             }
@@ -52,7 +53,7 @@ namespace Timer.WorkoutPlans
             Func<Round, T> lastRoundDone)
         {
             yield return warmUp(_warmupDuration);
-            foreach (var round in _roundCount.Rounds())
+            foreach (var round in _roundCount.Enumerate(x => new Round(x.Number, x.IsLast)))
             {
                 foreach (var x in 
                     _workoutRound.Select(
