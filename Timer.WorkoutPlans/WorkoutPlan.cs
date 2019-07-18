@@ -6,14 +6,25 @@ namespace Timer.WorkoutPlans
 {
     public sealed class WorkoutPlan
     {
-        private readonly Duration _warmupDuration = Duration.FromSeconds(3);
+        private readonly Duration _warmup;
         private readonly WorkoutRound _workoutRound;
-        private readonly Count _roundCount;
+        private readonly Count _rounds;
 
-        public WorkoutPlan(WorkoutRound workoutRound, Count roundCount)
+        public WorkoutPlan()
+            : this(new WorkoutRound(), new Count(1), new Duration(0))
+        {
+        }
+
+        public WorkoutPlan(WorkoutRound workoutRound, Count rounds)
+            : this(workoutRound, rounds, Duration.FromSeconds(3))
+        {
+        }
+
+        private WorkoutPlan(WorkoutRound workoutRound, Count rounds, Duration warmup)
         {
             _workoutRound = workoutRound;
-            _roundCount = roundCount;
+            _rounds = rounds;
+            _warmup = warmup;
         }
 
         public IEnumerable<(Round Round, IEnumerable<T> Workouts)> Rounds<T>(
@@ -22,7 +33,7 @@ namespace Timer.WorkoutPlans
             Func<Round, Duration, T> @break)
         {
             foreach (var round in
-                _roundCount.Enumerate(x => new Round(x.Number, x.IsLast)))
+                _rounds.Enumerate(x => new Round(x.Number, x.IsLast)))
             {
                 yield return (round, WorkoutsOfRound(round));
             }
@@ -31,7 +42,7 @@ namespace Timer.WorkoutPlans
             {
                 if (round.IsFirst)
                 {
-                    yield return warmUp(_warmupDuration);
+                    yield return warmUp(_warmup);
                 }
 
                 foreach (var a in
@@ -52,8 +63,8 @@ namespace Timer.WorkoutPlans
             Func<Round, T> nonLastRoundDone,
             Func<Round, T> lastRoundDone)
         {
-            yield return warmUp(_warmupDuration);
-            foreach (var round in _roundCount.Enumerate(x => new Round(x.Number, x.IsLast)))
+            yield return warmUp(_warmup);
+            foreach (var round in _rounds.Enumerate(x => new Round(x.Number, x.IsLast)))
             {
                 foreach (var x in 
                     _workoutRound.Select(
@@ -71,6 +82,22 @@ namespace Timer.WorkoutPlans
                     yield return lastRoundDone(round);
                 }
             }
+        }
+
+        public WorkoutPlan WithCountdown(Duration value)
+        {
+            return new WorkoutPlan(
+                _workoutRound,
+                _rounds,
+                warmup: value);
+        }
+
+        public WorkoutPlan WithRound(Count value)
+        {
+            return new WorkoutPlan(
+                _workoutRound,
+                rounds: value,
+                _warmup);
         }
     }
 }
