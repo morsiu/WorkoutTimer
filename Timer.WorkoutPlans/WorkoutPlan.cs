@@ -7,7 +7,7 @@ namespace Timer.WorkoutPlans
     public sealed class WorkoutPlan
     {
         private readonly Duration _warmup;
-        private readonly WorkoutRound _workoutRound;
+        private readonly WorkoutRound _round;
         private readonly Count _rounds;
 
         public WorkoutPlan()
@@ -15,17 +15,52 @@ namespace Timer.WorkoutPlans
         {
         }
 
-        private WorkoutPlan(WorkoutRound workoutRound, Count rounds, Duration warmup)
+        private WorkoutPlan(WorkoutRound round, Count rounds, Duration warmup)
         {
-            _workoutRound = workoutRound;
+            _round = round;
             _rounds = rounds;
             _warmup = warmup;
+        }
+
+        public IEnumerable<(Round Round, IEnumerable<T> Workouts)> EnumerateHierarchically<T>(WorkoutPlanVisitor<T> visitor)
+        {
+            foreach (var round in _rounds.Enumerate(x => new Round(x.Number, x.IsLast)))
+            {
+                yield return (round, Round());
+
+                IEnumerable<T> Round()
+                {
+                    if (round.IsFirst && _warmup.TotalSeconds > 0 && visitor.VisitWarmup(_warmup, out var warmup))
+                    {
+                        yield return warmup;
+                    }
+                    foreach (var item in _round.Enumerate(visitor, round))
+                    {
+                        yield return item;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<T> EnumerateLinearly<T>(WorkoutPlanVisitor<T> visitor)
+        {
+            if (_warmup.TotalSeconds > 0 && visitor.VisitWarmup(_warmup, out var warmup))
+            {
+                yield return warmup;
+            }
+            foreach (var round in _rounds.Enumerate(x => new Round(x.Number, x.IsLast)))
+            {
+                foreach (var item in _round.Enumerate(visitor, round))
+                {
+                    yield return item;
+                }
+            }
         }
 
         public WorkoutPlan AddBreak(Duration duration)
         {
             return new WorkoutPlan(
-                _workoutRound.AddBreakWorkout(duration),
+                _round.AddBreak(duration),
                 _rounds,
                 _warmup);
         }
@@ -33,7 +68,7 @@ namespace Timer.WorkoutPlans
         public WorkoutPlan AddExercise(Duration duration)
         {
             return new WorkoutPlan(
-                _workoutRound.AddExerciseWorkout(duration),
+                _round.AddExercise(duration),
                 _rounds,
                 _warmup);
         }
@@ -43,34 +78,23 @@ namespace Timer.WorkoutPlans
             Func<Round, Duration, T> exercise,
             Func<Round, Duration, T> @break)
         {
-            foreach (var round in
-                _rounds.Enumerate(x => new Round(x.Number, x.IsLast)))
-            {
-                yield return (round, WorkoutsOfRound(round));
-            }
-
-            IEnumerable<T> WorkoutsOfRound(Round round)
-            {
-                if (round.IsFirst)
-                {
-                    yield return warmUp(_warmup);
-                }
-
-                foreach (var a in
-                    _workoutRound.Select(
-                        x => exercise(round, x),
-                        x => @break(round, x)))
-                {
-                    yield return a;
-                }
-            }
+            var visitor =
+                new WorkoutPlanVisitor<T>()
+                    .OnWarmup(warmUp)
+                    .OnExercise(exercise)
+                    .OnBreak(@break);
+            return EnumerateHierarchically(visitor);
         }
 
         public IEnumerable<T> Round<T>(
             Func<Duration, T> exercise,
             Func<Duration, T> @break)
         {
-            return _workoutRound.Select(exercise, @break);
+            var visitor =
+                new WorkoutPlanVisitor<T>()
+                    .OnExercise((x, y) => exercise(y))
+                    .OnBreak((x, y) => @break(y));
+            return EnumerateLinearly(visitor);
         }
 
         [Pure]
@@ -81,31 +105,19 @@ namespace Timer.WorkoutPlans
             Func<Round, T> nonLastRoundDone,
             Func<Round, T> lastRoundDone)
         {
-            yield return warmUp(_warmup);
-            foreach (var round in _rounds.Enumerate(x => new Round(x.Number, x.IsLast)))
-            {
-                foreach (var x in 
-                    _workoutRound.Select(
-                        x => exercise(round, x),
-                        x => @break(round, x)))
-                {
-                    yield return x;
-                }
-                if (!round.IsLast)
-                {
-                    yield return nonLastRoundDone(round);
-                }
-                else
-                {
-                    yield return lastRoundDone(round);
-                }
-            }
+            var visitor =
+                new WorkoutPlanVisitor<T>()
+                    .OnWarmup(warmUp)
+                    .OnExercise(exercise)
+                    .OnBreak(@break)
+                    .OnRoundDone(nonLastRoundDone, lastRoundDone);
+            return EnumerateLinearly(visitor);
         }
 
         public WorkoutPlan WithCountdown(Duration value)
         {
             return new WorkoutPlan(
-                _workoutRound,
+                _round,
                 _rounds,
                 warmup: value);
         }
@@ -113,7 +125,7 @@ namespace Timer.WorkoutPlans
         public WorkoutPlan WithRound(Count value)
         {
             return new WorkoutPlan(
-                _workoutRound,
+                _round,
                 rounds: value,
                 _warmup);
         }

@@ -18,27 +18,42 @@ namespace Timer.WorkoutPlans
             _workouts = workouts;
         }
 
-        public WorkoutRound AddBreakWorkout(Duration duration) =>
+        public WorkoutRound AddBreak(Duration duration) =>
             new WorkoutRound(_workouts.Add((WorkoutType.Break, duration)));
 
-        public WorkoutRound AddExerciseWorkout(Duration duration) =>
+        public WorkoutRound AddExercise(Duration duration) =>
             new WorkoutRound(_workouts.Add((WorkoutType.Exercise, duration)));
 
-        public IEnumerable<T> Select<T>(Func<Duration, T> exercise, Func<Duration, T> @break)
+        public IEnumerable<T> Enumerate<T>(
+            WorkoutPlanVisitor<T> visitor,
+            Round round)
         {
             foreach (var step in _workouts)
             {
                 switch (step.Type)
                 {
                     case WorkoutType.Exercise:
-                        yield return exercise(step.Duration);
+                        if (visitor.VisitExercise(round, step.Duration, out var exercise))
+                        {
+                            yield return exercise;
+                        }
                         break;
                     case WorkoutType.Break:
-                        yield return @break(step.Duration);
+                        if (visitor.VisitBreak(round, step.Duration, out var @break))
+                        {
+                            yield return @break;
+                        }
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+            }
+            T roundEnd;
+            if (round.IsLast
+                ? visitor.VisitLastRound(round, out roundEnd)
+                : visitor.VisitNonLastRound(round, out roundEnd))
+            {
+                yield return roundEnd;
             }
         }
 
