@@ -28,13 +28,12 @@ namespace Timer.WorkoutTracking.Sound
             IEnumerable<ISoundEffect> SoundEffects()
             {
                 var sounds = new SoundsOfWorkout(_soundFactory);
-                return
-                    _workoutPlan.Workouts(
-                        exercise: (a, b) => sounds.Exercise(b.ToTimeSpan()),
-                        @break: (a, b) => sounds.Break(b.ToTimeSpan()),
-                        warmUp: x => sounds.WarmUp(x.ToTimeSpan()),
-                        nonLastRoundDone: x => sounds.RoundDone(),
-                        lastRoundDone: x => sounds.WorkoutDone());
+                return _workoutPlan.EnumerateLinearly(
+                    new WorkoutPlanVisitor<ISoundEffect>()
+                        .OnWarmup(x => sounds.WarmUp(x.ToTimeSpan()))
+                        .OnExercise((a, b) => sounds.Exercise(b.ToTimeSpan()))
+                        .OnBreak((a, b) => sounds.Break(b.ToTimeSpan()))
+                        .OnRoundDone(x => sounds.RoundDone(), x => sounds.WorkoutDone()));
             }
 
             Task DelayToAllowLastSoundToPlayOut() => Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);

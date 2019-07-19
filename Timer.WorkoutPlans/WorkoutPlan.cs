@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+﻿using System.Collections.Generic;
 
 namespace Timer.WorkoutPlans
 {
@@ -71,47 +69,6 @@ namespace Timer.WorkoutPlans
                 _round.AddExercise(duration),
                 _rounds,
                 _warmup);
-        }
-
-        public IEnumerable<(Round Round, IEnumerable<T> Workouts)> Rounds<T>(
-            Func<Duration, T> warmUp,
-            Func<Round, Duration, T> exercise,
-            Func<Round, Duration, T> @break)
-        {
-            var visitor =
-                new WorkoutPlanVisitor<T>()
-                    .OnWarmup(warmUp)
-                    .OnExercise(exercise)
-                    .OnBreak(@break);
-            return EnumerateHierarchically(visitor);
-        }
-
-        public IEnumerable<T> Round<T>(
-            Func<Duration, T> exercise,
-            Func<Duration, T> @break)
-        {
-            var visitor =
-                new WorkoutPlanVisitor<T>()
-                    .OnExercise((x, y) => exercise(y))
-                    .OnBreak((x, y) => @break(y));
-            return EnumerateLinearly(visitor);
-        }
-
-        [Pure]
-        public IEnumerable<T> Workouts<T>(
-            Func<Duration, T> warmUp,
-            Func<Round, Duration, T> exercise,
-            Func<Round, Duration, T> @break,
-            Func<Round, T> nonLastRoundDone,
-            Func<Round, T> lastRoundDone)
-        {
-            var visitor =
-                new WorkoutPlanVisitor<T>()
-                    .OnWarmup(warmUp)
-                    .OnExercise(exercise)
-                    .OnBreak(@break)
-                    .OnRoundDone(nonLastRoundDone, lastRoundDone);
-            return EnumerateLinearly(visitor);
         }
 
         public WorkoutPlan WithCountdown(Duration value)

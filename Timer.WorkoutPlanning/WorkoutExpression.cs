@@ -77,9 +77,10 @@ namespace Timer.WorkoutPlanning
                 return string.Join(
                     " ",
                     WorkoutPlan(new WorkoutPlan())
-                        .Round(
-                            exercise: x => $"{x.TotalSeconds} E",
-                            @break: x => $"{x.TotalSeconds} B"));
+                        .EnumerateLinearly(
+                            new WorkoutPlanVisitor<string>()
+                                .OnExercise((x, y) => $"{y.TotalSeconds} E")
+                                .OnBreak((x, y) => $"{y.TotalSeconds} B")));
             }
         }
 
