@@ -9,62 +9,64 @@ namespace Timer.WorkoutPlanning
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WorkoutRound WorkoutRound
+        public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
         {
             get
             {
-                var parts = Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                var result = new WorkoutRound();
-                using (var part = parts.AsEnumerable().GetEnumerator())
+                return result =>
                 {
-                    while (part.MoveNext())
+                    var parts = Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    using (var part = parts.AsEnumerable().GetEnumerator())
                     {
-                        if (Duration(part.Current) is Duration duration
-                            && part.MoveNext())
+                        while (part.MoveNext())
                         {
-                            if (Type(part.Current) is WorkoutType type)
+                            if (Duration(part.Current) is Duration duration
+                                && part.MoveNext())
                             {
-                                switch (type)
+                                if (Type(part.Current) is WorkoutType type)
                                 {
-                                    case WorkoutType.Break:
-                                        result = result.AddBreakWorkout(duration);
-                                        break;
-                                    case WorkoutType.Exercise:
-                                        result = result.AddExerciseWorkout(duration);
-                                        break;
-                                    default:
-                                        return result;
+                                    switch (type)
+                                    {
+                                        case WorkoutType.Break:
+                                            result = result.AddBreak(duration);
+                                            break;
+                                        case WorkoutType.Exercise:
+                                            result = result.AddExercise(duration);
+                                            break;
+                                        default:
+                                            return result;
+                                    }
+                                }
+                                else
+                                {
+                                    return result;
                                 }
                             }
                             else
                             {
                                 return result;
                             }
-                        }
-                        else
-                        {
-                            return result;
-                        }
 
-                        Duration? Duration(string input)
-                        {
-                            return int.TryParse(input, out var seconds)
-                                ? WorkoutPlans.Duration.TryFromSeconds(seconds)
-                                : default;
-                        }
-
-                        WorkoutType? Type(string input)
-                        {
-                            switch (input)
+                            Duration? Duration(string input)
                             {
-                                case "E": return WorkoutType.Exercise;
-                                case "B": return WorkoutType.Break;
-                                default: return null;
+                                return int.TryParse(input, out var seconds)
+                                    ? WorkoutPlans.Duration.TryFromSeconds(seconds)
+                                    : default;
+                            }
+
+                            WorkoutType? Type(string input)
+                            {
+                                switch (input)
+                                {
+                                    case "E": return WorkoutType.Exercise;
+                                    case "B": return WorkoutType.Break;
+                                    default: return null;
+                                }
                             }
                         }
                     }
-                }
-                return result;
+                    return result;
+                };
             }
         }
 
@@ -74,9 +76,10 @@ namespace Timer.WorkoutPlanning
             {
                 return string.Join(
                     " ",
-                    WorkoutRound.Select(
-                        exercise: x => $"{x.TotalSeconds} E",
-                        @break: x => $"{x.TotalSeconds} B"));
+                    WorkoutPlan(new WorkoutPlan())
+                        .Round(
+                            exercise: x => $"{x.TotalSeconds} E",
+                            @break: x => $"{x.TotalSeconds} B"));
             }
         }
 
@@ -87,7 +90,7 @@ namespace Timer.WorkoutPlanning
             set
             {
                 _value = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutRound)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutPlan)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActualValue)));
             }
         }

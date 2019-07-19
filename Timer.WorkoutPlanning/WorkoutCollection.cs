@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -9,15 +10,11 @@ namespace Timer.WorkoutPlanning
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WorkoutRound WorkoutRound
+        public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
         {
             get
             {
-                var round =
-                    this.Aggregate(
-                        new WorkoutRound(),
-                        (x, y) => y.AddTo(x));
-                return round;
+                return a => this.Aggregate(a, (x, y) => y.AddTo(x));
             }
         }
 
@@ -62,7 +59,7 @@ namespace Timer.WorkoutPlanning
 
         private void RaiseWorkoutRoundChange()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutRound)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutPlan)));
         }
     }
 }

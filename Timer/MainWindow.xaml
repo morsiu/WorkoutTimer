@@ -18,7 +18,7 @@
         <local:TrackWorkoutPlanCommand
             x:Key="TrackWorkoutPlan"
             RoundCount="{Binding RoundCount, Source={StaticResource RoundCount}}"
-            WorkoutRound="{Binding WorkoutRound, Source={StaticResource RoundWorkouts}}" />
+            WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
     </Window.Resources>
     <StackPanel>
         <TextBox Text="{Binding Value, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>

@@ -19,10 +19,10 @@ namespace Timer
                 typeof(TrackWorkoutPlanCommand),
                 new PropertyMetadata(null, RoundCountChanged));
 
-        public static readonly DependencyProperty WorkoutRoundProperty =
+        public static readonly DependencyProperty WorkoutPlanProperty =
             DependencyProperty.Register(
-                nameof(WorkoutRound),
-                typeof(WorkoutRound),
+                nameof(WorkoutPlan),
+                typeof(Func<WorkoutPlan, WorkoutPlan>),
                 typeof(TrackWorkoutPlanCommand),
                 new PropertyMetadata(null, WorkoutRoundChanged));
 
@@ -53,10 +53,10 @@ namespace Timer
             set => SetValue(RoundCountProperty, value);
         }
 
-        public WorkoutRound WorkoutRound
+        public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
         {
-            get => (WorkoutRound) GetValue(WorkoutRoundProperty);
-            set => SetValue(WorkoutRoundProperty, value);
+            get => (Func<WorkoutPlan, WorkoutPlan>) GetValue(WorkoutPlanProperty);
+            set => SetValue(WorkoutPlanProperty, value);
         }
 
         public object WorkoutsOfCurrentSegment
@@ -112,14 +112,14 @@ namespace Timer
 
             WorkoutPlan WorkoutPlan()
             {
-                return WorkoutRound != null && RoundCount != null
-                    ? new WorkoutPlan(WorkoutRound, RoundCount.Value)
+                return this.WorkoutPlan != null && RoundCount != null
+                    ? this.WorkoutPlan(new WorkoutPlan().WithRound(RoundCount.Value).WithCountdown(WorkoutPlans.Duration.FromSeconds(3)))
                     : default;
             }
         }
 
         public bool CanExecute(object parameter) =>
-            !_running && WorkoutRound != null && RoundCount != null;
+            !_running && WorkoutPlan != null && RoundCount != null;
 
         private static void RoundCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -30,7 +30,7 @@ namespace Timer.WorkoutPlanning
             }
         }
 
-        public WorkoutRound AddTo(WorkoutRound workoutRound)
+        public WorkoutPlan AddTo(WorkoutPlan workoutRound)
         {
             var duration = Duration.TryFromSeconds(LengthInSeconds);
             if (duration == null)
@@ -40,9 +40,9 @@ namespace Timer.WorkoutPlanning
             switch (Type)
             {
                 case WorkoutType.Exercise:
-                    return workoutRound.AddExerciseWorkout(duration.Value);
+                    return workoutRound.AddExercise(duration.Value);
                 case WorkoutType.Break:
-                    return workoutRound.AddBreakWorkout(duration.Value);
+                    return workoutRound.AddBreak(duration.Value);
                 default:
                     return workoutRound;
             }

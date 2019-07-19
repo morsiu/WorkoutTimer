@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 namespace Timer.WorkoutPlans
 {
-    public sealed class WorkoutRound
+    internal sealed class WorkoutRound
     {
         private readonly ImmutableArray<(WorkoutType Type, Duration Duration)> _workouts;
 

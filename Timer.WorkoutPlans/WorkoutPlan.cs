@@ -15,11 +15,6 @@ namespace Timer.WorkoutPlans
         {
         }
 
-        public WorkoutPlan(WorkoutRound workoutRound, Count rounds)
-            : this(workoutRound, rounds, Duration.FromSeconds(3))
-        {
-        }
-
         private WorkoutPlan(WorkoutRound workoutRound, Count rounds, Duration warmup)
         {
             _workoutRound = workoutRound;
@@ -69,6 +64,13 @@ namespace Timer.WorkoutPlans
                     yield return a;
                 }
             }
+        }
+
+        public IEnumerable<T> Round<T>(
+            Func<Duration, T> exercise,
+            Func<Duration, T> @break)
+        {
+            return _workoutRound.Select(exercise, @break);
         }
 
         [Pure]
