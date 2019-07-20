@@ -9,6 +9,12 @@ namespace Timer.WorkoutPlanning
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private enum WorkoutType
+        {
+            Break,
+            Exercise,
+        }
+
         public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
         {
             get
