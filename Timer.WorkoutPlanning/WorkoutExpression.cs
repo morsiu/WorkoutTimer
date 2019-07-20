@@ -13,6 +13,7 @@ namespace Timer.WorkoutPlanning
         {
             Break,
             Exercise,
+            Countdown
         }
 
         public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
@@ -38,6 +39,9 @@ namespace Timer.WorkoutPlanning
                                             break;
                                         case WorkoutType.Exercise:
                                             result = result.AddExercise(duration);
+                                            break;
+                                        case WorkoutType.Countdown:
+                                            result = result.WithCountdown(duration);
                                             break;
                                         default:
                                             return result;
@@ -66,6 +70,7 @@ namespace Timer.WorkoutPlanning
                                 {
                                     case "E": return WorkoutType.Exercise;
                                     case "B": return WorkoutType.Break;
+                                    case "W": return WorkoutType.Countdown;
                                     default: return null;
                                 }
                             }
@@ -85,6 +90,7 @@ namespace Timer.WorkoutPlanning
                     WorkoutPlan(new WorkoutPlan())
                         .EnumerateLinearly(
                             new WorkoutPlanVisitor<string>()
+                                .OnWarmup(x => $"{x.TotalSeconds} W")
                                 .OnExercise((x, y) => $"{y.TotalSeconds} E")
                                 .OnBreak((x, y) => $"{y.TotalSeconds} B")));
             }
