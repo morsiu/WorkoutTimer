@@ -12,13 +12,6 @@ namespace Timer
 {
     internal sealed class TrackWorkoutPlanCommand : DependencyObject, ICommand
     {
-        public static readonly DependencyProperty RoundCountProperty =
-            DependencyProperty.Register(
-                nameof(RoundCount),
-                typeof(Count?),
-                typeof(TrackWorkoutPlanCommand),
-                new PropertyMetadata(null, RoundCountChanged));
-
         public static readonly DependencyProperty WorkoutPlanProperty =
             DependencyProperty.Register(
                 nameof(WorkoutPlan),
@@ -46,12 +39,6 @@ namespace Timer
         public event EventHandler CanExecuteChanged;
 
         public ICommand Cancel => _cancel;
-
-        public Count? RoundCount
-        {
-            get => (Count?) GetValue(RoundCountProperty);
-            set => SetValue(RoundCountProperty, value);
-        }
 
         public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
         {
@@ -112,22 +99,14 @@ namespace Timer
 
             WorkoutPlan WorkoutPlan()
             {
-                return this.WorkoutPlan != null && RoundCount != null
-                    ? this.WorkoutPlan(new WorkoutPlan().WithRound(RoundCount.Value).WithCountdown(WorkoutPlans.Duration.FromSeconds(3)))
+                return this.WorkoutPlan != null
+                    ? this.WorkoutPlan(new WorkoutPlan())
                     : default;
             }
         }
 
         public bool CanExecute(object parameter) =>
-            !_running && WorkoutPlan != null && RoundCount != null;
-
-        private static void RoundCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackWorkoutPlanCommand self)
-            {
-                self.RaiseCanExecuteChanged();
-            }
-        }
+            !_running && WorkoutPlan != null;
 
         private static void WorkoutRoundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

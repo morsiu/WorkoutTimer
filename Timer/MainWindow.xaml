@@ -13,32 +13,21 @@
     <Window.Resources>
         <workoutPlanning:WorkoutExpression
             x:Key="RoundWorkouts"/>
-        <workoutPlanning:WorkoutRoundCount
-            x:Key="RoundCount" />
         <local:TrackWorkoutPlanCommand
             x:Key="TrackWorkoutPlan"
-            RoundCount="{Binding RoundCount, Source={StaticResource RoundCount}}"
             WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
     </Window.Resources>
     <StackPanel>
         <TextBox Text="{Binding Value, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Text="{Binding ActualValue, Source={StaticResource RoundWorkouts}}"/>
-        <ToolBar>
+        <StackPanel Orientation="Horizontal">
             <Button
                 Command="{StaticResource TrackWorkoutPlan}"
                 Content="Start" />
             <Button
                 Command="{Binding Cancel, Source={StaticResource TrackWorkoutPlan}}"
                 Content="Stop" />
-            <TextBox
-                Text="{Binding Value, Source={StaticResource RoundCount}}" />
-            <Button
-                Command="{Binding AddRound, Source={StaticResource RoundCount}}"
-                Content="+" />
-            <Button
-                Command="{Binding RemoveRound, Source={StaticResource RoundCount}}"
-                Content="-" />
-        </ToolBar>
+        </StackPanel>
         <ItemsControl
             ItemsSource="{Binding WorkoutsOfCurrentSegment, Source={StaticResource TrackWorkoutPlan}}" />
     </StackPanel>
