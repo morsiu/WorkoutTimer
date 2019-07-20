@@ -9,11 +9,12 @@ namespace Timer.WorkoutPlanning
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private enum WorkoutType
+        private enum FieldType
         {
             Break,
             Exercise,
-            Countdown
+            Countdown,
+            Round
         }
 
         public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
@@ -27,50 +28,56 @@ namespace Timer.WorkoutPlanning
                     {
                         while (part.MoveNext())
                         {
-                            if (Duration(part.Current) is Duration duration
+                            if (Value(part.Current) is int value
                                 && part.MoveNext())
                             {
-                                if (Type(part.Current) is WorkoutType type)
+                                if (Type(part.Current) is FieldType type)
                                 {
-                                    switch (type)
+                                    if (Duration.TryFromSeconds(value) is Duration duration)
                                     {
-                                        case WorkoutType.Break:
-                                            result = result.AddBreak(duration);
-                                            break;
-                                        case WorkoutType.Exercise:
-                                            result = result.AddExercise(duration);
-                                            break;
-                                        case WorkoutType.Countdown:
-                                            result = result.WithCountdown(duration);
-                                            break;
-                                        default:
-                                            return result;
+                                        switch (type)
+                                        {
+                                            case FieldType.Break:
+                                                result = result.AddBreak(duration);
+                                                continue;
+                                            case FieldType.Exercise:
+                                                result = result.AddExercise(duration);
+                                                continue;
+                                            case FieldType.Countdown:
+                                                result = result.WithCountdown(duration);
+                                                continue;
+                                        }
                                     }
-                                }
-                                else
-                                {
+                                    if (Count.FromNumber(value) is Count count)
+                                    {
+                                        switch (type)
+                                        {
+                                            case FieldType.Round:
+                                                result = result.WithRound(count);
+                                                continue;
+                                        }
+                                    }
                                     return result;
                                 }
-                            }
-                            else
-                            {
                                 return result;
                             }
+                            return result;
 
-                            Duration? Duration(string input)
+                            int? Value(string input)
                             {
-                                return int.TryParse(input, out var seconds)
-                                    ? WorkoutPlans.Duration.TryFromSeconds(seconds)
+                                return int.TryParse(input, out var number)
+                                    ? number
                                     : default;
                             }
 
-                            WorkoutType? Type(string input)
+                            FieldType? Type(string input)
                             {
                                 switch (input)
                                 {
-                                    case "E": return WorkoutType.Exercise;
-                                    case "B": return WorkoutType.Break;
-                                    case "W": return WorkoutType.Countdown;
+                                    case "E": return FieldType.Exercise;
+                                    case "B": return FieldType.Break;
+                                    case "W": return FieldType.Countdown;
+                                    case "R": return FieldType.Round;
                                     default: return null;
                                 }
                             }
