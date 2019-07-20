@@ -72,12 +72,12 @@ namespace Timer.WorkoutPlanning
 
                             FieldType? Type(string input)
                             {
-                                switch (input)
+                                switch (input.ToLower())
                                 {
-                                    case "E": return FieldType.Exercise;
-                                    case "B": return FieldType.Break;
-                                    case "W": return FieldType.Countdown;
-                                    case "R": return FieldType.Round;
+                                    case "e": return FieldType.Exercise;
+                                    case "b": return FieldType.Break;
+                                    case "w": return FieldType.Countdown;
+                                    case "r": return FieldType.Round;
                                     default: return null;
                                 }
                             }
