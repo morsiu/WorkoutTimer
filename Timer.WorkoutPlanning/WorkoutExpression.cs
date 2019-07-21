@@ -92,14 +92,20 @@ namespace Timer.WorkoutPlanning
         {
             get
             {
-                return string.Join(
-                    " ",
-                    WorkoutPlan(new WorkoutPlan())
-                        .EnumerateLinearly(
-                            new WorkoutPlanVisitor<string>()
-                                .OnWarmup(x => $"{x.TotalSeconds} W")
-                                .OnExercise((x, y) => $"{y.TotalSeconds} E")
-                                .OnBreak((x, y) => $"{y.TotalSeconds} B")));
+                var definition = WorkoutPlan(new WorkoutPlan())
+                    .Definition(
+                        x => x.TotalSeconds > 0
+                            ? $"{x.TotalSeconds} W"
+                            : string.Empty,
+                        x => $"{x.TotalSeconds} E",
+                        x => $"{x.TotalSeconds} B");
+                return string.Format(
+                    "{0} {1} R ({2})",
+                    definition.Warmup,
+                    definition.Round.Number,
+                    definition.Round.Workouts.Any()
+                        ? string.Join(" ", definition.Round.Workouts)
+                        : "empty");
             }
         }
 
