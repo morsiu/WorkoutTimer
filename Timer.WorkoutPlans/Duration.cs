@@ -33,6 +33,9 @@ namespace Timer.WorkoutPlans
                 ? new Duration(seconds)
                 : default(Duration?);
 
+        public Duration Add(in Duration duration) =>
+            new Duration(TotalSeconds + duration.TotalSeconds);
+
         public int CompareTo(Duration other) => TotalSeconds.CompareTo(other.TotalSeconds);
 
         public override bool Equals(object obj) => obj is Duration other && Equals(other);
