@@ -57,6 +57,27 @@ namespace Timer.WorkoutPlans
             }
         }
 
+
+        public IEnumerable<T> Definition<T>(
+            Func<Duration, T> exercise,
+            Func<Duration, T> @break)
+        {
+            foreach (var step in _workouts)
+            {
+                switch (step.Type)
+                {
+                    case WorkoutType.Exercise:
+                        yield return exercise(step.Duration);
+                        break;
+                    case WorkoutType.Break:
+                        yield return @break(step.Duration);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
         private enum WorkoutType
         {
             Exercise,

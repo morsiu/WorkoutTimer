@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Timer.WorkoutPlans
 {
@@ -18,6 +19,17 @@ namespace Timer.WorkoutPlans
             _round = round;
             _rounds = rounds;
             _warmup = warmup;
+        }
+
+        public (T Warmup, (Count Number, IEnumerable<T> Workouts) Round) Definition<T>(
+            Func<Duration, T> warmup,
+            Func<Duration, T> exercise,
+            Func<Duration, T> @break)
+        {
+            return (
+                warmup(_warmup), (
+                    _rounds,
+                    _round.Definition(exercise, @break)));
         }
 
         public IEnumerable<(Round Round, IEnumerable<T> Workouts)> EnumerateHierarchically<T>(WorkoutPlanVisitor<T> visitor)
