@@ -34,6 +34,10 @@ namespace Timer.WorkoutPlans
 
         public IEnumerable<(Round Round, IEnumerable<T> Workouts)> EnumerateHierarchically<T>(WorkoutPlanVisitor<T> visitor)
         {
+            if (!_round.HasExercise)
+            {
+                yield break;
+            }
             foreach (var round in _rounds.Enumerate(x => new Round(x.Number, x.IsLast)))
             {
                 yield return (round, Round());
@@ -54,6 +58,10 @@ namespace Timer.WorkoutPlans
 
         public IEnumerable<T> EnumerateLinearly<T>(WorkoutPlanVisitor<T> visitor)
         {
+            if (!_round.HasExercise)
+            {
+                yield break;
+            }
             if (_warmup is Duration duration && visitor.VisitWarmup(duration, out var warmup))
             {
                 yield return warmup;

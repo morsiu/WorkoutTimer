@@ -1,28 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Timer.WorkoutPlans
 {
     internal sealed class WorkoutRound
     {
         private readonly ImmutableArray<(WorkoutType Type, Duration Duration)> _workouts;
+        private readonly int? _lastExercise;
 
         public WorkoutRound()
-            : this(ImmutableArray<(WorkoutType, Duration)>.Empty)
+            : this(ImmutableArray<(WorkoutType, Duration)>.Empty, lastExercise: null)
         {
         }
 
-        private WorkoutRound(ImmutableArray<(WorkoutType, Duration)> workouts)
+        private WorkoutRound(
+            ImmutableArray<(WorkoutType, Duration)> workouts,
+            int? lastExercise)
         {
             _workouts = workouts;
+            _lastExercise = lastExercise;
         }
 
         public WorkoutRound AddBreak(Duration duration) =>
-            new WorkoutRound(_workouts.Add((WorkoutType.Break, duration)));
+            new WorkoutRound(
+                _workouts.Add((WorkoutType.Break, duration)), _lastExercise);
 
         public WorkoutRound AddExercise(Duration duration) =>
-            new WorkoutRound(_workouts.Add((WorkoutType.Exercise, duration)));
+            new WorkoutRound(
+                _workouts.Add((WorkoutType.Exercise, duration)), lastExercise: _workouts.Length);
+
+        public bool HasExercise => _lastExercise.HasValue;
 
         public IEnumerable<T> Enumerate<T>(
             WorkoutPlanVisitor<T> visitor,
