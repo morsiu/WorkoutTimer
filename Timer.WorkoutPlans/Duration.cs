@@ -7,9 +7,9 @@ namespace Timer.WorkoutPlans
     {
         public Duration(int seconds)
         {
-            if (seconds < 0)
+            if (seconds <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(seconds), "The value must not be negative.");
+                throw new ArgumentOutOfRangeException(nameof(seconds), "The value must be greater than zero.");
             }
             TotalSeconds = seconds;
         }
@@ -28,10 +28,8 @@ namespace Timer.WorkoutPlans
 
         public static bool operator !=(Duration left, Duration right) => left.CompareTo(right) != 0;
 
-        public static Duration FromSeconds(int seconds) => new Duration(seconds);
-
         public static Duration? TryFromSeconds(int seconds) =>
-            seconds >= 0
+            seconds > 0
                 ? new Duration(seconds)
                 : default(Duration?);
 

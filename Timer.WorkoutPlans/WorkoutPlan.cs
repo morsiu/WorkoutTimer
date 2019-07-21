@@ -5,16 +5,16 @@ namespace Timer.WorkoutPlans
 {
     public sealed class WorkoutPlan
     {
-        private readonly Duration _warmup;
+        private readonly Duration? _warmup;
         private readonly WorkoutRound _round;
         private readonly Count _rounds;
 
         public WorkoutPlan()
-            : this(new WorkoutRound(), new Count(1), new Duration(0))
+            : this(new WorkoutRound(), new Count(1), default)
         {
         }
 
-        private WorkoutPlan(WorkoutRound round, Count rounds, Duration warmup)
+        private WorkoutPlan(WorkoutRound round, Count rounds, Duration? warmup)
         {
             _round = round;
             _rounds = rounds;
@@ -22,7 +22,7 @@ namespace Timer.WorkoutPlans
         }
 
         public (T Warmup, (Count Number, IEnumerable<T> Workouts) Round) Definition<T>(
-            Func<Duration, T> warmup,
+            Func<Duration?, T> warmup,
             Func<Duration, T> exercise,
             Func<Duration, T> @break)
         {
@@ -40,7 +40,7 @@ namespace Timer.WorkoutPlans
 
                 IEnumerable<T> Round()
                 {
-                    if (round.IsFirst && _warmup.TotalSeconds > 0 && visitor.VisitWarmup(_warmup, out var warmup))
+                    if (round.IsFirst && _warmup is Duration duration && visitor.VisitWarmup(duration, out var warmup))
                     {
                         yield return warmup;
                     }
@@ -54,7 +54,7 @@ namespace Timer.WorkoutPlans
 
         public IEnumerable<T> EnumerateLinearly<T>(WorkoutPlanVisitor<T> visitor)
         {
-            if (_warmup.TotalSeconds > 0 && visitor.VisitWarmup(_warmup, out var warmup))
+            if (_warmup is Duration duration && visitor.VisitWarmup(duration, out var warmup))
             {
                 yield return warmup;
             }

@@ -48,7 +48,7 @@ namespace Timer.WorkoutPlanning
                                                 continue;
                                         }
                                     }
-                                    if (Count.FromNumber(value) is Count count)
+                                    if (Count.TryFromNumber(value) is Count count)
                                     {
                                         switch (type)
                                         {
@@ -94,8 +94,8 @@ namespace Timer.WorkoutPlanning
             {
                 var definition = WorkoutPlan(new WorkoutPlan())
                     .Definition(
-                        x => x.TotalSeconds > 0
-                            ? $"{x.TotalSeconds} W"
+                        x => x is Duration duration
+                            ? $"{duration.TotalSeconds} W"
                             : string.Empty,
                         x => $"{x.TotalSeconds} E",
                         x => $"{x.TotalSeconds} B");

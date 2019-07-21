@@ -31,8 +31,8 @@ namespace Timer.WorkoutPlans
 
         public static implicit operator int(Count x) => x._value;
 
-        public static Count? FromNumber(int number) =>
-            number >= 0
+        public static Count? TryFromNumber(int number) =>
+            number > 0
                 ? new Count(number)
                 : default(Count?);
 
