@@ -37,7 +37,16 @@ namespace Timer.WorkoutPlans
             WorkoutPlanVisitor<T> visitor,
             Round round)
         {
-            foreach (var step in _workouts)
+            if (!(_lastExercise is int lastExercise))
+            {
+                yield break;
+            }
+            var workouts =
+                _workouts.Take(
+                    round.IsLast
+                        ? lastExercise + 1
+                        : _workouts.Length);
+            foreach (var step in workouts)
             {
                 switch (step.Type)
                 {
