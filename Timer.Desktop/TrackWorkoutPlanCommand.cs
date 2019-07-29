@@ -8,7 +8,7 @@ using Timer.WorkoutTracking.Sound;
 using Timer.WorkoutTracking.Sound.NAudio;
 using Timer.WorkoutTracking.Visual;
 
-namespace Timer
+namespace Timer.Desktop
 {
     internal sealed class TrackWorkoutPlanCommand : DependencyObject, ICommand
     {

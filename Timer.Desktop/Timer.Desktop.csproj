@@ -7,7 +7,7 @@
     <LangVersion>latest</LangVersion>
     <Description>Timer for exercising</Description>
     <Authors>Łukasz Mrozek</Authors>
-    <StartupObject>Timer.App</StartupObject>
+    <StartupObject>Timer.Desktop.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Xaml" />

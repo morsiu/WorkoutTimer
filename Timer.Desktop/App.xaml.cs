@@ -1,4 +1,4 @@
-﻿namespace Timer
+﻿namespace Timer.Desktop
 {
     public partial class App
     {

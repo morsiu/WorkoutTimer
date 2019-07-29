@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Windows.Input;
 
-namespace Timer
+namespace Timer.Desktop
 {
     internal sealed class CancelCommand : ICommand
     {
