@@ -124,6 +124,16 @@ namespace Timer.WorkoutPlanning
             }
         }
 
+        public string DurationStatistics
+        {
+            get
+            {
+                var workoutPlan = WorkoutPlan(new WorkoutPlan());
+                var workoutDurationStatistics = new WorkoutDurationStatistics(workoutPlan);
+                return $"Total: {workoutDurationStatistics.Total()}, Exercise per round: {workoutDurationStatistics.ExercisePerRound()}";
+            }
+        }
+
         private string _value = string.Empty;
         public string Value
         {
@@ -133,6 +143,7 @@ namespace Timer.WorkoutPlanning
                 _value = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutPlan)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActualValue)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DurationStatistics)));
             }
         }
     }

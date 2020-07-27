@@ -20,6 +20,7 @@
     <StackPanel>
         <TextBox Text="{Binding Value, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Text="{Binding ActualValue, Source={StaticResource RoundWorkouts}}"/>
+        <TextBlock Text="{Binding DurationStatistics, Source={StaticResource RoundWorkouts}}"/>
         <StackPanel Orientation="Horizontal">
             <Button
                 Command="{StaticResource TrackWorkoutPlan}"
