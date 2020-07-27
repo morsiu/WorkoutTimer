@@ -44,7 +44,7 @@ namespace Timer.WorkoutPlans
 
                 IEnumerable<T> Round()
                 {
-                    if (round.IsFirst && _warmup is Duration duration && visitor.VisitWarmup(duration, out var warmup))
+                    if (round.IsFirst && _warmup is { } duration && visitor.VisitWarmup(duration, out var warmup))
                     {
                         yield return warmup;
                     }
@@ -62,7 +62,7 @@ namespace Timer.WorkoutPlans
             {
                 yield break;
             }
-            if (_warmup is Duration duration && visitor.VisitWarmup(duration, out var warmup))
+            if (_warmup is { } duration && visitor.VisitWarmup(duration, out var warmup))
             {
                 yield return warmup;
             }

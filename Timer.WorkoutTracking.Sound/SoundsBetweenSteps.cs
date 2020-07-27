@@ -18,26 +18,24 @@ namespace Timer.WorkoutTracking.Sound
 
         public async Task Run(CancellationToken cancellation)
         {
-            using (var enumerator = _steps.GetEnumerator())
+            using var enumerator = _steps.GetEnumerator();
+            if (!enumerator.MoveNext()) return;
+            var current = enumerator.Current;
+            if (!enumerator.MoveNext())
             {
-                if (!enumerator.MoveNext()) return;
-                var current = enumerator.Current;
-                if (!enumerator.MoveNext())
-                {
-                    await Task.Delay(current, cancellation);
-                    return;
-                }
-                var next = enumerator.Current;
-                while (true)
-                {
-                    await Task.Delay(current, cancellation);
-                    _sound.PlayAsynchronously();
-                    if (!enumerator.MoveNext()) break;
-                    current = next;
-                    next = enumerator.Current;
-                }
-                await Task.Delay(next, cancellation);
+                await Task.Delay(current, cancellation);
+                return;
             }
+            var next = enumerator.Current;
+            while (true)
+            {
+                await Task.Delay(current, cancellation);
+                _sound.PlayAsynchronously();
+                if (!enumerator.MoveNext()) break;
+                current = next;
+                next = enumerator.Current;
+            }
+            await Task.Delay(next, cancellation);
         }
     }
 }

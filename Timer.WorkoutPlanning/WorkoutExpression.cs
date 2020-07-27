@@ -24,65 +24,64 @@ namespace Timer.WorkoutPlanning
                 return result =>
                 {
                     var parts = Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    using (var part = parts.AsEnumerable().GetEnumerator())
+                    using var part = parts.AsEnumerable().GetEnumerator();
+                    while (part.MoveNext())
                     {
-                        while (part.MoveNext())
+                        if (Value(part.Current) is { } value
+                            && part.MoveNext())
                         {
-                            if (Value(part.Current) is int value
-                                && part.MoveNext())
+                            if (Type(part.Current) is { } type)
                             {
-                                if (Type(part.Current) is FieldType type)
+                                if (Duration.TryFromSeconds(value) is { } duration)
                                 {
-                                    if (Duration.TryFromSeconds(value) is Duration duration)
+                                    switch (type)
                                     {
-                                        switch (type)
-                                        {
-                                            case FieldType.Break:
-                                                result = result.AddBreak(duration);
-                                                continue;
-                                            case FieldType.Exercise:
-                                                result = result.AddExercise(duration);
-                                                continue;
-                                            case FieldType.Countdown:
-                                                result = result.WithCountdown(duration);
-                                                continue;
-                                        }
+                                        case FieldType.Break:
+                                            result = result.AddBreak(duration);
+                                            continue;
+                                        case FieldType.Exercise:
+                                            result = result.AddExercise(duration);
+                                            continue;
+                                        case FieldType.Countdown:
+                                            result = result.WithCountdown(duration);
+                                            continue;
                                     }
-                                    if (Count.TryFromNumber(value) is Count count)
+                                }
+                                if (Count.TryFromNumber(value) is { } count)
+                                {
+                                    switch (type)
                                     {
-                                        switch (type)
-                                        {
-                                            case FieldType.Round:
-                                                result = result.WithRound(count);
-                                                continue;
-                                        }
+                                        case FieldType.Round:
+                                            result = result.WithRound(count);
+                                            continue;
                                     }
-                                    return result;
                                 }
                                 return result;
                             }
                             return result;
+                        }
+                        return result;
 
-                            int? Value(string input)
-                            {
-                                return int.TryParse(input, out var number)
-                                    ? number
-                                    : default;
-                            }
+                        static int? Value(string input)
+                        {
+                            return int.TryParse(input, out var number)
+                                ? number
+                                : default;
+                        }
 
-                            FieldType? Type(string input)
+                        static FieldType? Type(string input)
+                        {
+                            return input.ToLower() switch
                             {
-                                switch (input.ToLower())
-                                {
-                                    case "e": return FieldType.Exercise;
-                                    case "b": return FieldType.Break;
-                                    case "w": return FieldType.Countdown;
-                                    case "r": return FieldType.Round;
-                                    default: return null;
-                                }
-                            }
+                                "e" => FieldType.Exercise,
+                                "b" => FieldType.Break,
+                                "w" => FieldType.Countdown,
+                                "r" => FieldType.Round,
+                                _ => null
+                            };
                         }
                     }
+
                     return result;
                 };
             }
@@ -94,7 +93,7 @@ namespace Timer.WorkoutPlanning
             {
                 var definition = WorkoutPlan(new WorkoutPlan())
                     .Definition(
-                        x => x is Duration duration
+                        x => x is { } duration
                             ? $"{duration.TotalSeconds} W"
                             : string.Empty,
                         x => $"{x.TotalSeconds} E",

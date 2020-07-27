@@ -44,7 +44,7 @@ namespace Timer.WorkoutPlans
             WorkoutPlanVisitor<T> visitor,
             Round round)
         {
-            if (!(_lastExercise is int lastExercise))
+            if (!(_lastExercise is { } lastExercise))
             {
                 yield break;
             }

@@ -54,7 +54,7 @@ namespace Timer.Desktop
 
         public async void Execute(object parameter)
         {
-            if (_running || !(WorkoutPlan() is WorkoutPlan workoutPlan)) return;
+            if (_running || !(WorkoutPlan?.Invoke(new WorkoutPlan()) is { } workoutPlan)) return;
             try
             {
                 _running = true;
@@ -80,11 +80,9 @@ namespace Timer.Desktop
 
                 async Task RunSoundTracking()
                 {
-                    using (var soundFactory = new NAudioSoundFactory())
-                    {
-                        await new SoundTrackingOfWorkout(workoutPlan, soundFactory)
-                            .Run(cancellation.Token);
-                    }
+                    using var soundFactory = new NAudioSoundFactory();
+                    await new SoundTrackingOfWorkout(workoutPlan, soundFactory)
+                        .Run(cancellation.Token);
                 }
             }
             catch (TaskCanceledException)
@@ -95,13 +93,6 @@ namespace Timer.Desktop
                 _cancel.Source = null;
                 _running = false;
                 RaiseCanExecuteChanged();
-            }
-
-            WorkoutPlan WorkoutPlan()
-            {
-                return this.WorkoutPlan != null
-                    ? this.WorkoutPlan(new WorkoutPlan())
-                    : default;
             }
         }
 
