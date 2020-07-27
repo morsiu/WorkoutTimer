@@ -14,7 +14,8 @@ namespace Timer.WorkoutPlanning
             Break,
             Exercise,
             Countdown,
-            Round
+            Round,
+            Repeat
         }
 
         public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
@@ -25,6 +26,7 @@ namespace Timer.WorkoutPlanning
                 {
                     var parts = Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     using var part = parts.AsEnumerable().GetEnumerator();
+                    var previousAction = default(Func<WorkoutPlan, WorkoutPlan>);
                     while (part.MoveNext())
                     {
                         if (Value(part.Current) is { } value
@@ -32,35 +34,48 @@ namespace Timer.WorkoutPlanning
                         {
                             if (Type(part.Current) is { } type)
                             {
-                                if (Duration.TryFromSeconds(value) is { } duration)
+                                if (Action(value, type, previousAction) is { } action)
                                 {
-                                    switch (type)
-                                    {
-                                        case FieldType.Break:
-                                            result = result.AddBreak(duration);
-                                            continue;
-                                        case FieldType.Exercise:
-                                            result = result.AddExercise(duration);
-                                            continue;
-                                        case FieldType.Countdown:
-                                            result = result.WithCountdown(duration);
-                                            continue;
-                                    }
-                                }
-                                if (Count.TryFromNumber(value) is { } count)
-                                {
-                                    switch (type)
-                                    {
-                                        case FieldType.Round:
-                                            result = result.WithRound(count);
-                                            continue;
-                                    }
+                                    result = action(result);
+                                    previousAction = action;
+                                    continue;
                                 }
                                 return result;
                             }
                             return result;
                         }
                         return result;
+
+                        static Func<WorkoutPlan, WorkoutPlan> Action(
+                            int value,
+                            FieldType type,
+                            Func<WorkoutPlan, WorkoutPlan> previousAction)
+                        {
+                            if (Duration.TryFromSeconds(value) is { } duration)
+                            {
+                                switch (type)
+                                {
+                                    case FieldType.Break:
+                                        return x => x.AddBreak(duration);
+                                    case FieldType.Exercise:
+                                        return x => x.AddExercise(duration);
+                                    case FieldType.Countdown:
+                                        return x => x.WithCountdown(duration);
+                                }
+                            }
+                            if (Count.TryFromNumber(value) is { } count)
+                            {
+                                switch (type)
+                                {
+                                    case FieldType.Round:
+                                        return x => x.WithRound(count);
+                                    case FieldType.Repeat when previousAction != null:
+                                        return x => Enumerable.Repeat(previousAction, count - 1)
+                                            .Aggregate(x, (a, b) => b(a));
+                                }
+                            }
+                            return null;
+                        }
 
                         static int? Value(string input)
                         {
@@ -77,6 +92,7 @@ namespace Timer.WorkoutPlanning
                                 "b" => FieldType.Break,
                                 "w" => FieldType.Countdown,
                                 "r" => FieldType.Round,
+                                "*" => FieldType.Repeat,
                                 _ => null
                             };
                         }
