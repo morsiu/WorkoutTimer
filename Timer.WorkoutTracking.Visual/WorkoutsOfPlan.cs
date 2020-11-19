@@ -11,13 +11,12 @@ namespace Timer.WorkoutTracking.Visual
 
         public WorkoutsOfPlan(WorkoutPlan plan)
         {
-            var workouts = new Workouts();
             _rounds =
                 plan.EnumerateHierarchically(
                         new WorkoutPlanVisitor<(Duration Duration, IWorkout Workout)>()
-                            .OnWarmup(workouts.Warmup)
-                            .OnExercise(workouts.Exercise)
-                            .OnBreak(workouts.Break))
+                            .OnWarmup(duration => (duration, new Workout(WorkoutType.WarmUp, duration, round: null)))
+                            .OnExercise((round, duration) => (duration, new Workout(WorkoutType.Exercise, duration, round)))
+                            .OnBreak((round, duration) => (duration, new Workout(WorkoutType.Break, duration, round))))
                     .ToImmutableDictionary(x => x.Round, x => x.Workouts.ToImmutableArray());
         }
 
