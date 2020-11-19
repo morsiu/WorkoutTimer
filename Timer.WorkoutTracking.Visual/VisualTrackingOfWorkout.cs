@@ -1,19 +1,16 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 using Timer.WorkoutPlans;
 
 namespace Timer.WorkoutTracking.Visual
 {
     public sealed class VisualTrackingOfWorkout
     {
-        private readonly Dispatcher _dispatcher;
         private readonly WorkoutsOfPlan _workoutsOfPlan;
         private readonly WorkoutSegment _workoutSegment;
 
-        public VisualTrackingOfWorkout(WorkoutPlan workoutPlan, Dispatcher dispatcher)
+        public VisualTrackingOfWorkout(WorkoutPlan workoutPlan)
         {
-            _dispatcher = dispatcher;
             var workoutsOfPlan = new WorkoutsOfPlan(workoutPlan);
             var workoutSegment = new WorkoutSegment(workoutsOfPlan);
             _workoutsOfPlan = workoutsOfPlan;

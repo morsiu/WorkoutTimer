@@ -67,7 +67,7 @@ namespace Timer.Desktop
                 {
                     try
                     {
-                        var visualTracking = new VisualTrackingOfWorkout(workoutPlan, Dispatcher);
+                        var visualTracking = new VisualTrackingOfWorkout(workoutPlan);
                         WorkoutsOfCurrentSegment = visualTracking.WorkoutsOfCurrentRound;
                         await visualTracking.Run(cancellation.Token);
 
