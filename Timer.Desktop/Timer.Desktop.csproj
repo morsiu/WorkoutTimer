@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <LangVersion>latest</LangVersion>
     <Description>Timer for exercising</Description>
-    <Authors>Łukasz Mrozek</Authors>
     <StartupObject>Timer.Desktop.App</StartupObject>
   </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
+
   <ItemGroup>
     <Page Include="**\*.xaml" Exclude="App.xaml">
       <SubType>Designer</SubType>
@@ -26,6 +25,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Timer.WorkoutTracking.Sound.NAudio\Timer.WorkoutTracking.Sound.NAudio.csproj" />
     <ProjectReference Include="..\Timer.WorkoutPlanning\Timer.WorkoutPlanning.csproj" />
@@ -33,4 +33,5 @@
     <ProjectReference Include="..\Timer.WorkoutTracking.Sound\Timer.WorkoutTracking.Sound.csproj" />
     <ProjectReference Include="..\Timer.WorkoutTracking.Visual\Timer.WorkoutTracking.Visual.csproj" />
   </ItemGroup>
+
 </Project>

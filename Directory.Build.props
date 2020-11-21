@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <LangVersion>9</LangVersion>
+    <Authors>£ukasz Mrozek</Authors>
+  </PropertyGroup>
+</Project>

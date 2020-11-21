@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.64
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer.Desktop", "Timer.Desktop\Timer.Desktop.csproj", "{4E7A7EB5-C0F4-4512-86C9-9B505F3441F2}"
 EndProject
@@ -14,6 +14,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timer.WorkoutPlanning", "Timer.WorkoutPlanning\Timer.WorkoutPlanning.csproj", "{9D048C01-F033-49F8-9158-9C4422359CC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.WorkoutTracking.Visual", "Timer.WorkoutTracking.Visual\Timer.WorkoutTracking.Visual.csproj", "{DF51886A-8543-46CC-ABE6-AB63D346C47B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{85C9A05E-B53D-42C0-AB53-9E11E525922C}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

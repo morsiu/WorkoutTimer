@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <OutputType>Library</OutputType>
     <TargetFramework>net472</TargetFramework>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <LangVersion>latest</LangVersion>
-    <Version>0.0.1</Version>
     <Description>NAudio backend for sound effects</Description>
-    <Authors>Łukasz Mrozek</Authors>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Timer.WorkoutTracking.Sound\Timer.WorkoutTracking.Sound.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="NAudio" Version="1.8.4" />
   </ItemGroup>
+
 </Project>
