@@ -52,19 +52,20 @@ namespace Timer.WorkoutPlans
                 _workouts.Take(
                     round.IsLast
                         ? lastExercise + 1
-                        : _workouts.Length);
-            foreach (var step in workouts)
+                        : _workouts.Length)
+                    .Select((x, i) => (x, new Index(i)));
+            foreach (var (workout, index) in workouts)
             {
-                switch (step.Type)
+                switch (workout.Type)
                 {
                     case WorkoutType.Exercise:
-                        if (visitor.VisitExercise(round, step.Duration, out var exercise))
+                        if (visitor.VisitExercise(round, index, workout.Duration, out var exercise))
                         {
                             yield return exercise;
                         }
                         break;
                     case WorkoutType.Break:
-                        if (visitor.VisitBreak(round, step.Duration, out var @break))
+                        if (visitor.VisitBreak(round, index, workout.Duration, out var @break))
                         {
                             yield return @break;
                         }

@@ -2,7 +2,7 @@
 
 namespace Timer.WorkoutPlans
 {
-    public readonly struct Round : IEquatable<Round>
+    public readonly struct Round : IEquatable<Round>, IComparable<Round>
     {
         public Round(int number, bool isLast)
         {
@@ -23,6 +23,12 @@ namespace Timer.WorkoutPlans
         public static bool operator ==(Round left, Round right) => left.Equals(right);
 
         public static bool operator !=(Round left, Round right) => !left.Equals(right);
+
+        public static bool operator >(Round left, Round right) => left.CompareTo(right) > 0;
+
+        public static bool operator <(Round left, Round right) => left.CompareTo(right) < 0;
+
+        public int CompareTo(Round other) => Number.CompareTo(other.Number);
 
         public bool Equals(Round other) => Number == other.Number;
 

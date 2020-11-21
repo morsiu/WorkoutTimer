@@ -5,8 +5,8 @@ namespace Timer.WorkoutPlans
     public sealed class WorkoutPlanVisitor<T>
     {
         private readonly Func<Duration, T> _warmup;
-        private readonly Func<Round, Duration, T> _break;
-        private readonly Func<Round, Duration, T> _exercise;
+        private readonly Func<Round, Index, Duration, T> _break;
+        private readonly Func<Round, Index, Duration, T> _exercise;
         private readonly Func<Round, T> _nonLastRound;
         private readonly Func<Round, T> _lastRound;
 
@@ -16,8 +16,8 @@ namespace Timer.WorkoutPlans
 
         private WorkoutPlanVisitor(
             Func<Duration, T> warmup,
-            Func<Round, Duration, T> @break,
-            Func<Round, Duration, T> exercise,
+            Func<Round, Index, Duration, T> @break,
+            Func<Round, Index, Duration, T> exercise,
             Func<Round, T> nonLastRound,
             Func<Round, T> lastRound)
         {
@@ -31,10 +31,10 @@ namespace Timer.WorkoutPlans
         public WorkoutPlanVisitor<T> OnWarmup(Func<Duration, T> map) =>
             new WorkoutPlanVisitor<T>(map, _break, _exercise, _nonLastRound, _lastRound);
 
-        public WorkoutPlanVisitor<T> OnBreak(Func<Round, Duration, T> map) =>
+        public WorkoutPlanVisitor<T> OnBreak(Func<Round, Index, Duration, T> map) =>
             new WorkoutPlanVisitor<T>(_warmup, map, _exercise, _nonLastRound, _lastRound);
 
-        public WorkoutPlanVisitor<T> OnExercise(Func<Round, Duration, T> map) =>
+        public WorkoutPlanVisitor<T> OnExercise(Func<Round, Index, Duration, T> map) =>
             new WorkoutPlanVisitor<T>(_warmup, _break, map, _nonLastRound, _lastRound);
 
         public WorkoutPlanVisitor<T> OnRoundDone(Func<Round, T> nonLast, Func<Round, T> last) =>
@@ -48,18 +48,18 @@ namespace Timer.WorkoutPlans
             return _warmup != null;
         }
 
-        internal bool VisitExercise(Round round, Duration duration, out T result)
+        internal bool VisitExercise(Round round, Index index, Duration duration, out T result)
         {
             result = _exercise != null
-                ? _exercise(round, duration)
+                ? _exercise(round, index, duration)
                 : default;
             return _exercise != null;
         }
 
-        internal bool VisitBreak(Round round, Duration duration, out T result)
+        internal bool VisitBreak(Round round, Index index, Duration duration, out T result)
         {
             result = _break != null
-                ? _break(round, duration)
+                ? _break(round, index, duration)
                 : default;
             return _break != null;
         }

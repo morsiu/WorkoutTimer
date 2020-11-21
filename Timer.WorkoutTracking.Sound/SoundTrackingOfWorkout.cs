@@ -31,8 +31,8 @@ namespace Timer.WorkoutTracking.Sound
                 return _workoutPlan.EnumerateLinearly(
                     new WorkoutPlanVisitor<ISoundEffect>()
                         .OnWarmup(x => sounds.WarmUp(x.ToTimeSpan()))
-                        .OnExercise((a, b) => sounds.Exercise(b.ToTimeSpan()))
-                        .OnBreak((a, b) => sounds.Break(b.ToTimeSpan()))
+                        .OnExercise((a, _, b) => sounds.Exercise(b.ToTimeSpan()))
+                        .OnBreak((a, _, b) => sounds.Break(b.ToTimeSpan()))
                         .OnRoundDone(x => sounds.RoundDone(), x => sounds.WorkoutDone()));
             }
 
