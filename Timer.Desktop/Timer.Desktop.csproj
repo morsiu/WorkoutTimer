@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Timer.WorkoutPlans\Timer.WorkoutPlans.csproj" />
     <ProjectReference Include="..\Timer.WorkoutTracking.Sound\Timer.WorkoutTracking.Sound.csproj" />
     <ProjectReference Include="..\Timer.WorkoutTracking.Visual\Timer.WorkoutTracking.Visual.csproj" />
+    <ProjectReference Include="..\Timer.WorkoutTracking\Timer.WorkoutTracking.csproj" />
   </ItemGroup>
 
 </Project>

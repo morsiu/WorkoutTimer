@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
 using Timer.WorkoutPlans;
@@ -17,6 +18,12 @@ namespace Timer.WorkoutTracking.Visual
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
+        public void Clear()
+        {
+            _round = null;
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
         public void SwitchToRound(Round round)
         {
             _round = round;
@@ -25,9 +32,10 @@ namespace Timer.WorkoutTracking.Visual
 
         public IEnumerator GetEnumerator()
         {
-            var workouts = _round != null
-                ? _workoutsOfPlan.OfRound(_round.Value).Select(x => x.Workout)
-                : Enumerable.Empty<IWorkout>();
+            var workouts = 
+                _round is { } round
+                    ? _workoutsOfPlan.WorkoutsOfRound(round)
+                    : Enumerable.Empty<IWorkout>();
             return workouts.GetEnumerator();
         }
     }

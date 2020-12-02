@@ -1,18 +1,26 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
 using Timer.WorkoutPlans;
 
 namespace Timer.WorkoutTracking.Visual
 {
-    public sealed class VisualTrackingOfWorkout
+    public sealed class VisualTrackingOfWorkout : IDisposable
     {
+        private readonly IDisposable _trackedWorkoutPlanSubscription;
         private readonly WorkoutsOfPlan _workoutsOfPlan;
         private readonly WorkoutSegment _workoutSegment;
 
-        public VisualTrackingOfWorkout(WorkoutPlan workoutPlan)
+        public VisualTrackingOfWorkout(TrackedWorkoutPlan trackedWorkoutPlan, WorkoutPlan workoutPlan)
         {
             var workoutsOfPlan = new WorkoutsOfPlan(workoutPlan);
             var workoutSegment = new WorkoutSegment(workoutsOfPlan);
+            _trackedWorkoutPlanSubscription =
+                trackedWorkoutPlan.Subscribe(
+                    new TrackedWorkoutPlanVisitor()
+                        .OnWorkoutStart(OnWorkoutStart)
+                        .OnWorkoutEnd(OnWorkoutEnd)
+                        .OnRoundStart(OnRoundStart)
+                        .OnRoundEnd(OnRoundEnd));
             _workoutsOfPlan = workoutsOfPlan;
             _workoutSegment = workoutSegment;
             WorkoutsOfCurrentRound = workoutSegment;
@@ -20,18 +28,31 @@ namespace Timer.WorkoutTracking.Visual
 
         public object WorkoutsOfCurrentRound { get; }
 
-        public async Task Run(CancellationToken cancellationToken)
+        private void OnRoundEnd(Round round, CancellationToken _)
         {
-            foreach (var round in _workoutsOfPlan.Rounds())
-            {
-                 _workoutSegment.SwitchToRound(round);
-                foreach (var (duration, workout) in _workoutsOfPlan.OfRound(round))
-                {
-                    workout.Activate();
-                    await Task.Delay(duration.ToTimeSpan(), cancellationToken);
-                    workout.Deactivate();
-                }
-            }
+            _workoutSegment.Clear();
+        }
+
+        private void OnRoundStart(Round round, CancellationToken _)
+        {
+            _workoutSegment.SwitchToRound(round);
+        }
+
+        private void OnWorkoutEnd(ITrackedWorkout trackedWorkout, CancellationToken _)
+        {
+            var workout = _workoutsOfPlan.Workout(trackedWorkout);
+            workout.Deactivate();
+        }
+
+        private void OnWorkoutStart(ITrackedWorkout trackedWorkout, CancellationToken _)
+        {
+            var workout = _workoutsOfPlan.Workout(trackedWorkout);
+            workout.Activate();
+        }
+
+        public void Dispose()
+        {
+            _trackedWorkoutPlanSubscription.Dispose();
         }
     }
 }

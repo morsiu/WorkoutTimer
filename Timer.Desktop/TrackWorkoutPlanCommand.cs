@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Timer.WorkoutPlans;
+using Timer.WorkoutTracking;
 using Timer.WorkoutTracking.Sound;
 using Timer.WorkoutTracking.Sound.NAudio;
 using Timer.WorkoutTracking.Visual;
@@ -61,28 +62,23 @@ namespace Timer.Desktop
                 var cancellation = new CancellationTokenSource();
                 _cancel.Source = cancellation;
                 RaiseCanExecuteChanged();
-                await Task.WhenAll(RunSoundTracking(), RunVisualTracking());
+                await RunTracking();
 
-                async Task RunVisualTracking()
+                async Task RunTracking()
                 {
                     try
                     {
-                        var visualTracking = new VisualTrackingOfWorkout(workoutPlan);
+                        var trackedWorkoutPlan = new TrackedWorkoutPlan(workoutPlan);
+                        using var soundFactory = new NAudioSoundFactory();
+                        await using var soundTracking = new SoundTrackingOfWorkout(trackedWorkoutPlan, soundFactory);
+                        using var visualTracking = new VisualTrackingOfWorkout(trackedWorkoutPlan, workoutPlan);
                         WorkoutsOfCurrentSegment = visualTracking.WorkoutsOfCurrentRound;
-                        await visualTracking.Run(cancellation.Token);
-
+                        await trackedWorkoutPlan.Start(cancellation.Token);
                     }
                     finally
                     {
                         WorkoutsOfCurrentSegment = null;
                     }
-                }
-
-                async Task RunSoundTracking()
-                {
-                    using var soundFactory = new NAudioSoundFactory();
-                    await new SoundTrackingOfWorkout(workoutPlan, soundFactory)
-                        .Run(cancellation.Token);
                 }
             }
             catch (TaskCanceledException)

@@ -1,42 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Timer.WorkoutPlans;
 
 namespace Timer.WorkoutTracking.Sound
 {
-    public sealed class SoundTrackingOfWorkout
+    public sealed class SoundTrackingOfWorkout : IAsyncDisposable
     {
-        private readonly WorkoutPlan _workoutPlan;
-        private readonly ISoundFactory _soundFactory;
+        private readonly IDisposable _planSubscription;
+        private readonly SoundsOfWorkout _sounds;
 
-        public SoundTrackingOfWorkout(WorkoutPlan workoutPlan, ISoundFactory soundFactory)
+        public SoundTrackingOfWorkout(TrackedWorkoutPlan plan, ISoundFactory soundFactory)
         {
-            _workoutPlan = workoutPlan;
-            _soundFactory = soundFactory;
+            _sounds = new SoundsOfWorkout(soundFactory);
+            _planSubscription = plan.Subscribe(
+                new TrackedWorkoutPlanVisitor()
+                    .OnWorkoutStart(OnWorkoutStart)
+                    .OnRoundEnd(OnRoundEnd));
         }
 
-        public async Task Run(CancellationToken cancellationToken)
+        private void OnRoundEnd(Round round, CancellationToken cancellationToken)
         {
-            foreach (var x in SoundEffects())
-            {
-                await x.Play(cancellationToken);
-            }
+            var sound = round.IsLast
+                ? _sounds.WorkoutDone()
+                : _sounds.RoundDone();
+            _ = sound.Play(cancellationToken);
+        }
+
+        private void OnWorkoutStart(ITrackedWorkout workout, CancellationToken cancellationToken)
+        {
+            var sound = workout.Match(
+                (a, _, b) => _sounds.Break(b.ToTimeSpan()),
+                (a, _, b) => _sounds.Exercise(b.ToTimeSpan()),
+                x => _sounds.WarmUp(x.ToTimeSpan()));
+            _ = sound.Play(cancellationToken);
+        }
+
+        public async ValueTask DisposeAsync()
+        {
             await DelayToAllowLastSoundToPlayOut();
+            _planSubscription.Dispose();
 
-            IEnumerable<ISoundEffect> SoundEffects()
-            {
-                var sounds = new SoundsOfWorkout(_soundFactory);
-                return _workoutPlan.EnumerateLinearly(
-                    new WorkoutPlanVisitor<ISoundEffect>()
-                        .OnWarmup(x => sounds.WarmUp(x.ToTimeSpan()))
-                        .OnExercise((a, _, b) => sounds.Exercise(b.ToTimeSpan()))
-                        .OnBreak((a, _, b) => sounds.Break(b.ToTimeSpan()))
-                        .OnRoundDone(x => sounds.RoundDone(), x => sounds.WorkoutDone()));
-            }
-
-            Task DelayToAllowLastSoundToPlayOut() => Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+            static Task DelayToAllowLastSoundToPlayOut() => Task.Delay(TimeSpan.FromSeconds(1));
         }
     }
 }
