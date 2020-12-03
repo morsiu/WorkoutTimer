@@ -1,30 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWpf>true</UseWpf>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Timer.WorkoutPlans\Timer.WorkoutPlans.csproj" />
     <ProjectReference Include="..\Timer.WorkoutTracking\Timer.WorkoutTracking.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Include="**\*.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </Page>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 
 </Project>

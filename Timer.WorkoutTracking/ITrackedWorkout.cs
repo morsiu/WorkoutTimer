@@ -1,5 +1,6 @@
 ﻿using System;
 using Timer.WorkoutPlans;
+using Index = Timer.WorkoutPlans.Index;
 
 namespace Timer.WorkoutTracking
 {

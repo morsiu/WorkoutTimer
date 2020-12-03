@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Timer.WorkoutPlans;
+using Index = Timer.WorkoutPlans.Index;
 
 namespace Timer.WorkoutTracking
 {
