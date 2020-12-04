@@ -28,16 +28,16 @@ namespace Timer.WorkoutTracking
         }
 
         public TrackedWorkoutPlanVisitor OnWorkoutStart(Action<ITrackedWorkout, CancellationToken> action) =>
-            new TrackedWorkoutPlanVisitor(action, _workoutEnd, _roundStart, _roundEnd);
+            new(action, _workoutEnd, _roundStart, _roundEnd);
 
         public TrackedWorkoutPlanVisitor OnWorkoutEnd(Action<ITrackedWorkout, CancellationToken> action) =>
-            new TrackedWorkoutPlanVisitor(_workoutStart, action, _roundStart, _roundEnd);
+            new(_workoutStart, action, _roundStart, _roundEnd);
 
         public TrackedWorkoutPlanVisitor OnRoundStart(Action<Round, CancellationToken> action) =>
-            new TrackedWorkoutPlanVisitor(_workoutStart, _workoutEnd, action, _roundEnd);
+            new(_workoutStart, _workoutEnd, action, _roundEnd);
 
         public TrackedWorkoutPlanVisitor OnRoundEnd(Action<Round, CancellationToken> action) =>
-            new TrackedWorkoutPlanVisitor(_workoutStart, _workoutEnd, _roundStart, action);
+            new(_workoutStart, _workoutEnd, _roundStart, action);
 
         internal void VisitWorkoutStart(ITrackedWorkout workout, CancellationToken cancellationToken)
         {

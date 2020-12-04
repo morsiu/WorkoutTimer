@@ -18,8 +18,11 @@ namespace Timer.WorkoutTracking.Sound.NAudio
         public NAudioSoundFactory()
         {
             _outputDevice = new WaveOutEvent();
-            _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(SampleRate, Channels));
-            _mixer.ReadFully = true;
+            _mixer =
+                new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(SampleRate, Channels))
+                {
+                    ReadFully = true
+                };
         }
         
         public void Dispose()

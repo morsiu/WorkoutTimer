@@ -24,7 +24,7 @@ namespace Timer.WorkoutPlans
                 : default(Duration?);
 
         public Duration Add(in Duration duration) =>
-            new Duration(TotalSeconds + duration.TotalSeconds);
+            new(TotalSeconds + duration.TotalSeconds);
 
         public int CompareTo(Duration other) => _secondsMinusOne.CompareTo(other._secondsMinusOne);
 

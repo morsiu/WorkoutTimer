@@ -23,13 +23,13 @@ namespace Timer.WorkoutPlans
         }
 
         public WorkoutPlanVisitor<T> OnWarmup(Func<Duration, T> map) =>
-            new WorkoutPlanVisitor<T>(map, _break, _exercise);
+            new(map, _break, _exercise);
 
         public WorkoutPlanVisitor<T> OnBreak(Func<Round, Index, Duration, T> map) =>
-            new WorkoutPlanVisitor<T>(_warmup, map, _exercise);
+            new(_warmup, map, _exercise);
 
         public WorkoutPlanVisitor<T> OnExercise(Func<Round, Index, Duration, T> map) =>
-            new WorkoutPlanVisitor<T>(_warmup, _break, map);
+            new(_warmup, _break, map);
 
         internal bool VisitWarmup(Duration duration, out T result)
         {

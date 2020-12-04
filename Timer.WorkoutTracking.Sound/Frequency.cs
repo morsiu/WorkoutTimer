@@ -6,7 +6,7 @@ namespace Timer.WorkoutTracking.Sound
 
         public Frequency(int hertz) => _hertz = hertz;
 
-        public static Frequency FromHertz(int hertz) => new Frequency(hertz);
+        public static Frequency FromHertz(int hertz) => new(hertz);
         
         public static implicit operator double(Frequency frequency) => frequency._hertz;
     }

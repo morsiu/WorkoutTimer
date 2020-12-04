@@ -35,8 +35,7 @@ namespace Timer.WorkoutPlans
         }
 
         public WorkoutRound AddExercise(Duration duration) =>
-            new WorkoutRound(
-                _workouts.Add((WorkoutType.Exercise, duration)), lastExercise: _workouts.Length);
+            new(_workouts.Add((WorkoutType.Exercise, duration)), lastExercise: _workouts.Length);
 
         public bool HasExercise => _lastExercise.HasValue;
 

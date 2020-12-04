@@ -55,17 +55,13 @@ namespace Timer.WorkoutTracking.Visual
 
             string DescriptionOfWorkoutType()
             {
-                switch (type)
+                return type switch
                 {
-                    case WorkoutType.WarmUp:
-                        return "Warm up";
-                    case WorkoutType.Exercise:
-                        return "Exercise";
-                    case WorkoutType.Break:
-                        return "Break";
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                }
+                    WorkoutType.WarmUp => "Warm up",
+                    WorkoutType.Exercise => "Exercise",
+                    WorkoutType.Break => "Break",
+                    _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
+                };
             }
         }
 

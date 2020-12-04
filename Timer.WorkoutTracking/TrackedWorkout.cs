@@ -26,13 +26,13 @@ namespace Timer.WorkoutTracking
         }
 
         public static TrackedWorkout Break(Round round, Index index, Duration duration) =>
-            new TrackedWorkout(round, index, duration, TrackedWorkoutType.Break);
+            new(round, index, duration, TrackedWorkoutType.Break);
 
         public static TrackedWorkout Exercise(Round round, Index index, Duration duration) =>
-            new TrackedWorkout(round, index, duration, TrackedWorkoutType.Exercise);
+            new(round, index, duration, TrackedWorkoutType.Exercise);
 
         public static TrackedWorkout Warmup(Duration duration) =>
-            new TrackedWorkout(null, null, duration, TrackedWorkoutType.Warmup);
+            new(null, null, duration, TrackedWorkoutType.Warmup);
 
         internal Task Track(CancellationToken cancellationToken) =>
             _duration is { } duration

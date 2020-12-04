@@ -23,7 +23,7 @@ namespace Timer.Desktop
         public static readonly DependencyProperty WorkoutsOfCurrentSegmentProperty;
         private static readonly DependencyPropertyKey WorkoutsOfCurrentSegmentPropertyKey;
 
-        private readonly CancelCommand _cancel = new CancelCommand();
+        private readonly CancelCommand _cancel = new();
         private bool _running;
 
         static TrackWorkoutPlanCommand()
