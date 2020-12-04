@@ -22,5 +22,17 @@ namespace Timer.WorkoutPlans
 
         public override string ToString() =>
             _value.ToString();
+
+        public static bool operator ==(Index left, Index right) => left.Equals(right);
+
+        public static bool operator !=(Index left, Index right) => !(left == right);
+
+        public static bool operator <(Index left, Index right) => left.CompareTo(right) < 0;
+
+        public static bool operator <=(Index left, Index right) => left.CompareTo(right) <= 0;
+
+        public static bool operator >(Index left, Index right) => left.CompareTo(right) > 0;
+
+        public static bool operator >=(Index left, Index right) => left.CompareTo(right) >= 0;
     }
 }
