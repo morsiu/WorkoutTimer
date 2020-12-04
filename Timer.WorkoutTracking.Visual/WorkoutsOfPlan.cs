@@ -13,7 +13,7 @@ namespace Timer.WorkoutTracking.Visual
         public WorkoutsOfPlan(WorkoutPlan plan)
         {
             _rounds =
-                plan.EnumerateHierarchically(
+                plan.Enumerate(
                         new WorkoutPlanVisitor<(Index Index, IWorkout Workout)>()
                             .OnWarmup(duration => (new Index(null), new Workout(WorkoutType.WarmUp, duration, round: null)))
                             .OnExercise((round, index,  duration) => (new Index(index), new Workout(WorkoutType.Exercise, duration, round)))

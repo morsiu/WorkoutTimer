@@ -25,7 +25,7 @@ namespace Timer.WorkoutTracking
 
         public async Task Start(CancellationToken cancellationToken)
         {
-            var allWorkouts = _workoutPlan.EnumerateHierarchically(
+            var allWorkouts = _workoutPlan.Enumerate(
                 new WorkoutPlanVisitor<TrackedWorkout>()
                     .OnBreak((round, index, duration) => TrackedWorkout.Break(round, index, duration))
                     .OnExercise((round, index, duration) => TrackedWorkout.Exercise(round, index, duration))

@@ -74,13 +74,6 @@ namespace Timer.WorkoutPlans
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            T roundEnd;
-            if (round.IsLast
-                ? visitor.VisitLastRound(round, out roundEnd)
-                : visitor.VisitNonLastRound(round, out roundEnd))
-            {
-                yield return roundEnd;
-            }
         }
 
 

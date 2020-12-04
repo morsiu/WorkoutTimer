@@ -32,7 +32,7 @@ namespace Timer.WorkoutPlans
                     _round.Definition(exercise, @break)));
         }
 
-        public IEnumerable<(Round Round, IEnumerable<T> Workouts)> EnumerateHierarchically<T>(WorkoutPlanVisitor<T> visitor)
+        public IEnumerable<(Round Round, IEnumerable<T> Workouts)> Enumerate<T>(WorkoutPlanVisitor<T> visitor)
         {
             if (!_round.HasExercise)
             {
@@ -52,25 +52,6 @@ namespace Timer.WorkoutPlans
                     {
                         yield return item;
                     }
-                }
-            }
-        }
-
-        public IEnumerable<T> EnumerateLinearly<T>(WorkoutPlanVisitor<T> visitor)
-        {
-            if (!_round.HasExercise)
-            {
-                yield break;
-            }
-            if (_warmup is { } duration && visitor.VisitWarmup(duration, out var warmup))
-            {
-                yield return warmup;
-            }
-            foreach (var round in _rounds.Enumerate(x => new Round(x.Number, x.IsLast)))
-            {
-                foreach (var item in _round.Enumerate(visitor, round))
-                {
-                    yield return item;
                 }
             }
         }
