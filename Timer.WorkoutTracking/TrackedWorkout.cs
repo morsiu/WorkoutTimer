@@ -9,7 +9,8 @@ namespace Timer.WorkoutTracking
     {
         public abstract T Match<T>(
             Func<Round, WorkoutPlans.Index, Duration, T> @break,
-            Func<Round, WorkoutPlans.Index, Duration, T> exercise,
+            Func<Round, WorkoutPlans.Index, Duration, T> exerciseWithDuration,
+            Func<Round, WorkoutPlans.Index, Action, T> exerciseWithoutDuration,
             Func<Duration, T> warmup);
 
         public abstract Task Track(CancellationToken cancellationToken);

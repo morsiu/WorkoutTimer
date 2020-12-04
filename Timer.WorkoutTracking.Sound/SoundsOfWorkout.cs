@@ -14,6 +14,8 @@ namespace Timer.WorkoutTracking.Sound
 
         public ISoundEffect WarmUp(TimeSpan duration) => new SoundCountdown(duration, Beep(), new Silence());
 
+        public ISoundEffect Exercise() => new Sound(ShortPip());
+
         public ISoundEffect Exercise(TimeSpan duration) => new Sound(ShortPip()).Then(new Delay(duration));
 
         public ISoundEffect Break(TimeSpan duration) => new Sound(TwoShortPips()).Then(new SoundCountdown(duration, Beep(), new Silence()));

@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using Timer.WorkoutPlans;
 using Duration = Timer.WorkoutPlans.Duration;
+
+#nullable enable
 
 namespace Timer.WorkoutTracking.Visual
 {
     [TemplatePart(Name = "PART_Countdown", Type = typeof(ProgressBar))]
     [TemplatePart(Name = "PART_Description", Type = typeof(TextBlock))]
     [TemplatePart(Name = "PART_Round", Type = typeof(TextBlock))]
+    [TemplatePart(Name = "PART_Complete", Type = typeof(ButtonBase))]
     [TemplateVisualState(GroupName = "ActivationStates", Name = "Active")]
     [TemplateVisualState(GroupName = "ActivationStates", Name = "Inactive")]
     [TemplateVisualState(GroupName = "ActivationStates", Name = "InactiveAgain")]
+    [TemplateVisualState(GroupName = "CompletionStates", Name = "AutomaticCompletion")]
+    [TemplateVisualState(GroupName = "CompletionStates", Name = "ManualCompletion")]
     public sealed class Workout : Control, IWorkout
     {
         public static readonly DependencyProperty DurationProperty;
@@ -20,6 +27,8 @@ namespace Timer.WorkoutTracking.Visual
         private static readonly DependencyPropertyKey DurationPropertyKey;
         private static readonly DependencyPropertyKey RoundPropertyKey;
         private static readonly DependencyProperty DescriptionProperty;
+        private Action? _complete;
+        private ButtonBase? _completePart;
 
         static Workout()
         {
@@ -33,7 +42,7 @@ namespace Timer.WorkoutTracking.Visual
             DurationPropertyKey =
                 DependencyProperty.RegisterReadOnly(
                     nameof(Duration),
-                    typeof(System.Windows.Duration?),
+                    typeof(System.Windows.Duration),
                     typeof(Workout),
                     new PropertyMetadata());
             DurationProperty = DurationPropertyKey.DependencyProperty;
@@ -46,12 +55,13 @@ namespace Timer.WorkoutTracking.Visual
             RoundProperty = RoundPropertyKey.DependencyProperty;
         }
 
-        internal Workout(WorkoutType type, Duration? duration, Round? round)
+        internal Workout(WorkoutType type, Duration? duration, Round? round, bool useManualCompletion)
         {
             Description = DescriptionOfWorkoutType();
-            Duration = duration?.ToTimeSpan();
+            Duration = duration?.ToTimeSpan() ?? TimeSpan.Zero;
             Round = round?.Number;
             GoToState("Inactive");
+            GoToState(useManualCompletion ? "ManualCompletion" : "AutomaticCompletion");
 
             string DescriptionOfWorkoutType()
             {
@@ -71,9 +81,9 @@ namespace Timer.WorkoutTracking.Visual
             private set => SetValue(DescriptionPropertyKey, value);
         }
 
-        public System.Windows.Duration? Duration
+        public System.Windows.Duration Duration
         {
-            get => (System.Windows.Duration?) GetValue(DurationProperty);
+            get => (System.Windows.Duration) GetValue(DurationProperty);
             private set => SetValue(DurationPropertyKey, value);
         }
 
@@ -83,9 +93,10 @@ namespace Timer.WorkoutTracking.Visual
             private set => SetValue(RoundPropertyKey, value);
         }
 
-        void IWorkout.Activate()
+        void IWorkout.Activate(Action? complete)
         {
             GoToState("Active");
+            _complete = complete;
         }
 
         void IWorkout.Deactivate()
@@ -104,6 +115,21 @@ namespace Timer.WorkoutTracking.Visual
             {
                 round.Text = Round?.ToString();
             }
+            if (_completePart is not null)
+            {
+                _completePart.Click -= OnComplete;
+                _completePart = null;
+            }
+            if (Template?.FindName("PART_Complete", this) is ButtonBase complete)
+            {
+                complete.Click += OnComplete;
+                _completePart = complete;
+            }
+        }
+
+        private void OnComplete(object sender, RoutedEventArgs e)
+        {
+            _complete?.Invoke();
         }
 
         private void GoToState(string visualState)

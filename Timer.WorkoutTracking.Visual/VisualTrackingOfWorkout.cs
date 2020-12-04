@@ -47,7 +47,8 @@ namespace Timer.WorkoutTracking.Visual
         private void OnWorkoutStart(ITrackedWorkout trackedWorkout, CancellationToken _)
         {
             var workout = _workoutsOfPlan.Workout(trackedWorkout);
-            workout.Activate();
+            var complete = trackedWorkout.Match((_, _, _) => null, (_, _, _) => null, (_, _, x) => x, _ => null);
+            workout.Activate(complete);
         }
 
         public void Dispose()

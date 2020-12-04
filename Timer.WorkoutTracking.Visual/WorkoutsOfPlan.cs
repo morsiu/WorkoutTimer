@@ -15,9 +15,10 @@ namespace Timer.WorkoutTracking.Visual
             _rounds =
                 plan.Enumerate(
                         new WorkoutPlanVisitor<(Index Index, IWorkout Workout)>()
-                            .OnWarmup(duration => (new Index(null), new Workout(WorkoutType.WarmUp, duration, round: null)))
-                            .OnExercise((round, index,  duration) => (new Index(index), new Workout(WorkoutType.Exercise, duration, round)))
-                            .OnBreak((round, index, duration) => (new Index(index), new Workout(WorkoutType.Break, duration, round))))
+                            .OnWarmup(duration => (new Index(null), new Workout(WorkoutType.WarmUp, duration, round: null, useManualCompletion: false)))
+                            .OnExercise((round, index, duration) => (new Index(index), new Workout(WorkoutType.Exercise, duration, round, useManualCompletion: false)))
+                            .OnExercise((round, index) => (new Index(index), new Workout(WorkoutType.Exercise, null, round, useManualCompletion: true)))
+                            .OnBreak((round, index, duration) => (new Index(index), new Workout(WorkoutType.Break, duration, round, useManualCompletion: false))))
                     .ToImmutableSortedDictionary(
                         x => x.Round,
                         x => x.Workouts.ToImmutableSortedDictionary(x => x.Index, x => x.Workout));
@@ -33,6 +34,7 @@ namespace Timer.WorkoutTracking.Visual
         public IWorkout Workout(ITrackedWorkout workout)
         {
             return workout.Match(
+                (round, index, _) => _rounds[round][new Index(index)],
                 (round, index, _) => _rounds[round][new Index(index)],
                 (round, index, _) => _rounds[round][new Index(index)],
                 _ => _rounds.Values.First()[new Index()]);

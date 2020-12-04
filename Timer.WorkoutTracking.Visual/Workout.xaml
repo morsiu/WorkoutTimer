@@ -41,6 +41,12 @@
                                     From="1"
                                     To="0"
                                     Duration="{Binding Duration, RelativeSource={RelativeSource TemplatedParent}, FallbackValue=0}" />
+                                <BooleanAnimationUsingKeyFrames
+                                    Storyboard.TargetName="PART_Complete"
+                                    Storyboard.TargetProperty="IsEnabled"
+                                    Duration="0">
+                                    <DiscreteBooleanKeyFrame Value="True" />
+                                </BooleanAnimationUsingKeyFrames>
                             </Storyboard>
 
                             <Storyboard
@@ -70,6 +76,12 @@
                                     <DiscreteDoubleKeyFrame
                                         Value="1" />
                                 </DoubleAnimationUsingKeyFrames>
+                                <BooleanAnimationUsingKeyFrames
+                                    Storyboard.TargetName="PART_Complete"
+                                    Storyboard.TargetProperty="IsEnabled"
+                                    Duration="0">
+                                    <DiscreteBooleanKeyFrame Value="False" />
+                                </BooleanAnimationUsingKeyFrames>
                             </Storyboard>
 
                             <Storyboard
@@ -99,6 +111,48 @@
                                     <DiscreteDoubleKeyFrame
                                         Value="0" />
                                 </DoubleAnimationUsingKeyFrames>
+                                <BooleanAnimationUsingKeyFrames
+                                    Storyboard.TargetName="PART_Complete"
+                                    Storyboard.TargetProperty="IsEnabled"
+                                    Duration="0">
+                                    <DiscreteBooleanKeyFrame Value="False" />
+                                </BooleanAnimationUsingKeyFrames>
+                            </Storyboard>
+
+                            <Storyboard
+                                x:Key="AutomaticCompletionStateStoryboard">
+                                <ObjectAnimationUsingKeyFrames
+                                    Storyboard.TargetName="PART_Countdown"
+                                    Storyboard.TargetProperty="Visibility"
+                                    Duration="0">
+                                    <DiscreteObjectKeyFrame
+                                        Value="{x:Static Visibility.Visible}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames
+                                    Storyboard.TargetName="PART_Complete"
+                                    Storyboard.TargetProperty="Visibility"
+                                    Duration="0">
+                                    <DiscreteObjectKeyFrame
+                                        Value="{x:Static Visibility.Collapsed}" />
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+
+                            <Storyboard
+                                x:Key="ManualCompletionStateStoryboard">
+                                <ObjectAnimationUsingKeyFrames
+                                    Storyboard.TargetName="PART_Countdown"
+                                    Storyboard.TargetProperty="Visibility"
+                                    Duration="0">
+                                    <DiscreteObjectKeyFrame
+                                        Value="{x:Static Visibility.Collapsed}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames
+                                    Storyboard.TargetName="PART_Complete"
+                                    Storyboard.TargetProperty="Visibility"
+                                    Duration="0">
+                                    <DiscreteObjectKeyFrame
+                                        Value="{x:Static Visibility.Visible}" />
+                                </ObjectAnimationUsingKeyFrames>
                             </Storyboard>
 
                         </Border.Resources>
@@ -111,12 +165,19 @@
                                         Width="*" />
                                     <ColumnDefinition
                                         Width="Auto" />
+                                    <ColumnDefinition
+                                        Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Name="PART_Description" />
+                                <Button
+                                    x:Name="PART_Complete"
+                                    Content="Complete"
+                                    Grid.Column="1"
+                                    Margin="5 0 5 0" />
                                 <TextBlock
                                     x:Name="PART_Round"
-                                    Grid.Column="1"
+                                    Grid.Column="2"
                                     HorizontalAlignment="Right" />
                             </Grid>
                             <ProgressBar
@@ -137,6 +198,15 @@
                                 <VisualState
                                     Name="InactiveAgain"
                                     Storyboard="{StaticResource InactiveAgainStateStoryboard}" />
+                            </VisualStateGroup>
+                            <VisualStateGroup
+                                Name="CompletionStates">
+                                <VisualState
+                                    Name="AutomaticCompletion"
+                                    Storyboard="{StaticResource AutomaticCompletionStateStoryboard}" />
+                                <VisualState
+                                    Name="ManualCompletion"
+                                    Storyboard="{StaticResource ManualCompletionStateStoryboard}" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Border>

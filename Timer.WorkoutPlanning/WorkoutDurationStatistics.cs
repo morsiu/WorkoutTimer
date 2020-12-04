@@ -19,6 +19,7 @@ namespace Timer.WorkoutPlanning
                 _workoutPlan.Definition(
                         x => x?.ToTimeSpan() ?? TimeSpan.Zero,
                         x => x.ToTimeSpan(),
+                        () => TimeSpan.Zero,
                         x => x.ToTimeSpan())
                     .Round;
             var roundDuration = round.Workouts.Aggregate(TimeSpan.Zero, (a, b) => a + b);
@@ -32,6 +33,7 @@ namespace Timer.WorkoutPlanning
                 _workoutPlan.Definition(
                         x => (Duration: x?.ToTimeSpan() ?? TimeSpan.Zero, IsBreak: false),
                         x => (Duration: x.ToTimeSpan(), IsBreak: false),
+                        () => (Duration: TimeSpan.Zero, IsBreak: false),
                         x => (Duration: x.ToTimeSpan(), IsBreak: true))
                     .Round.Workouts;
             return workoutsOfRound.Aggregate(
@@ -45,6 +47,7 @@ namespace Timer.WorkoutPlanning
                 _workoutPlan.Definition(
                         x => (Duration: x?.ToTimeSpan() ?? TimeSpan.Zero, IsBreak: false),
                         x => (Duration: x.ToTimeSpan(), IsBreak: false),
+                        () => (Duration: TimeSpan.Zero, IsBreak: false),
                         x => (Duration: x.ToTimeSpan(), IsBreak: true))
                     .Round.Workouts;
             return workoutsOfRound.Aggregate(

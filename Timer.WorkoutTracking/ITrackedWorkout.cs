@@ -8,7 +8,8 @@ namespace Timer.WorkoutTracking
     {
         T Match<T>(
             Func<Round, Index, Duration, T> @break,
-            Func<Round, Index, Duration, T> exercise,
+            Func<Round, Index, Duration, T> exerciseWithDuration,
+            Func<Round, Index, Action, T> exerciseWithoutDuration,
             Func<Duration, T> warmup);
     }
 }

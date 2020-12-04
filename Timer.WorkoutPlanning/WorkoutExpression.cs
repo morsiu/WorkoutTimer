@@ -63,6 +63,10 @@ namespace Timer.WorkoutPlanning
                                         return x => x.WithCountdown(duration);
                                 }
                             }
+                            if (value == 0 && type == FieldType.Exercise)
+                            {
+                                return x => x.AddExercise();
+                            }
                             if (Count.TryFromNumber(value) is { } count)
                             {
                                 switch (type)
@@ -113,6 +117,7 @@ namespace Timer.WorkoutPlanning
                             ? $"{duration.TotalSeconds} W"
                             : string.Empty,
                         x => $"{x.TotalSeconds} E",
+                        () => "E",
                         x => $"{x.TotalSeconds} B");
                 return string.Format(
                     "{0} {1} R ({2})",

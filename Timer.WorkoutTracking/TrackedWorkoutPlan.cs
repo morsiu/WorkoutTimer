@@ -28,7 +28,8 @@ namespace Timer.WorkoutTracking
             var allWorkouts = _workoutPlan.Enumerate(
                 new WorkoutPlanVisitor<TrackedWorkout>()
                     .OnBreak((round, index, duration) => new Break(round, index, duration))
-                    .OnExercise((round, index, duration) => new Exercise(round, index, duration))
+                    .OnExercise((round, index, duration) => new ExerciseWithDuration(round, index, duration))
+                    .OnExercise((round, index) => new ExerciseWithoutDuration(round, index))
                     .OnWarmup(duration => new Warmup(duration)));
             foreach (var (round, workouts) in allWorkouts)
             {

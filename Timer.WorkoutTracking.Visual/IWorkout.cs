@@ -1,8 +1,12 @@
-﻿namespace Timer.WorkoutTracking.Visual
+﻿using System;
+
+#nullable enable
+
+namespace Timer.WorkoutTracking.Visual
 {
     internal interface IWorkout
     {
-        void Activate();
+        void Activate(Action? complete);
 
         void Deactivate();
     }

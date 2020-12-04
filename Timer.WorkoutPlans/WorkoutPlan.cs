@@ -23,13 +23,14 @@ namespace Timer.WorkoutPlans
 
         public (T Warmup, (Count Number, IEnumerable<T> Workouts) Round) Definition<T>(
             Func<Duration?, T> warmup,
-            Func<Duration, T> exercise,
+            Func<Duration, T> exerciseWithDuration,
+            Func<T> exerciseWithoutDuration,
             Func<Duration, T> @break)
         {
             return (
                 warmup(_warmup), (
                     _rounds,
-                    _round.Definition(exercise, @break)));
+                    _round.Definition(exerciseWithDuration, exerciseWithoutDuration, @break)));
         }
 
         public IEnumerable<(Round Round, IEnumerable<T> Workouts)> Enumerate<T>(WorkoutPlanVisitor<T> visitor)
@@ -60,6 +61,14 @@ namespace Timer.WorkoutPlans
         {
             return new WorkoutPlan(
                 _round.AddBreak(duration),
+                _rounds,
+                _warmup);
+        }
+
+        public WorkoutPlan AddExercise()
+        {
+            return new WorkoutPlan(
+                _round.AddExercise(),
                 _rounds,
                 _warmup);
         }

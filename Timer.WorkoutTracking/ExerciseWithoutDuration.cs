@@ -6,17 +6,17 @@ using Index = Timer.WorkoutPlans.Index;
 
 namespace Timer.WorkoutTracking
 {
-    internal sealed class Break : TrackedWorkout
+    internal sealed class ExerciseWithoutDuration : TrackedWorkout
     {
-        private readonly Duration _duration;
         private readonly Index _index;
         private readonly Round _round;
+        private readonly TaskCompletionSource _complete;
 
-        public Break(Round round, Index index, Duration duration)
+        public ExerciseWithoutDuration(Round round, Index index)
         {
-            _duration = duration;
             _round = round;
             _index = index;
+            _complete = new();
         }
 
         public override T Match<T>(
@@ -25,12 +25,19 @@ namespace Timer.WorkoutTracking
             Func<Round, Index, Action, T> exerciseWithoutDuration,
             Func<Duration, T> warmup)
         {
-            return @break(_round, _index, _duration);
+            return exerciseWithoutDuration(_round, _index, Complete);
         }
 
         public override Task Track(CancellationToken cancellationToken)
         {
-            return Task.Delay(_duration.ToTimeSpan(), cancellationToken);
+            var registration = cancellationToken.Register(() => _complete.TrySetCanceled(cancellationToken));
+            _complete.Task.ContinueWith(_ => registration.Dispose(), CancellationToken.None);
+            return _complete.Task;
+        }
+
+        private void Complete()
+        {
+            _complete.TrySetResult();
         }
     }
 }

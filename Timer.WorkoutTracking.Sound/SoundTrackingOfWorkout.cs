@@ -32,6 +32,7 @@ namespace Timer.WorkoutTracking.Sound
             var sound = workout.Match(
                 (a, _, b) => _sounds.Break(b.ToTimeSpan()),
                 (a, _, b) => _sounds.Exercise(b.ToTimeSpan()),
+                (_, _, _) => _sounds.Exercise(),
                 x => _sounds.WarmUp(x.ToTimeSpan()));
             _ = sound.Play(cancellationToken);
         }
