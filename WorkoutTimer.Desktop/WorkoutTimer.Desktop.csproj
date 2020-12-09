@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <Description>Timer for exercising</Description>
+    <StartupObject>WorkoutTimer.Desktop.App</StartupObject>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkoutTimer.Tracking.Sound.NAudio\WorkoutTimer.Tracking.Sound.NAudio.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Planning\WorkoutTimer.Planning.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Plans\WorkoutTimer.Plans.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Tracking.Sound\WorkoutTimer.Tracking.Sound.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Tracking.Visual\WorkoutTimer.Tracking.Visual.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Tracking\WorkoutTimer.Tracking.csproj" />
+  </ItemGroup>
+
+</Project>

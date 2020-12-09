@@ -1,0 +1,35 @@
+﻿<Window
+    x:Class="WorkoutTimer.Desktop.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WorkoutTimer.Desktop"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:planning="http://workoutTimer/planning"
+    Title="Workout timer"
+    Width="525"
+    Height="350"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <planning:WorkoutExpression
+            x:Key="RoundWorkouts"/>
+        <local:TrackWorkoutPlanCommand
+            x:Key="TrackWorkoutPlan"
+            WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
+    </Window.Resources>
+    <StackPanel>
+        <TextBox Text="{Binding Value, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Text="{Binding ActualValue, Source={StaticResource RoundWorkouts}}"/>
+        <TextBlock Text="{Binding DurationStatistics, Source={StaticResource RoundWorkouts}}"/>
+        <StackPanel Orientation="Horizontal">
+            <Button
+                Command="{StaticResource TrackWorkoutPlan}"
+                Content="Start" />
+            <Button
+                Command="{Binding Cancel, Source={StaticResource TrackWorkoutPlan}}"
+                Content="Stop" />
+        </StackPanel>
+        <ItemsControl
+            ItemsSource="{Binding WorkoutsOfCurrentSegment, Source={StaticResource TrackWorkoutPlan}}" />
+    </StackPanel>
+</Window>

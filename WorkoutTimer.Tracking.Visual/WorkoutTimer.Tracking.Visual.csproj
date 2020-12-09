@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWpf>true</UseWpf>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkoutTimer.Plans\WorkoutTimer.Plans.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Tracking\WorkoutTimer.Tracking.csproj" />
+  </ItemGroup>
+
+</Project>

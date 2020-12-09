@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Authors>Łukasz Mrozek</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkoutTimer.Plans\WorkoutTimer.Plans.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Tracking\WorkoutTimer.Tracking.csproj" />
+  </ItemGroup>
+
+ </Project>
