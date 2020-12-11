@@ -15,16 +15,16 @@ namespace WorkoutTimer.Planning
 
         public TimeSpan Total()
         {
-            var round =
+            var (rounds, workoutsOfRound) =
                 _workoutPlan.Definition(
                         x => x?.ToTimeSpan() ?? TimeSpan.Zero,
                         x => x.ToTimeSpan(),
                         () => TimeSpan.Zero,
                         x => x.ToTimeSpan())
                     .Round;
-            var roundDuration = round.Workouts.Aggregate(TimeSpan.Zero, (a, b) => a + b);
+            var roundDuration = workoutsOfRound.Aggregate(TimeSpan.Zero, (a, b) => a + b);
             var lastBreakOfRound = LastBreakOfRound();
-            return TimeSpan.FromSeconds(roundDuration.TotalSeconds * round.Number) - lastBreakOfRound;
+            return TimeSpan.FromSeconds(roundDuration.TotalSeconds * rounds) - lastBreakOfRound;
         }
 
         public TimeSpan ExercisePerRound()
