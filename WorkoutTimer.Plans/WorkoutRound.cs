@@ -8,7 +8,7 @@ namespace WorkoutTimer.Plans
     internal sealed class WorkoutRound
     {
         private readonly ImmutableArray<(WorkoutType Type, Duration? Duration)> _workouts;
-        private readonly int? _lastExercise;
+        private readonly int? _indexOfLastExercise;
 
         public WorkoutRound()
             : this(ImmutableArray<(WorkoutType, Duration?)>.Empty, lastExercise: null)
@@ -20,11 +20,11 @@ namespace WorkoutTimer.Plans
             int? lastExercise)
         {
             _workouts = workouts;
-            _lastExercise = lastExercise;
+            _indexOfLastExercise = lastExercise;
         }
 
         public WorkoutRound AddBreak(Duration duration) =>
-            new(_workouts.Add((WorkoutType.Break, duration)), _lastExercise);
+            new(_workouts.Add((WorkoutType.Break, duration)), _indexOfLastExercise);
 
         public WorkoutRound AddExercise() =>
             new(_workouts.Add((WorkoutType.Exercise, null)), lastExercise: _workouts.Length);
@@ -32,20 +32,20 @@ namespace WorkoutTimer.Plans
         public WorkoutRound AddExercise(Duration duration) =>
             new(_workouts.Add((WorkoutType.Exercise, duration)), lastExercise: _workouts.Length);
 
-        public bool HasExercise => _lastExercise.HasValue;
+        public bool HasExercise => _indexOfLastExercise.HasValue;
 
         public IEnumerable<T> Enumerate<T>(
             WorkoutPlanVisitor<T> visitor,
             Round round)
         {
-            if (!(_lastExercise is { } lastExercise))
+            if (!(_indexOfLastExercise is { } indexOfLastExercise))
             {
                 yield break;
             }
             var workouts =
                 _workouts.Take(
                     round.IsLast
-                        ? lastExercise + 1
+                        ? indexOfLastExercise + 1
                         : _workouts.Length)
                     .Select((x, i) => (x, new Index(i)));
             foreach (var (workout, index) in workouts)
