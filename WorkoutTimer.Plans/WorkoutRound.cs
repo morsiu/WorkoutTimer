@@ -23,16 +23,8 @@ namespace WorkoutTimer.Plans
             _lastExercise = lastExercise;
         }
 
-        public WorkoutRound AddBreak(Duration duration)
-        {
-            var workouts =
-                _workouts.Length == 0 || _workouts.Last().Type != WorkoutType.Break
-                    ? _workouts.Add((WorkoutType.Break, duration))
-                    : _workouts
-                        .Add((WorkoutType.Break, _workouts.Last().Duration.Value.Add(duration)))
-                        .RemoveAt(_workouts.Length - 1);
-            return new WorkoutRound(workouts, _lastExercise);
-        }
+        public WorkoutRound AddBreak(Duration duration) =>
+            new(_workouts.Add((WorkoutType.Break, duration)), _lastExercise);
 
         public WorkoutRound AddExercise() =>
             new(_workouts.Add((WorkoutType.Exercise, null)), lastExercise: _workouts.Length);
