@@ -15,12 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutTimer.Planning", "Wo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutTimer.Tracking.Visual", "WorkoutTimer.Tracking.Visual\WorkoutTimer.Tracking.Visual.csproj", "{DF51886A-8543-46CC-ABE6-AB63D346C47B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutTimer.tTracking", "WorkoutTimer.Tracking\WorkoutTimer.Tracking.csproj", "{BE5FAFEE-59A8-4C98-AC36-03F18CFA7400}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutTimer.Tracking", "WorkoutTimer.Tracking\WorkoutTimer.Tracking.csproj", "{BE5FAFEE-59A8-4C98-AC36-03F18CFA7400}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{85C9A05E-B53D-42C0-AB53-9E11E525922C}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutTimer.Planning.Textual", "WorkoutTimer.Planning.Textual\WorkoutTimer.Planning.Textual.csproj", "{BDEBA076-4C1F-4A2D-B718-9240A41A284E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{BE5FAFEE-59A8-4C98-AC36-03F18CFA7400}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE5FAFEE-59A8-4C98-AC36-03F18CFA7400}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE5FAFEE-59A8-4C98-AC36-03F18CFA7400}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDEBA076-4C1F-4A2D-B718-9240A41A284E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDEBA076-4C1F-4A2D-B718-9240A41A284E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDEBA076-4C1F-4A2D-B718-9240A41A284E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDEBA076-4C1F-4A2D-B718-9240A41A284E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
