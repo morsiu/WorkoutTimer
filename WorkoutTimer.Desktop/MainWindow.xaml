@@ -11,16 +11,16 @@
     Height="350"
     mc:Ignorable="d">
     <Window.Resources>
-        <planning:WorkoutExpression
+        <planning:TextualPlanningOfWorkout
             x:Key="RoundWorkouts"/>
         <local:TrackWorkoutPlanCommand
             x:Key="TrackWorkoutPlan"
             WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
     </Window.Resources>
     <StackPanel>
-        <TextBox Text="{Binding Value, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Text="{Binding ActualValue, Source={StaticResource RoundWorkouts}}"/>
-        <TextBlock Text="{Binding DurationStatistics, Source={StaticResource RoundWorkouts}}"/>
+        <TextBox Text="{Binding WorkoutExpression, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Text="{Binding ActualWorkoutExpression, Source={StaticResource RoundWorkouts}}"/>
+        <TextBlock Text="{Binding WorkoutDurationStatistics, Source={StaticResource RoundWorkouts}}"/>
         <StackPanel Orientation="Horizontal">
             <Button
                 Command="{StaticResource TrackWorkoutPlan}"

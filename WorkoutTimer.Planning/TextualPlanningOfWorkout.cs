@@ -6,13 +6,13 @@ using WorkoutTimer.Plans;
 
 namespace WorkoutTimer.Planning
 {
-    public sealed class WorkoutExpression : INotifyPropertyChanged
+    public sealed class TextualPlanningOfWorkout : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan => new WorkoutPlanExpression(Value).ToWorkoutPlan;
+        public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan => new WorkoutPlanExpression(WorkoutExpression).ToWorkoutPlan;
 
-        public string ActualValue
+        public string ActualWorkoutExpression
         {
             get
             {
@@ -34,7 +34,7 @@ namespace WorkoutTimer.Planning
             }
         }
 
-        public string DurationStatistics
+        public string WorkoutDurationStatistics
         {
             get
             {
@@ -44,16 +44,16 @@ namespace WorkoutTimer.Planning
             }
         }
 
-        private string _value = string.Empty;
-        public string Value
+        private string _workoutExpression = string.Empty;
+        public string WorkoutExpression
         {
-            get => _value;
+            get => _workoutExpression;
             set
             {
-                _value = value;
+                _workoutExpression = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutPlan)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActualValue)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DurationStatistics)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActualWorkoutExpression)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutDurationStatistics)));
             }
         }
     }
