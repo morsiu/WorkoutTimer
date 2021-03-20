@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkoutTimer.Statistics.Visual\WorkoutTimer.Statistics.Visual.csproj" />
     <ProjectReference Include="..\WorkoutTimer.Tracking.Sound.NAudio\WorkoutTimer.Tracking.Sound.NAudio.csproj" />
     <ProjectReference Include="..\WorkoutTimer.Planning\WorkoutTimer.Planning.csproj" />
     <ProjectReference Include="..\WorkoutTimer.Plans\WorkoutTimer.Plans.csproj" />

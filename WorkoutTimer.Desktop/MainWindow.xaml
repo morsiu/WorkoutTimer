@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:WorkoutTimer.Desktop"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:planning="http://workoutTimer/planning"
+    xmlns:statistics="http://workoutTimer/statistics"
     Title="Workout timer"
     Width="525"
     Height="350"
@@ -16,11 +17,14 @@
         <local:TrackWorkoutPlanCommand
             x:Key="TrackWorkoutPlan"
             WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
+        <statistics:TextualStatisticsOfWorkout
+            x:Key="WorkoutStatistics"
+            WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
     </Window.Resources>
     <StackPanel>
         <TextBox Text="{Binding WorkoutExpression, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Text="{Binding ActualWorkoutExpression, Source={StaticResource RoundWorkouts}}"/>
-        <TextBlock Text="{Binding WorkoutDurationStatistics, Source={StaticResource RoundWorkouts}}"/>
+        <TextBlock Text="{Binding WorkoutDurationStatistics, Source={StaticResource WorkoutStatistics}}"/>
         <StackPanel Orientation="Horizontal">
             <Button
                 Command="{StaticResource TrackWorkoutPlan}"

@@ -2,9 +2,9 @@
 using System.Linq;
 using WorkoutTimer.Plans;
 
-namespace WorkoutTimer.Planning
+namespace WorkoutTimer.Statistics
 {
-    internal sealed class WorkoutDurationStatistics
+    public sealed class WorkoutDurationStatistics
     {
         private readonly WorkoutPlan _workoutPlan;
 

@@ -34,16 +34,6 @@ namespace WorkoutTimer.Planning
             }
         }
 
-        public string WorkoutDurationStatistics
-        {
-            get
-            {
-                var workoutPlan = WorkoutPlan(new WorkoutPlan());
-                var workoutDurationStatistics = new WorkoutDurationStatistics(workoutPlan);
-                return $"Total: {workoutDurationStatistics.Total()}, Exercise per round: {workoutDurationStatistics.ExercisePerRound()}";
-            }
-        }
-
         private string _workoutExpression = string.Empty;
         public string WorkoutExpression
         {
@@ -53,7 +43,6 @@ namespace WorkoutTimer.Planning
                 _workoutExpression = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutPlan)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActualWorkoutExpression)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WorkoutDurationStatistics)));
             }
         }
     }
