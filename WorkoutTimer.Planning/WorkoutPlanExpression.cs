@@ -2,7 +2,7 @@
 using System.Linq;
 using WorkoutTimer.Plans;
 
-namespace WorkoutTimer.Planning.Textual
+namespace WorkoutTimer.Planning
 {
     public sealed class WorkoutPlanExpression
     {

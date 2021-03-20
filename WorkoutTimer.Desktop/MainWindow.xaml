@@ -22,7 +22,7 @@
             WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
     </Window.Resources>
     <StackPanel>
-        <TextBox Text="{Binding WorkoutExpression, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Text="{Binding WorkoutExpression, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged, Delay=100}"/>
         <TextBlock Text="{Binding ActualWorkoutExpression, Source={StaticResource RoundWorkouts}}"/>
         <TextBlock Text="{Binding WorkoutDurationStatistics, Source={StaticResource WorkoutStatistics}}"/>
         <StackPanel Orientation="Horizontal">
