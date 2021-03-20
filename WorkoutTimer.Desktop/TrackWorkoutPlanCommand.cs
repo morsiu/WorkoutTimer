@@ -18,7 +18,7 @@ namespace WorkoutTimer.Desktop
                 nameof(WorkoutPlan),
                 typeof(Func<WorkoutPlan, WorkoutPlan>),
                 typeof(TrackWorkoutPlanCommand),
-                new PropertyMetadata(null, WorkoutRoundChanged));
+                new PropertyMetadata(null, WorkoutPlanChanged));
 
         public static readonly DependencyProperty WorkoutsOfCurrentSegmentProperty;
         private static readonly DependencyPropertyKey WorkoutsOfCurrentSegmentPropertyKey;
@@ -95,7 +95,7 @@ namespace WorkoutTimer.Desktop
         public bool CanExecute(object parameter) =>
             !_running && WorkoutPlan != null;
 
-        private static void WorkoutRoundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void WorkoutPlanChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is TrackWorkoutPlanCommand self)
             {
