@@ -6,20 +6,20 @@ namespace WorkoutTimer.Tracking
 {
     public sealed class TrackedWorkoutPlanVisitor
     {
-        private readonly Action<ITrackedWorkout, CancellationToken> _workoutStart;
-        private readonly Action<ITrackedWorkout, CancellationToken> _workoutEnd;
-        private readonly Action<Round, CancellationToken> _roundStart;
-        private readonly Action<Round, CancellationToken> _roundEnd;
+        private readonly Action<ITrackedWorkout, CancellationToken>? _workoutStart;
+        private readonly Action<ITrackedWorkout, CancellationToken>? _workoutEnd;
+        private readonly Action<Round, CancellationToken>? _roundStart;
+        private readonly Action<Round, CancellationToken>? _roundEnd;
 
         public TrackedWorkoutPlanVisitor()
         {
         }
 
         private TrackedWorkoutPlanVisitor(
-            Action<ITrackedWorkout, CancellationToken> workoutStart,
-            Action<ITrackedWorkout, CancellationToken> workoutEnd,
-            Action<Round, CancellationToken> roundStart,
-            Action<Round, CancellationToken> roundEnd)
+            Action<ITrackedWorkout, CancellationToken>? workoutStart,
+            Action<ITrackedWorkout, CancellationToken>? workoutEnd,
+            Action<Round, CancellationToken>? roundStart,
+            Action<Round, CancellationToken>? roundEnd)
         {
             _workoutStart = workoutStart;
             _workoutEnd = workoutEnd;

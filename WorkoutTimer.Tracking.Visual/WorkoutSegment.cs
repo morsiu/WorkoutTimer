@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
 using WorkoutTimer.Plans;
@@ -16,7 +15,7 @@ namespace WorkoutTimer.Tracking.Visual
             _workoutsOfPlan = workoutsOfPlan;
         }
 
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
         public void Clear()
         {

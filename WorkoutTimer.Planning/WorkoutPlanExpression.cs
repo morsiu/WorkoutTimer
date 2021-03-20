@@ -17,7 +17,7 @@ namespace WorkoutTimer.Planning
         {
             var parts = _expression.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             using var part = parts.AsEnumerable().GetEnumerator();
-            var previousAction = default(Func<WorkoutPlan, WorkoutPlan>);
+            var previousAction = default(Func<WorkoutPlan, WorkoutPlan>?);
             while (part.MoveNext())
             {
                 if (Value(part.Current) is { } value
@@ -37,10 +37,10 @@ namespace WorkoutTimer.Planning
                 }
                 return result;
 
-                static Func<WorkoutPlan, WorkoutPlan> Action(
+                static Func<WorkoutPlan, WorkoutPlan>? Action(
                     int value,
                     FieldType type,
-                    Func<WorkoutPlan, WorkoutPlan> previousAction)
+                    Func<WorkoutPlan, WorkoutPlan>? previousAction)
                 {
                     if (Duration.TryFromSeconds(value) is { } duration)
                         switch (type)

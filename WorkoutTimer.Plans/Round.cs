@@ -32,7 +32,7 @@ namespace WorkoutTimer.Plans
 
         public bool Equals(Round other) => Number == other.Number;
 
-        public override bool Equals(object obj) => obj is Round other && Equals(other);
+        public override bool Equals(object? obj) => obj is Round other && Equals(other);
 
         public override int GetHashCode() => Number;
     }

@@ -11,7 +11,7 @@ namespace WorkoutTimer.Plans
         public int CompareTo(Index other) =>
             _value.CompareTo(other._value);
 
-        public override bool Equals(object obj) =>
+        public override bool Equals(object? obj) =>
             obj is Index other && Equals(other);
 
         public bool Equals(Index other) =>

@@ -28,7 +28,7 @@ namespace WorkoutTimer.Plans
 
         public int CompareTo(Duration other) => _secondsMinusOne.CompareTo(other._secondsMinusOne);
 
-        public override bool Equals(object obj) => obj is Duration other && Equals(other);
+        public override bool Equals(object? obj) => obj is Duration other && Equals(other);
 
         public bool Equals(Duration other) => CompareTo(other) == 0;
 

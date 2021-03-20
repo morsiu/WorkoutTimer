@@ -30,7 +30,7 @@ namespace WorkoutTimer.Plans
 
         public bool Equals(Count other) => CompareTo(other) == 0;
 
-        public override bool Equals(object obj) => obj is Count other && Equals(other);
+        public override bool Equals(object? obj) => obj is Count other && Equals(other);
 
         public IEnumerable<T> Enumerate<T>(
             Func<(int Number, bool IsLast), T> element) =>

@@ -6,11 +6,11 @@ namespace WorkoutTimer.Desktop
 {
     internal sealed class CancelCommand : ICommand
     {
-        private CancellationTokenSource _source;
+        private CancellationTokenSource? _source;
         
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
-        public CancellationTokenSource Source
+        public CancellationTokenSource? Source
         {
             get => _source;
             set
@@ -20,9 +20,9 @@ namespace WorkoutTimer.Desktop
             }
         }
 
-        public bool CanExecute(object parameter) => Source != null && !Source.IsCancellationRequested;
+        public bool CanExecute(object? parameter) => Source != null && !Source.IsCancellationRequested;
 
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             Source?.Cancel();
             RaiseCanExecuteChanged();

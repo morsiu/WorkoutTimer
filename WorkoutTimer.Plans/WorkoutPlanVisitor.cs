@@ -1,23 +1,24 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WorkoutTimer.Plans
 {
     public sealed class WorkoutPlanVisitor<T>
     {
-        private readonly Func<Duration, T> _warmup;
-        private readonly Func<Round, Index, Duration, T> _break;
-        private readonly Func<Round, Index, Duration, T> _exerciseWithDuration;
-        private readonly Func<Round, Index, T> _exerciseWithoutDuration;
+        private readonly Func<Duration, T>? _warmup;
+        private readonly Func<Round, Index, Duration, T>? _break;
+        private readonly Func<Round, Index, Duration, T>? _exerciseWithDuration;
+        private readonly Func<Round, Index, T>? _exerciseWithoutDuration;
 
         public WorkoutPlanVisitor()
         {
         }
 
         private WorkoutPlanVisitor(
-            Func<Duration, T> warmup,
-            Func<Round, Index, Duration, T> @break,
-            Func<Round, Index, Duration, T> exerciseWithDuration,
-            Func<Round, Index, T> exerciseWithoutDuration)
+            Func<Duration, T>? warmup,
+            Func<Round, Index, Duration, T>? @break,
+            Func<Round, Index, Duration, T>? exerciseWithDuration,
+            Func<Round, Index, T>? exerciseWithoutDuration)
         {
             _warmup = warmup;
             _break = @break;
@@ -37,7 +38,7 @@ namespace WorkoutTimer.Plans
         public WorkoutPlanVisitor<T> OnExercise(Func<Round, Index, Duration, T> map) =>
             new(_warmup, _break, map, _exerciseWithoutDuration);
 
-        internal bool VisitWarmup(Duration duration, out T result)
+        internal bool VisitWarmup(Duration duration, [NotNullWhen(true)] out T? result)
         {
             result = _warmup != null
                 ? _warmup(duration)
@@ -45,7 +46,7 @@ namespace WorkoutTimer.Plans
             return _warmup != null;
         }
 
-        internal bool VisitExercise(Round round, Index index, out T result)
+        internal bool VisitExercise(Round round, Index index, [NotNullWhen(true)] out T? result)
         {
             result = _exerciseWithoutDuration != null
                 ? _exerciseWithoutDuration(round, index)
@@ -53,7 +54,7 @@ namespace WorkoutTimer.Plans
             return _exerciseWithoutDuration != null;
         }
 
-        internal bool VisitExercise(Round round, Index index, Duration duration, out T result)
+        internal bool VisitExercise(Round round, Index index, Duration duration, [NotNullWhen(true)] out T? result)
         {
             result = _exerciseWithDuration != null
                 ? _exerciseWithDuration(round, index, duration)
@@ -61,7 +62,7 @@ namespace WorkoutTimer.Plans
             return _exerciseWithDuration != null;
         }
 
-        internal bool VisitBreak(Round round, Index index, Duration duration, out T result)
+        internal bool VisitBreak(Round round, Index index, Duration duration, [NotNullWhen(true)] out T? result)
         {
             result = _break != null
                 ? _break(round, index, duration)

@@ -5,8 +5,6 @@ using System.Windows.Controls.Primitives;
 using WorkoutTimer.Plans;
 using Duration = WorkoutTimer.Plans.Duration;
 
-#nullable enable
-
 namespace WorkoutTimer.Tracking.Visual
 {
     [TemplatePart(Name = "PART_Countdown", Type = typeof(ProgressBar))]

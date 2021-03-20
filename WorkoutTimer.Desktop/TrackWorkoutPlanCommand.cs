@@ -37,23 +37,23 @@ namespace WorkoutTimer.Desktop
             WorkoutsOfCurrentSegmentProperty = WorkoutsOfCurrentSegmentPropertyKey.DependencyProperty;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         public ICommand Cancel => _cancel;
 
-        public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
+        public Func<WorkoutPlan, WorkoutPlan>? WorkoutPlan
         {
-            get => (Func<WorkoutPlan, WorkoutPlan>) GetValue(WorkoutPlanProperty);
+            get => (Func<WorkoutPlan, WorkoutPlan>?) GetValue(WorkoutPlanProperty);
             set => SetValue(WorkoutPlanProperty, value);
         }
 
-        public object WorkoutsOfCurrentSegment
+        public object? WorkoutsOfCurrentSegment
         {
             get => GetValue(WorkoutsOfCurrentSegmentProperty);
             private set => SetValue(WorkoutsOfCurrentSegmentPropertyKey, value);
         }
 
-        public async void Execute(object parameter)
+        public async void Execute(object? parameter)
         {
             if (_running || !(WorkoutPlan?.Invoke(new WorkoutPlan()) is { } workoutPlan)) return;
             try
@@ -92,7 +92,7 @@ namespace WorkoutTimer.Desktop
             }
         }
 
-        public bool CanExecute(object parameter) =>
+        public bool CanExecute(object? parameter) =>
             !_running && WorkoutPlan != null;
 
         private static void WorkoutPlanChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

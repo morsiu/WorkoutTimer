@@ -1,7 +1,5 @@
 ﻿using System;
 
-#nullable enable
-
 namespace WorkoutTimer.Tracking.Visual
 {
     internal interface IWorkout
