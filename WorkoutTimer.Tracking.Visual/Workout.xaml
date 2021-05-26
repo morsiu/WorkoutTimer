@@ -6,6 +6,7 @@
     <Style
         TargetType="{x:Type local:Workout}">
         <Setter Property="Padding" Value="5" />
+        <Setter Property="Width" Value="75" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate
@@ -45,7 +46,8 @@
                                     Storyboard.TargetName="PART_Complete"
                                     Storyboard.TargetProperty="IsEnabled"
                                     Duration="0">
-                                    <DiscreteBooleanKeyFrame Value="True" />
+                                    <DiscreteBooleanKeyFrame
+                                        Value="True" />
                                 </BooleanAnimationUsingKeyFrames>
                             </Storyboard>
 
@@ -80,7 +82,8 @@
                                     Storyboard.TargetName="PART_Complete"
                                     Storyboard.TargetProperty="IsEnabled"
                                     Duration="0">
-                                    <DiscreteBooleanKeyFrame Value="False" />
+                                    <DiscreteBooleanKeyFrame
+                                        Value="False" />
                                 </BooleanAnimationUsingKeyFrames>
                             </Storyboard>
 
@@ -115,7 +118,8 @@
                                     Storyboard.TargetName="PART_Complete"
                                     Storyboard.TargetProperty="IsEnabled"
                                     Duration="0">
-                                    <DiscreteBooleanKeyFrame Value="False" />
+                                    <DiscreteBooleanKeyFrame
+                                        Value="False" />
                                 </BooleanAnimationUsingKeyFrames>
                             </Storyboard>
 
@@ -159,31 +163,18 @@
 
                         <StackPanel
                             Orientation="Vertical">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition
-                                        Width="*" />
-                                    <ColumnDefinition
-                                        Width="Auto" />
-                                    <ColumnDefinition
-                                        Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                                    x:Name="PART_Description" />
+                            <TextBlock
+                                x:Name="PART_Description" />
+                            <Grid Height="20">
+                                <!-- The progress bar and the button are never shown at the same time -->
+                                <ProgressBar
+                                    x:Name="PART_Countdown"
+                                    Foreground="LimeGreen" />
                                 <Button
                                     x:Name="PART_Complete"
-                                    Content="Complete"
-                                    Grid.Column="1"
-                                    Margin="5 0 5 0" />
-                                <TextBlock
-                                    x:Name="PART_Round"
-                                    Grid.Column="2"
-                                    HorizontalAlignment="Right" />
+                                    Content="a"
+                                    FontFamily="Marlett" />
                             </Grid>
-                            <ProgressBar
-                                x:Name="PART_Countdown"
-                                Height="20"
-                                Foreground="LimeGreen" />
                         </StackPanel>
 
                         <VisualStateManager.VisualStateGroups>

@@ -8,8 +8,9 @@
     xmlns:planning="http://workoutTimer/planning"
     xmlns:statistics="http://workoutTimer/statistics"
     Title="Workout timer"
+    SizeToContent ="Height"
     Width="525"
-    Height="350"
+    Height="150"
     mc:Ignorable="d">
     <Window.Resources>
         <planning:TextualPlanningOfWorkout
@@ -33,7 +34,12 @@
                 Command="{Binding Cancel, Source={StaticResource TrackWorkoutPlan}}"
                 Content="Stop" />
         </StackPanel>
-        <ItemsControl
-            ItemsSource="{Binding WorkoutsOfCurrentSegment, Source={StaticResource TrackWorkoutPlan}}" />
+        <ItemsControl ItemsSource="{Binding WorkoutsOfCurrentSegment, Source={StaticResource TrackWorkoutPlan}}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </StackPanel>
 </Window>
