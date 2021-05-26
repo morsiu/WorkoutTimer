@@ -40,8 +40,6 @@ namespace WorkoutTimer.Tracking.Visual
                 _ => _rounds.Values.First()[new Index()]);
         }
 
-        public IEnumerable<Round> Rounds() => _rounds.Keys;
-
         private readonly struct Index : IComparable<Index>
         {
             private readonly Plans.Index? _index;
