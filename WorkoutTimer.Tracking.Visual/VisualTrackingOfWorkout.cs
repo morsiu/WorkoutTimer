@@ -42,6 +42,7 @@ namespace WorkoutTimer.Tracking.Visual
         {
             var workout = _workoutsOfPlan.Workout(trackedWorkout);
             workout.Deactivate();
+            _workoutSegment.Remove(workout);
         }
 
         private void OnWorkoutStart(ITrackedWorkout trackedWorkout, CancellationToken _)
