@@ -47,7 +47,7 @@ namespace WorkoutTimer.Plans
                     round.IsLast
                         ? indexOfLastExercise + 1
                         : _workouts.Length)
-                    .Select((x, i) => (x, new Index(i)));
+                    .Select((x, i) => (x, new Index(i + 1)));
             foreach (var (workout, index) in workouts)
             {
                 switch (workout.Type, workout.Duration)

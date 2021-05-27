@@ -6,14 +6,15 @@
     <Style
         TargetType="{x:Type local:Workout}">
         <Setter Property="Padding" Value="5" />
-        <Setter Property="Width" Value="75" />
+        <Setter Property="Width" Value="100" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate
                     TargetType="{x:Type local:Workout}">
                     <Border
                         x:Name="Border"
-                        Padding="{TemplateBinding Padding}">
+                        Padding="{TemplateBinding Padding}"
+                        VerticalAlignment="Stretch">
                         <Border.Resources>
 
                             <Storyboard
@@ -25,7 +26,7 @@
                                     <DiscreteObjectKeyFrame>
                                         <DiscreteObjectKeyFrame.Value>
                                             <SolidColorBrush
-                                                Color="Red" />
+                                                Color="LightSalmon" />
                                         </DiscreteObjectKeyFrame.Value>
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
@@ -161,12 +162,37 @@
 
                         </Border.Resources>
 
-                        <StackPanel
-                            Orientation="Vertical">
-                            <TextBlock
-                                x:Name="PART_Description" />
-                            <Grid Height="20">
-                                <!-- The progress bar and the button are never shown at the same time -->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="*" />
+                                <RowDefinition
+                                    Height="20" />
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition
+                                        Width="Auto" />
+                                    <ColumnDefinition
+                                        Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    x:Name="PART_Index"
+                                    Width="20"
+                                    Margin="0 0 3 3"
+                                    Padding="3"
+                                    Background="Black"
+                                    Foreground="White"
+                                    TextAlignment="Center" />
+                                <TextBlock
+                                    x:Name="PART_Description"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Arial" />
+                            </Grid>
+                            <Grid
+                                Grid.Row="1">
+                                <!--  The progress bar and the button are never shown at the same time  -->
                                 <ProgressBar
                                     x:Name="PART_Countdown"
                                     Foreground="LimeGreen" />
@@ -175,7 +201,7 @@
                                     Content="a"
                                     FontFamily="Marlett" />
                             </Grid>
-                        </StackPanel>
+                        </Grid>
 
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup

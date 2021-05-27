@@ -9,6 +9,7 @@ namespace WorkoutTimer.Tracking.Visual
 {
     [TemplatePart(Name = "PART_Countdown", Type = typeof(ProgressBar))]
     [TemplatePart(Name = "PART_Description", Type = typeof(TextBlock))]
+    [TemplatePart(Name = "PART_Number", Type = typeof(TextBlock))]
     [TemplatePart(Name = "PART_Round", Type = typeof(TextBlock))]
     [TemplatePart(Name = "PART_Complete", Type = typeof(ButtonBase))]
     [TemplateVisualState(GroupName = "ActivationStates", Name = "Active")]
@@ -19,9 +20,11 @@ namespace WorkoutTimer.Tracking.Visual
     public sealed class Workout : Control, IWorkout
     {
         public static readonly DependencyProperty DurationProperty;
+        public static readonly DependencyProperty IndexProperty;
         public static readonly DependencyProperty RoundProperty;
         private static readonly DependencyPropertyKey DescriptionPropertyKey;
         private static readonly DependencyPropertyKey DurationPropertyKey;
+        private static readonly DependencyPropertyKey IndexPropertyKey;
         private static readonly DependencyPropertyKey RoundPropertyKey;
         private static readonly DependencyProperty DescriptionProperty;
         private Action? _complete;
@@ -43,6 +46,13 @@ namespace WorkoutTimer.Tracking.Visual
                     typeof(Workout),
                     new PropertyMetadata());
             DurationProperty = DurationPropertyKey.DependencyProperty;
+            IndexPropertyKey =
+                DependencyProperty.RegisterReadOnly(
+                    nameof(Index),
+                    typeof(int?),
+                    typeof(Workout),
+                    new PropertyMetadata());
+            IndexProperty = IndexPropertyKey.DependencyProperty;
             RoundPropertyKey =
                 DependencyProperty.RegisterReadOnly(
                     nameof(Round),
@@ -52,10 +62,11 @@ namespace WorkoutTimer.Tracking.Visual
             RoundProperty = RoundPropertyKey.DependencyProperty;
         }
 
-        internal Workout(WorkoutType type, Duration? duration, Round? round, bool useManualCompletion)
+        internal Workout(WorkoutType type, Duration? duration, int? index, Round? round, bool useManualCompletion)
         {
             Description = DescriptionOfWorkoutType();
             Duration = duration?.ToTimeSpan() ?? TimeSpan.Zero;
+            Index = index;
             Round = round?.Number;
             GoToState("Inactive");
             GoToState(useManualCompletion ? "ManualCompletion" : "AutomaticCompletion");
@@ -84,6 +95,12 @@ namespace WorkoutTimer.Tracking.Visual
             private set => SetValue(DurationPropertyKey, value);
         }
 
+        public int? Index
+        {
+            get => (int?) GetValue(IndexProperty);
+            private set => SetValue(IndexPropertyKey, value);
+        }
+
         public int? Round
         {
             get => (int?) GetValue(RoundProperty);
@@ -107,6 +124,11 @@ namespace WorkoutTimer.Tracking.Visual
             if (Template?.FindName("PART_Description", this) is TextBlock description)
             {
                 description.Text = Description;
+            }
+            if (Template?.FindName("PART_Index", this) is TextBlock index)
+            {
+                index.Text = Index?.ToString();
+                index.Visibility = Index is null ? Visibility.Collapsed : Visibility.Visible;
             }
             if (Template?.FindName("PART_Round", this) is TextBlock round)
             {

@@ -8,6 +8,8 @@ namespace WorkoutTimer.Plans
 
         public Index(int value) => _value = value;
 
+        public int Number => _value;
+
         public int CompareTo(Index other) =>
             _value.CompareTo(other._value);
 
