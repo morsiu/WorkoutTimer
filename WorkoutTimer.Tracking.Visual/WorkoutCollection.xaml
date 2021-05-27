@@ -5,7 +5,9 @@
 
     <DataTemplate
         DataType="{x:Type local:WorkoutSegment}">
-        <local:WorkoutCollection Workouts="{Binding}" />
+        <local:WorkoutCollection
+            Round="{Binding Round}"
+            Workouts="{Binding}" />
     </DataTemplate>
 
     <Style
@@ -13,13 +15,49 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <ItemsControl x:Name="PART_Items">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="Auto" />
+                            <ColumnDefinition
+                                Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ContentControl
+                            x:Name="PART_Round"
+                            Width="30"
+                            Height="30"
+                            Margin="3"
+                            VerticalAlignment="Center">
+                            <ContentControl.Template>
+                                <ControlTemplate>
+                                    <Grid>
+                                        <Ellipse
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Fill="LimeGreen" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontFamily="Arial"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="White"
+                                            Text="{Binding Content, RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </ContentControl.Template>
+                        </ContentControl>
+                        <ItemsControl
+                            x:Name="PART_Items"
+                            Grid.Column="1">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel
+                                        Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

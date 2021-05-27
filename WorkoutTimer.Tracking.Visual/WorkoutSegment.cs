@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using WorkoutTimer.Plans;
 
 namespace WorkoutTimer.Tracking.Visual
 {
-    internal sealed class WorkoutSegment : IEnumerable, INotifyCollectionChanged
+    internal sealed class WorkoutSegment : IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged
     {
         private readonly WorkoutsOfPlan _workoutsOfPlan;
         private List<IWorkout>? _items;
+        private int? _round;
 
         public WorkoutSegment(WorkoutsOfPlan workoutsOfPlan)
         {
@@ -18,10 +20,23 @@ namespace WorkoutTimer.Tracking.Visual
 
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public int? Round
+        {
+            get => _round;
+            set
+            {
+                _round = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Round)));
+            }
+        }
+
         public void Clear()
         {
             _items = null;
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            Round = null;
         }
 
         public void Remove(IWorkout workout)
@@ -39,6 +54,7 @@ namespace WorkoutTimer.Tracking.Visual
         {
             _items = _workoutsOfPlan.WorkoutsOfRound(round).ToList();
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            Round = round.Number;
         }
 
         public IEnumerator GetEnumerator()
