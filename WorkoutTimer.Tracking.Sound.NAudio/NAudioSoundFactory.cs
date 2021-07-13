@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -10,14 +11,14 @@ namespace WorkoutTimer.Tracking.Sound.NAudio
     {
         private const int Channels = 1;
         private const int SampleRate = 44100;
-        private readonly WaveOutEvent _outputDevice;
+        private readonly WasapiOut _outputDevice;
         private readonly MixingSampleProvider _mixer;
         private bool _disposed;
         private bool _initialized;
 
         public NAudioSoundFactory()
         {
-            _outputDevice = new WaveOutEvent();
+            _outputDevice = new WasapiOut(AudioClientShareMode.Shared, latency: 100);
             _mixer =
                 new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(SampleRate, Channels))
                 {
