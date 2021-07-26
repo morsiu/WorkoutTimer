@@ -1,58 +1,83 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Windows;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using WorkoutTimer.Plans;
+using WorkoutTimer.Visual;
 
 namespace WorkoutTimer.Planning.Visual
 {
-    public sealed class TextualPlanningOfWorkout : DependencyObject
+    public sealed class TextualPlanningOfWorkout : INotifyPropertyChanged
     {
-        public static DependencyProperty ActualWorkoutExpressionProperty =
-            DependencyProperty.RegisterReadOnly(
-                    nameof(ActualWorkoutExpression),
-                    typeof(string),
-                    typeof(TextualPlanningOfWorkout),
-                    new PropertyMetadata(string.Empty, null, CoerceActualWorkoutExpression))
-                .DependencyProperty;
-        public static DependencyProperty WorkoutExpressionProperty =
-            DependencyProperty.Register(
-                nameof(WorkoutExpression),
-                typeof(string),
-                typeof(TextualPlanningOfWorkout),
-                new FrameworkPropertyMetadata(
-                    string.Empty,
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    WorkoutExpressionChanged));
-        public static DependencyProperty WorkoutPlanProperty =
-            DependencyProperty.RegisterReadOnly(
-                    nameof(WorkoutPlan),
-                    typeof(Func<WorkoutPlan, WorkoutPlan>),
-                    typeof(TextualPlanningOfWorkout),
-                    new PropertyMetadata(new Func<WorkoutPlan, WorkoutPlan>(x => x), WorkoutPlanChanged, CoerceWorkoutPlan))
-                .DependencyProperty;
+        private readonly DelegateCommand _start;
+        private readonly TaskCompletionSource<WorkoutPlan> _started;
+        private string? _expression;
+        private string? _parsedExpression;
+        private WorkoutPlan? _parsedWorkoutPlan;
 
-        public TextualPlanningOfWorkout()
+        public TextualPlanningOfWorkout(string? initialExpression)
         {
-            CoerceValue(WorkoutPlanProperty);
+            var started = new TaskCompletionSource<WorkoutPlan>();
+            var startCommand =
+                new DelegateCommand(
+                    () =>
+                    {
+                        if (ParsedWorkoutPlan is not null)
+                            started.TrySetResult(ParsedWorkoutPlan);
+                    },
+                    () => ParsedWorkoutPlan != null);
+            _started = started;
+            _start = startCommand;
+            Start = new OneOffCommand(startCommand);
+            Expression = initialExpression;
         }
 
-        public string ActualWorkoutExpression =>
-            (string)GetValue(ActualWorkoutExpressionProperty);
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public string WorkoutExpression
+        public string? Expression
         {
-            get => (string)GetValue(WorkoutExpressionProperty);
-            set => SetValue(WorkoutExpressionProperty, value);
+            get => _expression;
+            set
+            {
+                _expression = value;
+                PropertyChanged?.Invoke(this);
+                ParsedWorkoutPlan =
+                    !string.IsNullOrWhiteSpace(_expression)
+                        ? new WorkoutPlanExpression(_expression).ToWorkoutPlan(new WorkoutPlan())
+                        : null;
+                ParsedExpression = ParsedExpressionFromWorkoutPlan();
+            }
         }
 
-        public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan =>
-            (Func<WorkoutPlan, WorkoutPlan>)GetValue(WorkoutPlanProperty);
+        public Task<WorkoutPlan> Finished => _started.Task;
 
-        private static object CoerceActualWorkoutExpression(DependencyObject d, object baseValue)
+        public string? ParsedExpression
         {
-            if (d is not TextualPlanningOfWorkout self
-                || self.WorkoutPlan?.Invoke(new WorkoutPlan()) is not { } workoutPlan) return baseValue;
-            var definition = workoutPlan
+            get => _parsedExpression;
+            set
+            {
+                _parsedExpression = value;
+                PropertyChanged?.Invoke(this);
+            }
+        }
+
+        public WorkoutPlan? ParsedWorkoutPlan
+        {
+            get => _parsedWorkoutPlan;
+            set
+            {
+                _parsedWorkoutPlan = value;
+                _start.RaiseCanExecuteChanged();
+                PropertyChanged?.Invoke(this);
+            }
+        }
+
+        public ICommand Start { get; }
+
+        private string? ParsedExpressionFromWorkoutPlan()
+        {
+            if (ParsedWorkoutPlan is null) return null;
+            var definition = ParsedWorkoutPlan
                 .Definition(
                     x => x is { } duration
                         ? $"{duration.TotalSeconds} W"
@@ -67,23 +92,6 @@ namespace WorkoutTimer.Planning.Visual
                 definition.Round.Workouts.Any()
                     ? string.Join(" ", definition.Round.Workouts)
                     : "empty");
-        }
-
-        private static object CoerceWorkoutPlan(DependencyObject d, object baseValue)
-        {
-            if (d is not TextualPlanningOfWorkout self) return baseValue;
-            var expression = new WorkoutPlanExpression(self.WorkoutExpression);
-            return new Func<WorkoutPlan, WorkoutPlan>(expression.ToWorkoutPlan);
-        }
-
-        private static void WorkoutExpressionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            d.CoerceValue(WorkoutPlanProperty);
-        }
-
-        private static void WorkoutPlanChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            d.CoerceValue(ActualWorkoutExpressionProperty);
         }
     }
 }

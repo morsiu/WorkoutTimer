@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Input;
 using WorkoutTimer.Plans;
+using WorkoutTimer.Visual;
 
 namespace WorkoutTimer.Tracking.Visual
 {
@@ -10,7 +12,10 @@ namespace WorkoutTimer.Tracking.Visual
         private readonly WorkoutsOfPlan _workoutsOfPlan;
         private readonly WorkoutSegment _workoutSegment;
 
-        public VisualTrackingOfWorkout(TrackedWorkoutPlan trackedWorkoutPlan, WorkoutPlan workoutPlan)
+        public VisualTrackingOfWorkout(
+            TrackedWorkoutPlan trackedWorkoutPlan,
+            WorkoutPlan workoutPlan,
+            CancellationTokenSource trackingCancellation)
         {
             var workoutsOfPlan = new WorkoutsOfPlan(workoutPlan);
             var workoutSegment = new WorkoutSegment(workoutsOfPlan);
@@ -23,8 +28,15 @@ namespace WorkoutTimer.Tracking.Visual
                         .OnRoundEnd(OnRoundEnd));
             _workoutsOfPlan = workoutsOfPlan;
             _workoutSegment = workoutSegment;
+            Cancel =
+                new OneOffCommand(
+                    new DelegateCommand(
+                        () => trackingCancellation.Cancel(),
+                        () => !trackingCancellation.IsCancellationRequested));
             WorkoutsOfCurrentRound = workoutSegment;
         }
+
+        public ICommand Cancel { get; }
 
         public object WorkoutsOfCurrentRound { get; }
 

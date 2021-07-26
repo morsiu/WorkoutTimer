@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutTimer.Statistics", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutTimer.Statistics.Visual", "WorkoutTimer.Statistics.Visual\WorkoutTimer.Statistics.Visual.csproj", "{1A123E1F-8C58-4BE1-AE3A-9D16079AB00A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutTimer.Visual", "WorkoutTimer.Visual\WorkoutTimer.Visual.csproj", "{900FCE53-196D-49D4-8547-689DDB0D566A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{1A123E1F-8C58-4BE1-AE3A-9D16079AB00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A123E1F-8C58-4BE1-AE3A-9D16079AB00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A123E1F-8C58-4BE1-AE3A-9D16079AB00A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{900FCE53-196D-49D4-8547-689DDB0D566A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{900FCE53-196D-49D4-8547-689DDB0D566A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{900FCE53-196D-49D4-8547-689DDB0D566A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{900FCE53-196D-49D4-8547-689DDB0D566A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

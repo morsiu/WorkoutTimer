@@ -5,36 +5,40 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:WorkoutTimer.Desktop"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:planning="http://workoutTimer/planning"
-    xmlns:statistics="http://workoutTimer/statistics"
+    xmlns:tracking="http://workoutTimer/tracking"
+    xmlns:visual="clr-namespace:WorkoutTimer.Visual;assembly=WorkoutTimer.Visual"
     Title="Workout timer"
-    SizeToContent ="Height"
     Width="525"
     Height="150"
+    d:DataContext="{d:DesignInstance {x:Type visual:SwitchedViewModel}}"
+    SizeToContent="Height"
     mc:Ignorable="d">
     <Window.Resources>
-        <planning:TextualPlanningOfWorkout
-            x:Key="RoundWorkouts"/>
-        <local:TrackWorkoutPlanCommand
-            x:Key="TrackWorkoutPlan"
-            WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
-        <statistics:TextualStatisticsOfWorkout
-            x:Key="WorkoutStatistics"
-            WorkoutPlan="{Binding WorkoutPlan, Source={StaticResource RoundWorkouts}}" />
+        <DataTemplate
+            DataType="{x:Type local:TextualPlanningAndStatisticsOfWorkout}">
+            <StackPanel>
+                <TextBox
+                    Text="{Binding Planning.Expression, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
+                <TextBlock
+                    Text="{Binding Planning.ParsedExpression}" />
+                <TextBlock
+                    Text="{Binding Statistics.Duration}" />
+                <Button
+                    Command="{Binding Planning.Start, Mode=OneTime}"
+                    Content="_Start" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate
+            DataType="{x:Type tracking:VisualTrackingOfWorkout}">
+            <StackPanel>
+                <Button
+                    Command="{Binding Cancel, Mode=OneTime}"
+                    Content="_Cancel" />
+                <ContentControl
+                    Content="{Binding WorkoutsOfCurrentRound}" />
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
-    <StackPanel>
-        <TextBox Text="{Binding WorkoutExpression, Source={StaticResource RoundWorkouts}, UpdateSourceTrigger=PropertyChanged, Delay=100}"/>
-        <TextBlock Text="{Binding ActualWorkoutExpression, Source={StaticResource RoundWorkouts}}"/>
-        <TextBlock Text="{Binding WorkoutDurationStatistics, Source={StaticResource WorkoutStatistics}}"/>
-        <StackPanel Orientation="Horizontal">
-            <Button
-                Command="{StaticResource TrackWorkoutPlan}"
-                Content="Start" />
-            <Button
-                Command="{Binding Cancel, Source={StaticResource TrackWorkoutPlan}}"
-                Content="Stop" />
-        </StackPanel>
-        <ContentControl
-            Content="{Binding WorkoutsOfCurrentSegment, Source={StaticResource TrackWorkoutPlan}}" />
-    </StackPanel>
+    <ContentControl
+        Content="{Binding ViewModel}" />
 </Window>

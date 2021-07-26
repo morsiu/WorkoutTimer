@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWpf>true</UseWpf>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WorkoutTimer.Plans\WorkoutTimer.Plans.csproj" />
     <ProjectReference Include="..\WorkoutTimer.Tracking\WorkoutTimer.Tracking.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Visual\WorkoutTimer.Visual.csproj" />
   </ItemGroup>
 
 </Project>

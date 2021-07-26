@@ -1,56 +1,45 @@
-﻿using System;
-using System.Windows;
+﻿using System.ComponentModel;
 using WorkoutTimer.Plans;
+using WorkoutTimer.Visual;
 
 namespace WorkoutTimer.Statistics.Visual
 {
-    public sealed class TextualStatisticsOfWorkout : DependencyObject
+    public sealed class TextualStatisticsOfWorkout : INotifyPropertyChanged
     {
-        public static readonly DependencyProperty WorkoutDurationStatisticsProperty =
-            DependencyProperty.RegisterReadOnly(
-                    nameof(WorkoutDurationStatistics),
-                    typeof(string),
-                    typeof(TextualStatisticsOfWorkout),
-                    new PropertyMetadata(string.Empty, null, CoerceWorkoutDurationStatistics))
-                .DependencyProperty;
+        private string _duration = string.Empty;
+        private WorkoutPlan? _workoutPlan;
 
-        public static readonly DependencyProperty WorkoutPlanProperty =
-            DependencyProperty.Register(
-                nameof(WorkoutPlan),
-                typeof(Func<WorkoutPlan, WorkoutPlan>),
-                typeof(TextualStatisticsOfWorkout),
-                new PropertyMetadata(new Func<WorkoutPlan, WorkoutPlan>(x => x), WorkoutPlanChanged, CoerceWorkoutPlan));
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public TextualStatisticsOfWorkout()
+        public string Duration
         {
-            CoerceValue(WorkoutDurationStatisticsProperty);
+            get => _duration;
+            private set
+            {
+                _duration = value;
+                PropertyChanged?.Invoke(this);
+            }
         }
 
-        public string WorkoutDurationStatistics =>
-            (string)GetValue(WorkoutDurationStatisticsProperty);
-
-        public Func<WorkoutPlan, WorkoutPlan> WorkoutPlan
+        public WorkoutPlan? WorkoutPlan
         {
-            get => (Func<WorkoutPlan, WorkoutPlan>)GetValue(WorkoutPlanProperty);
-            set => SetValue(WorkoutPlanProperty, value);
+            get => _workoutPlan;
+            set
+            {
+                _workoutPlan = value;
+                UpdateDuration();
+            }
         }
 
-        private static object CoerceWorkoutDurationStatistics(DependencyObject d, object baseValue)
+        private void UpdateDuration()
         {
-            if (d is not TextualStatisticsOfWorkout self) return baseValue;
-            var workoutPlan = self.WorkoutPlan(new WorkoutPlan());
-            var workoutDurationStatistics = new WorkoutDurationStatistics(workoutPlan);
-            return $"Total: {workoutDurationStatistics.Total()}, Exercise per round: {workoutDurationStatistics.ExercisePerRound()}";
-        }
-
-        private static object CoerceWorkoutPlan(DependencyObject d, object baseValue)
-        {
-            return baseValue is null ? new Func<WorkoutPlan, WorkoutPlan>(x => x) : baseValue;
-        }
-
-        private static void WorkoutPlanChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            d.CoerceValue(WorkoutDurationStatisticsProperty);
+            if (WorkoutPlan is null)
+            {
+                Duration = string.Empty;
+                return;
+            }
+            var statistics = new WorkoutDurationStatistics(WorkoutPlan);
+            Duration = $"Total: {statistics.Total()}, Exercise per round: {statistics.ExercisePerRound()}";
         }
     }
 }

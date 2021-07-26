@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WorkoutTimer.Planning\WorkoutTimer.Planning.csproj" />
     <ProjectReference Include="..\WorkoutTimer.Plans\WorkoutTimer.Plans.csproj" />
+    <ProjectReference Include="..\WorkoutTimer.Visual\WorkoutTimer.Visual.csproj" />
   </ItemGroup>
 
 </Project>
