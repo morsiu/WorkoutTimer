@@ -15,7 +15,7 @@ namespace WorkoutTimer.Planning
 
         public WorkoutPlan ToWorkoutPlan(WorkoutPlan result)
         {
-            var parts = _expression.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var parts = _expression.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             using var part = parts.AsEnumerable().GetEnumerator();
             var previousAction = default(Func<WorkoutPlan, WorkoutPlan>?);
             while (part.MoveNext())
