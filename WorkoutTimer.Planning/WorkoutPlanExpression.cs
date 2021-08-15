@@ -35,6 +35,12 @@ namespace WorkoutTimer.Planning
                     }
                     return result;
                 }
+                if (Type(part.Current) is FieldType.Exercise)
+                {
+                    result = result.AddExercise();
+                    previousAction = x => x.AddExercise();
+                    continue;
+                }
                 return result;
 
                 static Func<WorkoutPlan, WorkoutPlan>? Action(
@@ -52,7 +58,6 @@ namespace WorkoutTimer.Planning
                             case FieldType.Countdown:
                                 return x => x.WithCountdown(duration);
                         }
-                    if (value == 0 && type == FieldType.Exercise) return x => x.AddExercise();
                     if (Count.TryFromNumber(value) is { } count)
                         switch (type)
                         {
@@ -69,7 +74,7 @@ namespace WorkoutTimer.Planning
                 {
                     return int.TryParse(input, out var number)
                         ? number
-                        : default;
+                        : default(int?);
                 }
 
                 static FieldType? Type(string input)
