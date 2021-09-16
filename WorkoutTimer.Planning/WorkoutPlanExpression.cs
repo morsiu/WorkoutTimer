@@ -20,10 +20,9 @@ namespace WorkoutTimer.Planning
             var previousAction = default(Func<WorkoutPlan, WorkoutPlan>?);
             while (part.MoveNext())
             {
-                if (Value(part.Current) is { } value
-                    && part.MoveNext())
+                if (Value(part.Current) is { } value)
                 {
-                    if (Type(part.Current) is { } type)
+                    if (part.MoveNext() && Type(part.Current) is { } type)
                     {
                         if (Action(value, type, previousAction) is { } action)
                         {
