@@ -40,7 +40,7 @@ namespace WorkoutTimer.Desktop
                         finally
                         {
                             visualTracking.Dispose();
-                            _ = soundTracking.DisposeAsync();
+                            _ = soundTracking.DisposeAsync().AsTask();
                         }
                     }
                     textualPlanningAndStatistics =
