@@ -19,6 +19,7 @@ namespace WorkoutTimer.Desktop
             static async IAsyncEnumerable<object> ViewModels(
                 TextualPlanningAndStatisticsOfWorkout textualPlanningAndStatistics)
             {
+                using var soundFactory = new NAudioSoundFactory();
                 while (true)
                 {
                     {
@@ -27,7 +28,6 @@ namespace WorkoutTimer.Desktop
                         var trackingCancellation = new CancellationTokenSource();
                         var visualTracking =
                             new VisualTrackingOfWorkout(trackedWorkoutPlan, workoutPlan, trackingCancellation);
-                        using var soundFactory = new NAudioSoundFactory();
                         var soundTracking = new SoundTrackingOfWorkout(trackedWorkoutPlan, soundFactory);
                         yield return visualTracking;
                         try
