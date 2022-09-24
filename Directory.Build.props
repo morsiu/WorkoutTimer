@@ -2,7 +2,7 @@
   <PropertyGroup>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Authors>Łukasz Mrozek</Authors>
     <Nullable>enable</Nullable>
   </PropertyGroup>
